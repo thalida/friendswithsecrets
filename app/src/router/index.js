@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
-import Robyn from '@/components/Robyn';
+import Home from '@/components/Home';
+import Thread from '@/components/Thread';
 
 Vue.use(Router);
 
@@ -9,13 +9,14 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld,
+      name: 'Home',
+      component: Home,
     },
     {
-      path: '/robyn',
-      name: 'Robyn',
-      component: Robyn,
+      path: '/:person',
+      name: 'Thread',
+      component: Thread,
+      props: true,
     },
   ],
 });
