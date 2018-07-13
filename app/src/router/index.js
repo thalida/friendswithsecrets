@@ -13,10 +13,16 @@ export default new Router({
       component: Home,
     },
     {
-      path: '/:person',
+      path: '/:participant/:viewSession?',
       name: 'Thread',
       component: Thread,
-      props: true,
+      props: (route) => {
+        const viewSession = route.params.viewSession || 1;
+        return {
+          participant: route.params.participant,
+          viewSession: parseInt(viewSession, 10),
+        };
+      },
     },
   ],
 });
