@@ -32,7 +32,7 @@
         </header>
         <p
           class="header__body__about header__body__about--after"
-          v-if="$router.history.current.name.toLowerCase() !== 'thread'">
+          v-if="!isThreadView">
             Three friends participated in 15 individual online text therapy
             sessions from January to April 2018. These sessions capture a slice
             of their life, their thoughts and feelings, their individualitiies,
@@ -51,12 +51,13 @@ export default {
   data() {
     return {
       headerIsOpen: false,
+      isThreadView: this.$router.history.current.name.toLowerCase() === 'thread',
     };
   },
-  beforeRouteUpdate(to, from, next) {
-    // eslint-disable-next-line
-    console.log(to, from);
-    next();
+  watch: {
+    $route(to) {
+      this.isThreadView = to.name.toLowerCase() === 'thread';
+    },
   },
   methods: {
     toggle() {

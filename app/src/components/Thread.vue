@@ -49,7 +49,7 @@
       v-bind:session-number="getSessionNumber(index)"
       v-bind:people="people"
       v-bind:selected="index === selectedSession"
-      v-on:session-toggle="onSessionSelect" />
+      v-on:session-toggle="onSessionToggle" />
   </section>
 </template>
 
@@ -109,7 +109,20 @@ export default {
       return `thread--${this.location}`;
     },
   },
+  watch: {
+    $route(to, from) {
+      if (to.params.participant !== from.params.participant) {
+        this.has_loaded = false;
+        this.selectedParticipant = to.params.participant;
+        this.selectedSession = to.params.viewSession - 1;
+        this.getThreadData();
+      }
+    },
+  },
   methods: {
+    resetThread() {
+
+    },
     getSessionNumber(index) {
       const pad = (index + 1 < 10) ? '0' : '';
       return `${pad}${index + 1}`;
@@ -133,26 +146,20 @@ export default {
         },
       });
     },
-    onSessionSelect(e) {
-      if (e.source && e.source === 'session') {
+    onSessionToggle(e) {
+      if (e.state === true) {
         this.selectedSession = (e.state === true) ? e.index : this.selectedSession;
         this.$el.scrollTop = 0;
-        setTimeout(() => {
-          // eslint-disable-next-line
-          console.log(this);
-          this.$el.scrollTop = 0;
-        }, 5000);
-        // eslint-disable-next-line
-        // console.log(this.$el.scrollTop);
-      } else if (this.location === 'home') {
-        this.$router.push({
-          name: 'Thread',
-          params: {
-            participant: this.participant,
-            viewSession: this.selectedSession + 1,
-          },
-        });
       }
+    },
+    onSessionSelect() {
+      this.$router.push({
+        name: 'Thread',
+        params: {
+          participant: this.participant,
+          viewSession: this.selectedSession + 1,
+        },
+      });
     },
   },
 };
