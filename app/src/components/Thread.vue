@@ -4,7 +4,8 @@
     <section class="thread" :class="[locationClass, participantClass]" v-if="has_loaded">
       <div class="thread__header">
         <h2 class="participant-header">
-          {{ people[participant].full_name }}
+          <router-link v-if="location == 'home'" :to="participantRoute">{{ people[participant].full_name }}</router-link>
+          <router-link v-else to="/">{{ people[participant].full_name }}</router-link>
           <span class="participant-header__symbol">
             <router-link v-if="location == 'home'" :to="participantRoute">--></router-link>
             <router-link v-else to="/">x</router-link>
@@ -282,7 +283,7 @@ $color-timothy: #18E5EA;
     }
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 700px) {
     .participant-header__symbol {
       display: none;
     }
@@ -295,6 +296,9 @@ $color-timothy: #18E5EA;
     }
 
     &--home {
+      height: auto; 
+      overflow: hidden;
+
       .participant-header {
         display: inline-block;
         font-size: 36px;

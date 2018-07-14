@@ -156,7 +156,7 @@ export default {
         }
     }
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 700px) {
         &__body__credits{
             display: block;
             float: none;
