@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <Header v-bind:location="'home'" />
     <Thread
       v-for="(participant, index) in participantOrder"
       :key="index"
@@ -10,13 +9,11 @@
 </template>
 
 <script>
-import Header from './Header';
 import Thread from './Thread';
 
 export default {
   name: 'Home',
   components: {
-    Header,
     Thread,
   },
   data() {
@@ -38,4 +35,3 @@ export default {
     }
 }
 </style>
-

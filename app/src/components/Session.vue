@@ -1,6 +1,6 @@
 <template>
   <div class="session" :class="[sessionToggleClass]">
-    <div class="session__toggle" v-on:click="toggle()">
+    <div class="session__toggle" v-on:click="toggle">
       {{ sessionNumber }}. Session
     </div>
     <transition name="slide-fade">
@@ -69,7 +69,11 @@ export default {
   },
   methods: {
     toggle() {
-      this.isToggleOpen = !this.isToggleOpen;
+      this.$emit('session-toggle', {
+        source: 'session',
+        index: this.index,
+        state: !this.isToggleOpen,
+      });
     },
   },
 };
@@ -100,6 +104,11 @@ $color-gray: #EEE;
   }
 
   &--expanded &__toggle {
+    color: $color-dark-gray;
+    cursor: default;
+  }
+
+  &--collapsed &__toggle:hover {
     color: $color-dark-gray;
   }
 }

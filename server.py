@@ -121,6 +121,7 @@ threads = {
     'akilah': [
         [{'sender': 'akilah' if message['sender'] is 'robyn' else 'deb', 'message_text': message['message_text']} for index, message in enumerate(realSession) if index > 10 and index <= 30],
         [{'sender': 'akilah' if message['sender'] is 'robyn' else 'deb', 'message_text': message['message_text']} for index, message in enumerate(realSession) if index > 30],
+        [{'sender': 'akilah' if message['sender'] is 'robyn' else 'deb', 'message_text': message['message_text']} for index, message in enumerate(realSession) if index > 30],
     ],
     'robyn': [
         realSession,
@@ -136,7 +137,7 @@ threads = {
 
 @app.route('/api/thread/<string:person>', methods=['GET'])
 def get_thread(person):
-    try: 
+    try:
         thread_messages = threads[person]
         res = {
             'sessions': thread_messages,

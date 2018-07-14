@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     messageTherapistClass() {
-      return (this.sender.is_therapist) ? `message--therapist` : '';
+      return (this.sender.is_therapist) ? 'message--therapist' : '';
     },
     messageSenderClass() {
       return `message--${this.sender.name}`;

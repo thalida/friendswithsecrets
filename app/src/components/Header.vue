@@ -30,7 +30,9 @@
                 </div>
             </div>
         </header>
-        <p class="header__body__about header__body__about--after" v-if="location === 'home'">
+        <p
+          class="header__body__about header__body__about--after"
+          v-if="$router.history.current.name.toLowerCase() !== 'thread'">
             Three friends participated in 15 individual online text therapy
             sessions from January to April 2018. These sessions capture a slice
             of their life, their thoughts and feelings, their individualitiies,
@@ -50,6 +52,11 @@ export default {
     return {
       headerIsOpen: false,
     };
+  },
+  beforeRouteUpdate(to, from, next) {
+    // eslint-disable-next-line
+    console.log(to, from);
+    next();
   },
   methods: {
     toggle() {
@@ -172,4 +179,3 @@ export default {
     }
 }
 </style>
-

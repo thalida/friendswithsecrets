@@ -1,63 +1,65 @@
 <template>
-  <div>
-    <Header v-if="location === 'standalone'" v-bind:location="'thread'" />
-    <section class="thread" :class="[locationClass, participantClass]" v-if="has_loaded">
-      <div class="thread__header">
-        <h2 class="participant-header">
-          <router-link v-if="location == 'home'" :to="participantRoute">{{ people[participant].full_name }}</router-link>
-          <router-link v-else to="/">{{ people[participant].full_name }}</router-link>
-          <span class="participant-header__symbol">
-            <router-link v-if="location == 'home'" :to="participantRoute">--></router-link>
-            <router-link v-else to="/">x</router-link>
-          </span>
-        </h2>
+  <section class="thread" :class="[locationClass, participantClass]" v-if="has_loaded">
+    <div class="thread__header">
+      <h2 v-if="location == 'home'" class="participant-header">
+        <router-link
+          :to="participantRoute">
+          {{ people[participant].full_name }}
+          <span class="participant-header__symbol">-></span>
+        </router-link>
+      </h2>
+      <h2 v-else class="participant-header">
+        <router-link to="/">
+          {{ people[participant].full_name }}
+          <span class="participant-header__symbol">x</span>
+        </router-link>
+      </h2>
 
-        <select
-          class="participant-dropdown"
-          v-model="selectedParticipant"
-          v-on:change="onParticipantSelect">
-          <option
-            v-for="(name, index) in allParticipants"
-            :key="index"
-            :value="name">
-              {{name}}
-          </option>
-        </select>
+      <select
+        class="participant-dropdown"
+        v-model="selectedParticipant"
+        v-on:change="onParticipantSelect">
+        <option
+          v-for="(name, index) in allParticipants"
+          :key="index"
+          :value="name">
+            {{name}}
+        </option>
+      </select>
 
-        <select
-          class="sessions-dropdown"
-          v-model="selectedSession"
-          v-on:change="onSessionSelect">
-          <option value="" v-if="location === 'home'">sessions</option>
-          <option
-            v-for="(session, index) in sessions"
-            :key="index"
-            :value="index">
-              {{ getSessionNumber(index) }}. session
-          </option>
-        </select>
-      </div>
-      <Session
-        v-for="(session, index) in sessions"
-        :key="index"
-        v-bind:index="index"
-        v-bind:session="session"
-        v-bind:session-number="getSessionNumber(index)"
-        v-bind:people="people"
-        v-bind:selected="index === selectedSession" />
-    </section>
-  </div>
+      <select
+        class="sessions-dropdown"
+        v-model="selectedSession"
+        v-on:change="onSessionSelect">
+        <option value="" v-if="location === 'home'">sessions</option>
+        <option
+          v-for="(session, index) in sessions"
+          :key="index"
+          :value="index">
+            {{ getSessionNumber(index) }}. session
+        </option>
+      </select>
+    </div>
+
+    <Session
+      v-for="(session, index) in sessions"
+      :key="index"
+      v-bind:index="index"
+      v-bind:session="session"
+      v-bind:session-number="getSessionNumber(index)"
+      v-bind:people="people"
+      v-bind:selected="index === selectedSession"
+      v-on:session-toggle="onSessionSelect" />
+  </section>
 </template>
 
 <script>
 import axios from 'axios';
-import Header from './Header';
 import Session from './Session';
 
 export default {
   name: 'Thread',
   components: {
-    Header,
     Session,
   },
   props: {
@@ -83,6 +85,7 @@ export default {
       allParticipants: ['akilah', 'robyn', 'timothy'],
       selectedParticipant: this.participant,
       selectedSession: (this.location === 'home' && !isDesktop) ? '' : this.viewSession - 1,
+      lastSelectedSession: null,
       sessions: [],
       people: {},
     };
@@ -126,12 +129,22 @@ export default {
         name: 'Thread',
         params: {
           participant: this.selectedParticipant,
-          viewSession: 1,
+          viewSession: this.selectedSession + 1,
         },
       });
     },
-    onSessionSelect() {
-      if (this.location === 'home') {
+    onSessionSelect(e) {
+      if (e.source && e.source === 'session') {
+        this.selectedSession = (e.state === true) ? e.index : this.selectedSession;
+        this.$el.scrollTop = 0;
+        setTimeout(() => {
+          // eslint-disable-next-line
+          console.log(this);
+          this.$el.scrollTop = 0;
+        }, 5000);
+        // eslint-disable-next-line
+        // console.log(this.$el.scrollTop);
+      } else if (this.location === 'home') {
         this.$router.push({
           name: 'Thread',
           params: {
@@ -296,7 +309,7 @@ $color-timothy: #18E5EA;
     }
 
     &--home {
-      height: auto; 
+      height: auto;
       overflow: hidden;
 
       .participant-header {
