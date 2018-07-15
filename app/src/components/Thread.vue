@@ -43,6 +43,7 @@
 
     <div
       class="thread__sessions"
+      v-scroll-to:params="{isMobile, selectedSession}"
       v-height:params="{location, windowHeight}">
       <Session
         v-for="(session, index) in sessions"
@@ -82,13 +83,14 @@ export default {
     },
   },
   data() {
-    const isDesktop = window.innerWidth > 600;
+    const isMobile = this.setIsMobile();
     return {
+      isMobile,
       has_loaded: false,
       apiHost: (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000' : '',
       allParticipants: ['akilah', 'robyn', 'timothy'],
       selectedParticipant: this.participant,
-      selectedSession: (this.location === 'home' && !isDesktop) ? '' : this.viewSession - 1,
+      selectedSession: (this.location === 'home' && isMobile) ? '' : this.viewSession - 1,
       lastSelectedSession: null,
       sessions: [],
       people: {},
@@ -113,6 +115,7 @@ export default {
         name: 'Thread',
         params: {
           participant: this.participant,
+          viewSession: this.selectedSession + 1,
         },
       };
     },
@@ -143,6 +146,36 @@ export default {
         $el.style.height = `${params.windowHeight - $el.getBoundingClientRect().y}px`;
       },
     },
+    scrollTo: {
+      inserted(elem, args) {
+        const $el = elem;
+        const params = args.value;
+
+        if (params.isMobile) {
+          return;
+        }
+
+        const $sessionToggle = $el.querySelector('.session__toggle');
+        const styles = window.getComputedStyle($sessionToggle);
+        const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
+        const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
+        $el.scrollTop = toggleHeight * params.selectedSession;
+      },
+      update(elem, args) {
+        const $el = elem;
+        const params = args.value;
+
+        if (params.isMobile) {
+          return;
+        }
+
+        const $sessionToggle = $el.querySelector('.session__toggle');
+        const styles = window.getComputedStyle($sessionToggle);
+        const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
+        const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
+        $el.scrollTop = toggleHeight * params.selectedSession;
+      },
+    },
   },
   methods: {
     getOuterHeight($el) {
@@ -162,6 +195,14 @@ export default {
       const width = $el[`${prefix}Width`];
       const height = $el[`${prefix}Height`];
       return { width, height };
+    },
+    setIsMobile() {
+      const viewport = this.getViewportSize();
+      this.isMobile = viewport.width <= 700 || viewport.height <= 400;
+    },
+    setWindowHeight() {
+      const viewport = this.getViewportSize();
+      this.windowHeight = viewport.height;
     },
     getSessionNumber(index) {
       const pad = (index + 1 < 10) ? '0' : '';
@@ -189,14 +230,20 @@ export default {
     onSessionToggle(e) {
       if (e.state === true) {
         this.selectedSession = (e.state === true) ? e.index : this.selectedSession;
-
-        const $scrollContainer = this.$el.querySelector('.thread__sessions');
-        const $sessionToggle = $scrollContainer.querySelector('.session__toggle');
-        const toggleHeight = this.getOuterHeight($sessionToggle);
-        $scrollContainer.scrollTop = toggleHeight * this.selectedSession;
+        this.emitSessionSelect();
+        if (this.location === 'standalone') {
+          this.$router.push({
+            name: 'Thread',
+            params: {
+              participant: this.participant,
+              viewSession: this.selectedSession + 1,
+            },
+          });
+        }
       }
     },
     onSessionSelect() {
+      this.emitSessionSelect();
       this.$router.push({
         name: 'Thread',
         params: {
@@ -206,8 +253,14 @@ export default {
       });
     },
     onResize() {
-      const winDimensions = this.getViewportSize();
-      this.windowHeight = winDimensions.height;
+      this.setIsMobile();
+      this.setWindowHeight();
+    },
+    emitSessionSelect() {
+      this.$root.$emit('session-select', {
+        participant: this.participant,
+        selectedSession: this.selectedSession,
+      });
     },
   },
 };

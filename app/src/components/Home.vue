@@ -4,7 +4,8 @@
       v-for="(participant, index) in participantOrder"
       :key="index"
       v-bind:participant="participant"
-      v-bind:location="'home'" />
+      v-bind:location="'home'"
+      v-on:session-select="onSessionSelect" />
   </div>
 </template>
 
@@ -21,8 +22,15 @@ export default {
       participantOrder: ['akilah', 'robyn', 'timothy'],
     };
   },
-  created() {},
-  methods: {},
+  mounted() {
+    this.$root.$on('session-select', this.onSessionSelect);
+  },
+  watch: {
+    $route() {},
+  },
+  methods: {
+    onSessionSelect() {},
+  },
 };
 </script>
 
