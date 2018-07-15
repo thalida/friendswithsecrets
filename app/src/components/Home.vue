@@ -28,10 +28,12 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-    &:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
+  width: 80%;
+  margin: 0 auto;
+  &:after {
+      content: "";
+      display: table;
+      clear: both;
+  }
 }
 </style>

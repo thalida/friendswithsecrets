@@ -72,7 +72,7 @@ export default {
     display: block;
     position: relative;
     width: 100%;
-    height: auto;
+    min-height: 64px;
     padding: 15px 0;
     background: linear-gradient(#79E2F7, #1DE5EB);
 

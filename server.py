@@ -120,7 +120,7 @@ realSession = [
 threads = {
     'akilah': [
         [{'sender': 'akilah' if message['sender'] is 'robyn' else 'deb', 'message_text': message['message_text']} for index, message in enumerate(realSession) if index > 10 and index <= 30],
-        [{'sender': 'akilah' if message['sender'] is 'robyn' else 'deb', 'message_text': message['message_text']} for index, message in enumerate(realSession) if index > 30],
+        [{'sender': 'akilah' if message['sender'] is 'robyn' else 'deb', 'message_text': message['message_text']} for index, message in enumerate(realSession) if index < 10],
         [{'sender': 'akilah' if message['sender'] is 'robyn' else 'deb', 'message_text': message['message_text']} for index, message in enumerate(realSession) if index > 30],
     ],
     'robyn': [

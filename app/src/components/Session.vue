@@ -85,7 +85,6 @@ $color-dark-gray-faded: rgba($color-dark-gray, 0.5);
 $color-gray: #EEE;
 .session {
   overflow: hidden;
-  border-right: 1px solid $color-gray;
 
   &__toggle {
     padding: 10px;
