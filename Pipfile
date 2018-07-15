@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 requests = "*"
 flask-cors = "*"
+gspread = "*"
+"oauth2client" = "*"
 
 [dev-packages]
 
