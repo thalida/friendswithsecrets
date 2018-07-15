@@ -28,8 +28,11 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+  display: block;
+  position: relative;
   width: 80%;
   margin: 0 auto;
+
   &:after {
       content: "";
       display: table;

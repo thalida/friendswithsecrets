@@ -40,7 +40,10 @@
         </option>
       </select>
     </div>
-    <div class="thread__sessions">
+
+    <div
+      class="thread__sessions"
+      v-height:params="{location, windowHeight}">
       <Session
         v-for="(session, index) in sessions"
         :key="index"
@@ -89,10 +92,17 @@ export default {
       lastSelectedSession: null,
       sessions: [],
       people: {},
+      windowHeight: this.getViewportSize().height,
     };
   },
   created() {
     this.getThreadData();
+  },
+  mounted() {
+    window.addEventListener('resize', this.onResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
   },
   computed: {
     participantClass() {
@@ -120,11 +130,38 @@ export default {
       }
     },
   },
+  directives: {
+    height: {
+      inserted(elem, args) {
+        const $el = elem;
+        const params = args.value;
+        $el.style.height = `${params.windowHeight - $el.getBoundingClientRect().y}px`;
+      },
+      update(elem, args) {
+        const $el = elem;
+        const params = args.value;
+        $el.style.height = `${params.windowHeight - $el.getBoundingClientRect().y}px`;
+      },
+    },
+  },
   methods: {
     getOuterHeight($el) {
       const styles = window.getComputedStyle($el);
       const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
       return Math.ceil($el.offsetHeight + margin);
+    },
+    getViewportSize() {
+      let $el = window;
+      let prefix = 'inner';
+
+      if (!('innerWidth' in window)) {
+        $el = document.documentElement || document.body;
+        prefix = 'client';
+      }
+
+      const width = $el[`${prefix}Width`];
+      const height = $el[`${prefix}Height`];
+      return { width, height };
     },
     getSessionNumber(index) {
       const pad = (index + 1 < 10) ? '0' : '';
@@ -168,22 +205,24 @@ export default {
         },
       });
     },
+    onResize() {
+      const winDimensions = this.getViewportSize();
+      this.windowHeight = winDimensions.height;
+    },
   },
 };
 </script>
 
 <style lang="scss">
-$color-gray: #EEE;
-$color-akilah: #40DCFB;
-$color-robyn: #65FFF6;
-$color-timothy: #18E5EA;
-
+@import '../assets/styles/colors';
 .thread {
   position: relative;
   overflow: hidden;
 
   &__header {
     width: 100%;
+    height: 64px;
+
     &:after {
       content: "";
       clear: both;
@@ -193,8 +232,8 @@ $color-timothy: #18E5EA;
 
   &__sessions {
     width: 100%;
-    height: 300px;
     overflow: auto;
+    padding: 0 0 10% 0;
   }
 
   .participant-header {
@@ -241,13 +280,11 @@ $color-timothy: #18E5EA;
     $padding: 10%;
     $padding-adjustment: ($padding / 2) / $total-threads;
 
-    width: $width;
     float: left;
-    margin-top: 60px;
+    margin-top: $padding / 2;
 
     .thread__sessions {
       border-right: 1px solid $color-gray;
-      padding: 0;
     }
 
     .participant-dropdown {
@@ -289,10 +326,6 @@ $color-timothy: #18E5EA;
     width: 80%;
     max-width: 800px;
     margin: 0 auto;
-
-    .thread__sessions {
-      padding: 0;
-    }
 
     .participant-dropdown {
       display: none;
@@ -345,7 +378,7 @@ $color-timothy: #18E5EA;
     }
   }
 
-  @media screen and (max-width: 700px), screen and (max-height: 500px) {
+  @media screen and (max-width: 700px), screen and (max-height: 400px) {
     .participant-header__symbol {
       display: none;
     }
@@ -360,6 +393,10 @@ $color-timothy: #18E5EA;
       width: 100% !important;
       height: auto;
       overflow: hidden;
+
+      .thread__header {
+        height: auto;
+      }
 
       .participant-header {
         display: inline-block;

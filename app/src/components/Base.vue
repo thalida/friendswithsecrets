@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <div class="app-innner">
-      <Header />
-      <router-view />
-    </div>
+    <Header />
+    <router-view />
   </div>
 </template>
 
@@ -18,7 +16,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import '../assets/styles/colors';
 html {
   box-sizing: border-box;
 }
@@ -32,10 +31,10 @@ body {
   margin: 0;
   padding: 0;
   font: 16px/1.2 'Dosis', sans-serif;
-  color: #222222;
+  color: $text-color;
 }
 
 a {
-  color: #222222;
+  color: $text-color;
 }
 </style>

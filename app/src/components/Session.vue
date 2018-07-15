@@ -80,9 +80,7 @@ export default {
 </script>
 
 <style lang="scss">
-$color-dark-gray: #222222;
-$color-dark-gray-faded: rgba($color-dark-gray, 0.5);
-$color-gray: #EEE;
+@import '../assets/styles/colors';
 .session {
   overflow: hidden;
 
@@ -103,12 +101,12 @@ $color-gray: #EEE;
   }
 
   &--expanded &__toggle {
-    color: $color-dark-gray;
+    color: $text-color;
     cursor: default;
   }
 
   &--collapsed &__toggle:hover {
-    color: $color-dark-gray;
+    color: $text-color;
   }
 }
 

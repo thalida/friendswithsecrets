@@ -35,12 +35,12 @@ export default {
 </script>
 
 <style lang="scss">
-$color-gray: #EEE;
+@import '../assets/styles/colors';
 .message {
   &__sender {
     margin: 15px 0px 5px;
 
-    color: #222222;
+    color: $text-color;
     font-size: 14px;
     font-weight: bold;
     text-transform: lowercase;

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="header-wrapper">
         <header class="header">
             <div class="header__bar">
                 <router-link to="/" class="header__link">threadsss</router-link>
@@ -68,13 +68,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/colors';
 .header {
     display: block;
     position: relative;
     width: 100%;
     min-height: 64px;
     padding: 15px 0;
-    background: linear-gradient(#79E2F7, #1DE5EB);
+    background: linear-gradient($color-gradient-start, $color-gradient-end);
 
     &__bar {
         display: block;
@@ -121,7 +122,7 @@ export default {
         }
 
         a {
-            color: #222222;
+            color: $text-color;
         }
 
         &__about,
@@ -164,7 +165,7 @@ export default {
         }
     }
 
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 700px), screen and (max-height: 400px) {
         &__body__credits{
             display: block;
             float: none;
