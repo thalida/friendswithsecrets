@@ -8,6 +8,7 @@ requests = "*"
 flask-cors = "*"
 gspread = "*"
 "oauth2client" = "*"
+flask-basicauth = "*"
 
 [dev-packages]
 

@@ -209,14 +209,25 @@ export default {
       return `${pad}${index + 1}`;
     },
     getThreadData() {
-      const path = `${this.apiHost}/api/thread/${this.participant}`;
-      axios.get(path)
-        .then((response) => {
-          this.sessions = response.data.sessions;
-          this.people[response.data.participant.name] = response.data.participant;
-          this.people[response.data.therapist.name] = response.data.therapist;
-          this.has_loaded = true;
-        });
+      const storeKey = `thread-${this.participant}`;
+      const storedResData = this.$session.get(storeKey);
+      if (typeof storedResData === 'undefined') {
+        const path = `${this.apiHost}/api/thread/${this.participant}`;
+        axios.get(path)
+          .then((response) => {
+            const res = response.data;
+            this.setThreadData(res);
+            this.$session.set(storeKey, res);
+          });
+      } else {
+        this.setThreadData(storedResData);
+      }
+    },
+    setThreadData(res) {
+      this.sessions = res.sessions;
+      this.people[res.participant.name] = res.participant;
+      this.people[res.therapist.name] = res.therapist;
+      this.has_loaded = true;
     },
     onParticipantSelect() {
       this.$router.push({

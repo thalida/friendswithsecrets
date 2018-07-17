@@ -13,6 +13,9 @@ export default {
   components: {
     Header,
   },
+  created() {
+    this.$session.start();
+  },
 };
 </script>
 
