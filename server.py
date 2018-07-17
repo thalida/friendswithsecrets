@@ -6,6 +6,11 @@ from pprint import pprint
 from flask import Flask, request, make_response, jsonify, render_template, abort
 from flask_cors import CORS
 
+# Custom
+import people
+import spreadsheet
+from thread import Thread
+
 logger = logging.getLogger(__name__)
 app = Flask(
     __name__,
@@ -14,20 +19,7 @@ app = Flask(
 )
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-participants = {
-    'akilah': {'name': 'akilah', 'full_name': 'Akilah', 'is_therapist': False},
-    'robyn': {'name': 'robyn', 'full_name': 'Robyn', 'is_therapist': False},
-    'timothy': {'name': 'timothy', 'full_name': 'Timothy', 'is_therapist': False},
-    'deb': {'name': 'deb', 'full_name': 'Deb', 'is_therapist': True},
-    'jennifer': {'name': 'jennifer', 'full_name': 'Jennifer', 'is_therapist': True},
-    'april': {'name': 'april', 'full_name': 'April', 'is_therapist': True},
-}
-
-particpantToTherapist = {
-    'akilah': {'name': 'deb', 'full_name': 'Deb', 'is_therapist': True},
-    'robyn': {'name': 'jennifer', 'full_name': 'Jennifer', 'is_therapist': True},
-    'timothy': {'name': 'april', 'full_name': 'April', 'is_therapist': True},
-}
+google_client = spreadsheet.create_gc()
 
 realSession = [
     {'sender': 'robyn', 'message_text': 'hi, jennifer. are you around to talk?'},
@@ -135,14 +127,17 @@ threads = {
     ],
 }
 
+def get_n_thread_sessions(person, num_sessions):
+    thread = Thread(google_client, person)
+    return thread.get_n_sessions(num_sessions)
+
 @app.route('/api/thread/<string:person>', methods=['GET'])
 def get_thread(person):
     try:
-        thread_messages = threads[person]
         res = {
-            'sessions': thread_messages,
-            'participant': participants[person],
-            'therapist': particpantToTherapist[person],
+            'sessions': get_n_thread_sessions(person, 10),
+            'participant': people.PARTICIPANTS[person],
+            'therapist': people.PARTICIPANT_TO_THERAPIST[person],
         }
         return make_response(jsonify(res))
     except Exception:
