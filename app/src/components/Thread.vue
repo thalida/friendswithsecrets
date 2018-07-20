@@ -5,38 +5,60 @@
         <router-link
           :to="participantRoute">
           {{ people[participant].full_name }}
-          <span class="participant-header__symbol">
-            <svg width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <title>Arrow Top Right</title>
-                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g
-                    class="icon-arrow-up-right"
-                    fill="#000000"
-                    fill-rule="nonzero"
-                    stroke="#000000">
-                        <g transform="translate(1.000000, 1.000000)">
-                            <path d="M0.103329745,10.4696553 L9.87487302,0.698181818 L3.80599738,
-                            0.698181818 C3.61320004,0.69818181 3.45690646,0.541888233 3.45690646,
-                            0.349090909 C3.45690646,0.156293585 3.61320004,0 3.80599737,
-                            0 L10.7175785,0 C10.9103758,-8.42747227e-09 11.0666694,
-                            0.156293585 11.0666694,0.349090909 L11.0666694,7.26074182 C11.0666694,
-                            7.45353914 10.9103758,7.60983273 10.7175784,7.60983273 C10.5247811,
-                            7.60983273 10.3684875,7.45353914 10.3684875,7.26074182 L10.3684875,
-                            1.19179636 L0.597014078,10.9633396 C0.46128405,11.1002636 0.24025365,
-                            11.1012319 0.103329723,10.9655018 C-0.0335942042,
-                            10.8297717 -0.0345625823,10.6087413 0.101167594,10.4718174 C0.101885136,
-                            10.4710935 0.102605848,10.4703728 0.103329702,10.4696553 Z"></path>
-                        </g>
-                    </g>
-                </g>
-            </svg>
-          </span>
+          <svg class="participant-header__symbol" width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>Arrow Top Right</title>
+              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g
+                  class="icon-arrow-up-right"
+                  fill="#000000"
+                  fill-rule="nonzero"
+                  stroke="#000000">
+                      <g transform="translate(1.000000, 1.000000)">
+                          <path d="M0.103329745,10.4696553 L9.87487302,0.698181818 L3.80599738,
+                          0.698181818 C3.61320004,0.69818181 3.45690646,0.541888233 3.45690646,
+                          0.349090909 C3.45690646,0.156293585 3.61320004,0 3.80599737,
+                          0 L10.7175785,0 C10.9103758,-8.42747227e-09 11.0666694,
+                          0.156293585 11.0666694,0.349090909 L11.0666694,7.26074182 C11.0666694,
+                          7.45353914 10.9103758,7.60983273 10.7175784,7.60983273 C10.5247811,
+                          7.60983273 10.3684875,7.45353914 10.3684875,7.26074182 L10.3684875,
+                          1.19179636 L0.597014078,10.9633396 C0.46128405,11.1002636 0.24025365,
+                          11.1012319 0.103329723,10.9655018 C-0.0335942042,
+                          10.8297717 -0.0345625823,10.6087413 0.101167594,10.4718174 C0.101885136,
+                          10.4710935 0.102605848,10.4703728 0.103329702,10.4696553 Z"></path>
+                      </g>
+                  </g>
+              </g>
+          </svg>
         </router-link>
       </h2>
       <h2 v-else class="participant-header">
         <router-link to="/">
           {{ people[participant].full_name }}
-          <span class="participant-header__symbol">x</span>
+          <svg class="participant-header__symbol" width="11px" height="11px" viewBox="0 0 11 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>X</title>
+              <g troke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g
+                    class="icon-x"
+                    fill="#000000"
+                    fill-rule="nonzero"
+                    stroke="#000000">
+                      <path d="M10.1592333,1.35923333 L6.01846667,5.5 L10.1592333,
+                      9.64076667 C10.2981898,9.78463893 10.2962025,10.0133311 10.1547668,
+                      10.1547668 C10.0133311,10.2962025 9.78463893,10.2981898 9.64076667,
+                      10.1592333 L5.5,6.01846667 L1.35923333,10.1592333 C1.21536107,
+                      10.2981898 0.986668915,10.2962025 0.845233189,10.1547668 C0.703797463,
+                      10.0133311 0.70181019,9.78463893 0.840766667,9.64076667 L4.98153333,
+                      5.5 L0.840766667,1.35923333 C0.745449252,1.26717269 0.707222048,
+                      1.13084477 0.740777709,1.00264731 C0.774333371,0.874449856 0.874449856,
+                      0.774333371 1.00264731,0.740777709 C1.13084477,0.707222048 1.26717269,
+                      0.745449252 1.35923333,0.840766667 L5.5,4.98153333 L9.64076667,
+                      0.840766667 C9.73282731,0.745449252 9.86915523,0.707222048 9.99735269,
+                      0.740777709 C10.1255501,0.774333371 10.2256666,0.874449856 10.2592223,
+                      1.00264731 C10.292778,1.13084477 10.2545507,1.26717269 10.1592333,
+                      1.35923333 Z"></path>
+                  </g>
+              </g>
+          </svg>
         </router-link>
       </h2>
 
@@ -342,6 +364,10 @@ export default {
     a {
       text-decoration: none;
     }
+
+    &__symbol {
+      vertical-align: middle;
+    }
   }
 
   .participant-dropdown {
@@ -446,7 +472,8 @@ export default {
         stroke: $color-akilah;
       }
     }
-    .icon-arrow-up-right {
+    .icon-arrow-up-right,
+    .icon-x {
       fill: $color-akilah;
       stroke: $color-akilah;
     }
@@ -468,7 +495,8 @@ export default {
         stroke: $color-robyn;
       }
     }
-    .icon-arrow-up-right {
+    .icon-arrow-up-right,
+    .icon-x {
       fill: $color-robyn;
       stroke: $color-robyn;
     }
@@ -490,7 +518,8 @@ export default {
         stroke: $color-timothy;
       }
     }
-    .icon-arrow-up-right {
+    .icon-arrow-up-right,
+    .icon-x {
       fill: $color-timothy;
       stroke: $color-timothy;
     }
@@ -527,6 +556,10 @@ export default {
       }
 
       .thread__sessions {
+        display: none;
+      }
+
+      .dev-only-message {
         display: none;
       }
     }
