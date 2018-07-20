@@ -19,11 +19,17 @@ def get_file(gc, person):
     return gc.open_by_key(people.PERSON_TO_SHEET[person])
 
 def get_session(file, session_index):
-    sheet = file.get_worksheet(session_index + 1)
+    try:
+        sheet = file.get_worksheet(session_index + 1)
+    except gspread.exceptions.APIError:
+        return None;
+
     try:
         session = sheet.get_all_values()
         return _format_session(session)
-    except (AttributeError):
+    except gspread.exceptions.APIError:
+        return None;
+    except AttributeError:
         return None
 
 def _format_session(session):

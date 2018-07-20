@@ -27,15 +27,26 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 google_client = spreadsheet.create_gc()
 basic_auth = BasicAuth(app)
 
+threads = {};
+
+def get_thread_class(person):
+    try:
+        return threads[person]
+    except (KeyError):
+        threads[person] = Thread(google_client, person)
+        return threads[person]
+
 def get_n_thread_sessions(person, num_sessions):
-    thread = Thread(google_client, person)
+    thread = get_thread_class(person)
     return thread.get_n_sessions(num_sessions)
 
 @app.route('/api/thread/<string:person>', methods=['GET'])
 def get_thread(person):
     try:
+        (sessions, used_cached) = get_n_thread_sessions(person, 5)
         res = {
-            'sessions': get_n_thread_sessions(person, 10),
+            'sessions': sessions,
+            'used_cached': used_cached,
             'participant': people.PARTICIPANTS[person],
             'therapist': people.PARTICIPANT_TO_THERAPIST[person],
         }

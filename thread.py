@@ -12,14 +12,24 @@ class Thread():
         self.gc = google_client
         self.person = person
         self.file = spreadsheet.get_file(self.gc, self.person)
+        self.used_cached_session = False;
+        self.sessions = {};
 
     def get_session(self, session_index=0):
         session = spreadsheet.get_session(self.file, session_index)
+        if session is None:
+            self.used_cached_session = True;
+            session = self.sessions.get(session_index, None)
+        else:
+            self.sessions[session_index] = session;
+
         return self._tmp_format_session(session);
 
     def get_n_sessions(self, n):
+        self.used_cached_session = False;
         sessions = [self.get_session(i) for i in range(n)]
-        return [session for session in sessions if session is not None ]
+        sessions = [session for session in sessions if session is not None ]
+        return (sessions, self.used_cached_session)
 
     def _tmp_format_session(self, session):
         try:

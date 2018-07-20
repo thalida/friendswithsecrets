@@ -8,9 +8,13 @@
           <span class="participant-header__symbol">
             <svg width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>Arrow Top Right</title>
-                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g id="Artboard" fill="#000000" fill-rule="nonzero" stroke="#000000">
-                        <g id="Arrow-Top-Right" transform="translate(1.000000, 1.000000)">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g
+                    class="icon-arrow-up-right"
+                    fill="#000000"
+                    fill-rule="nonzero"
+                    stroke="#000000">
+                        <g transform="translate(1.000000, 1.000000)">
                             <path d="M0.103329745,10.4696553 L9.87487302,0.698181818 L3.80599738,
                             0.698181818 C3.61320004,0.69818181 3.45690646,0.541888233 3.45690646,
                             0.349090909 C3.45690646,0.156293585 3.61320004,0 3.80599737,
@@ -21,8 +25,7 @@
                             1.19179636 L0.597014078,10.9633396 C0.46128405,11.1002636 0.24025365,
                             11.1012319 0.103329723,10.9655018 C-0.0335942042,
                             10.8297717 -0.0345625823,10.6087413 0.101167594,10.4718174 C0.101885136,
-                            10.4710935 0.102605848,10.4703728 0.103329702,10.4696553 Z"
-                            id="Shape"></path>
+                            10.4710935 0.102605848,10.4703728 0.103329702,10.4696553 Z"></path>
                         </g>
                     </g>
                 </g>
@@ -62,6 +65,11 @@
         </option>
       </select>
     </div>
+
+    <p v-if="used_cached" class="dev-only-message">
+      <strong>[DEV ONLY] Cached Session Text...</strong><br />
+      Please refresh in 60s to see changes!
+    </p>
 
     <div
       class="thread__sessions"
@@ -114,6 +122,7 @@ export default {
       selectedParticipant: this.participant,
       selectedSession: (this.location === 'home' && isMobile) ? '' : this.viewSession - 1,
       lastSelectedSession: null,
+      used_cached: false,
       sessions: [],
       people: {},
       windowHeight: this.getViewportSize().height,
@@ -231,24 +240,18 @@ export default {
       return `${pad}${index + 1}`;
     },
     getThreadData() {
-      const storeKey = `thread-${this.participant}`;
-      const storedResData = this.$session.get(storeKey);
-      if (typeof storedResData === 'undefined') {
-        const path = `${this.apiHost}/api/thread/${this.participant}`;
-        axios.get(path)
-          .then((response) => {
-            const res = response.data;
-            this.setThreadData(res);
-            this.$session.set(storeKey, res);
-          });
-      } else {
-        this.setThreadData(storedResData);
-      }
+      const path = `${this.apiHost}/api/thread/${this.participant}`;
+      axios.get(path)
+        .then((response) => {
+          const res = response.data;
+          this.setThreadData(res);
+        });
     },
     setThreadData(res) {
       this.sessions = res.sessions;
       this.people[res.participant.name] = res.participant;
       this.people[res.therapist.name] = res.therapist;
+      this.used_cached = res.used_cached;
       this.has_loaded = true;
     },
     onParticipantSelect() {
@@ -304,6 +307,11 @@ export default {
 .thread {
   position: relative;
   overflow: hidden;
+
+  .dev-only-message {
+    font-size: 12px;
+    text-align: center;
+  }
 
   &__header {
     width: 100%;
@@ -433,6 +441,14 @@ export default {
     }
     .session--expanded .session__toggle {
       border-color: $color-akilah;
+      .icon-chevron {
+        fill: $color-akilah;
+        stroke: $color-akilah;
+      }
+    }
+    .icon-arrow-up-right {
+      fill: $color-akilah;
+      stroke: $color-akilah;
     }
   }
 
@@ -447,6 +463,14 @@ export default {
     }
     .session--expanded .session__toggle {
       border-color: $color-robyn;
+      .icon-chevron {
+        fill: $color-robyn;
+        stroke: $color-robyn;
+      }
+    }
+    .icon-arrow-up-right {
+      fill: $color-robyn;
+      stroke: $color-robyn;
     }
   }
 
@@ -461,6 +485,14 @@ export default {
     }
     .session--expanded .session__toggle {
       border-color: $color-timothy;
+      .icon-chevron {
+        fill: $color-timothy;
+        stroke: $color-timothy;
+      }
+    }
+    .icon-arrow-up-right {
+      fill: $color-timothy;
+      stroke: $color-timothy;
     }
   }
 
