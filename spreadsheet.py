@@ -30,7 +30,7 @@ def get_session(file, session_index):
     except gspread.exceptions.APIError:
         return None;
     except AttributeError:
-        return None
+        return []
 
 def _format_session(session):
     formatted_session = []

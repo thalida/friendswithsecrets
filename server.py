@@ -43,7 +43,7 @@ def get_n_thread_sessions(person, num_sessions):
 @app.route('/api/thread/<string:person>', methods=['GET'])
 def get_thread(person):
     try:
-        (sessions, used_cached) = get_n_thread_sessions(person, 5)
+        (sessions, used_cached) = get_n_thread_sessions(person, 10)
         res = {
             'sessions': sessions,
             'used_cached': used_cached,

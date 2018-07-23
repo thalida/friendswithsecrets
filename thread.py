@@ -20,8 +20,10 @@ class Thread():
         if session is None:
             self.used_cached_session = True;
             session = self.sessions.get(session_index, None)
-        else:
+        elif len(session) > 0:
             self.sessions[session_index] = session;
+        else:
+            session = None;
 
         return self._tmp_format_session(session);
 
