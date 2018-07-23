@@ -30,7 +30,7 @@ html {
 }
 
 body {
-  background-color: #F8F8F8;
+  background-color: $body-bg-color;
   margin: 0;
   padding: 0;
   font: 16px/1.2 'Dosis', sans-serif;

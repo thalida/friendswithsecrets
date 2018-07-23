@@ -49,12 +49,11 @@
             {{name}}
         </option>
       </select>
-
       <select
         class="sessions-dropdown"
         v-model="selectedSession"
         v-on:change="onSessionSelect">
-        <option value="" v-if="location === 'home'">sessions</option>
+        <option :value="null" disabled hidden v-if="location === 'home'">sessions</option>
         <option
           v-for="(session, index) in sessions"
           :key="index"
@@ -262,7 +261,7 @@ export default {
       });
     },
     onSessionToggle(e) {
-      this.selectedSession = (e.state === true) ? e.index : -1;
+      this.selectedSession = (e.state === true) ? e.index : null;
       this.emitSessionSelect();
       if (this.location === 'standalone') {
         this.$router.push({
@@ -348,7 +347,7 @@ export default {
   .participant-dropdown {
     display: inline-block;
     vertical-align: sub;
-    background: #FFFFFF;
+    background: $body-bg-color;
     color: $text-color;
     padding: 5px 0;
     font-size: 36px;
@@ -361,7 +360,8 @@ export default {
   .sessions-dropdown {
     display: inline-block;
     vertical-align: sub;
-    background: #FFFFFF;
+    background: $body-bg-color;
+    color: $text-color;
     width: 128px;
     padding: 5px 0;
     font-size: 14px;
