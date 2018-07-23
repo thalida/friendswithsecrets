@@ -53,7 +53,7 @@ export default {
     padding: 8px;
     border-radius: 8px;
     font-weight: normal;
-    background-color: $color-gray;
+    background-color: $color-gray-2;
 
     &:first-of-type {
       border-radius: 8px 8px 8px 0px;
