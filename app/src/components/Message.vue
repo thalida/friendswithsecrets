@@ -1,12 +1,12 @@
 <template>
-  <div class="message" :class="[messageIndexClass, messageSenderClass, messageTherapistClass]">
+  <li class="message" :class="[messageIndexClass, messageSenderClass, messageTypeClass]">
     <div class="message__sender">{{sender.full_name}}</div>
     <p
       v-for="(message, index) in messages" class="message__text"
       :key="index">
       {{message}}
     </p>
-  </div>
+  </li>
 </template>
 
 <script>
@@ -21,8 +21,8 @@ export default {
     return {};
   },
   computed: {
-    messageTherapistClass() {
-      return (this.sender.is_therapist) ? 'message--therapist' : '';
+    messageTypeClass() {
+      return (this.sender.is_therapist) ? 'message--therapist' : 'message--participant';
     },
     messageSenderClass() {
       return `message--${this.sender.name}`;
@@ -62,6 +62,12 @@ export default {
 
   &--0 &__sender {
     margin-top: 0;
+  }
+
+  &--participant {
+    .message__text {
+      background-color: $color-participant;
+    }
   }
 }
 </style>

@@ -3,10 +3,17 @@
         <header class="header">
             <div class="header__bar">
                 <router-link to="/" class="header__link">threadsss</router-link>
-                <span class="header__btn" v-on:click="toggle()">
-                    <span v-if="!headerIsOpen">?</span>
-                    <span v-else>X</span>
-                </span>
+                <a
+                  tabindex="0"
+                  class="header__btn"
+                  v-on:click="toggle()"
+                  v-on:keyup.enter="toggle()"
+                  :title="(headerIsOpen ? 'Close' : 'Open') + ' threadsss about section'">
+                    <span
+                      v-if="!headerIsOpen">?</span>
+                    <span
+                      v-else>X</span>
+                </a>
             </div>
             <div class="header__body" v-if="headerIsOpen">
                 <p class="header__body__about header__body__about--inline">
@@ -56,6 +63,7 @@ export default {
   },
   watch: {
     $route(to) {
+      this.headerIsOpen = false;
       this.isThreadView = to.name.toLowerCase() === 'thread';
     },
   },

@@ -1,6 +1,11 @@
 <template>
-  <div class="session" :class="[sessionToggleClass]">
-    <div class="session__toggle" v-on:click="toggle">
+  <li class="session" :class="[sessionToggleClass]">
+    <a
+      class="session__toggle"
+      v-on:click="toggle"
+      v-on:keyup.enter="toggle()"
+      :title="(isToggleOpen ? 'Close' : 'Open') + ' Session #' + sessionNumber"
+      tabindex="0">
       <svg class="session__toggle__icon" width="13px" height="8px" viewBox="0 0 13 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <title>Chevron Arrow</title>
           <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -22,18 +27,18 @@
           </g>
       </svg>
       {{ sessionNumber }}. Session
-    </div>
+    </a>
     <transition name="slide-fade">
-      <div class="session__messages" v-if="isToggleOpen">
+      <ol class="session__messages" v-if="isToggleOpen">
         <Message
           v-for="(groupedMessages, index) in messagesFormatted"
           :key="index"
           v-bind:index="index"
           v-bind:messages="groupedMessages.messages"
           v-bind:sender="people[groupedMessages.sender]" />
-      </div>
+      </ol>
     </transition>
-  </div>
+  </li>
 </template>
 
 <script>
@@ -105,6 +110,8 @@ export default {
   overflow: hidden;
 
   &__toggle {
+    display: block;
+    width: 100%;
     padding: 10px;
     margin: 10px 0;
     border: 2px solid $color-dark-gray-faded;
@@ -133,7 +140,12 @@ export default {
   &--expanded &__toggle {
     font-weight: bold;
     color: $text-color;
-    cursor: default;
+    border-color: $color-participant;
+
+    .icon-chevron {
+      fill: $color-participant;
+      stroke: $color-participant;
+    }
 
     .session__toggle__icon {
       transform: rotate(0deg);

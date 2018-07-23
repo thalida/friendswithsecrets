@@ -5,30 +5,6 @@
         <router-link
           :to="participantRoute">
           {{ people[participant].full_name }}
-          <svg class="participant-header__symbol" width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>Arrow Top Right</title>
-              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g
-                  class="icon-arrow-up-right"
-                  fill="#000000"
-                  fill-rule="nonzero"
-                  stroke="#000000">
-                      <g transform="translate(1.000000, 1.000000)">
-                          <path d="M0.103329745,10.4696553 L9.87487302,0.698181818 L3.80599738,
-                          0.698181818 C3.61320004,0.69818181 3.45690646,0.541888233 3.45690646,
-                          0.349090909 C3.45690646,0.156293585 3.61320004,0 3.80599737,
-                          0 L10.7175785,0 C10.9103758,-8.42747227e-09 11.0666694,
-                          0.156293585 11.0666694,0.349090909 L11.0666694,7.26074182 C11.0666694,
-                          7.45353914 10.9103758,7.60983273 10.7175784,7.60983273 C10.5247811,
-                          7.60983273 10.3684875,7.45353914 10.3684875,7.26074182 L10.3684875,
-                          1.19179636 L0.597014078,10.9633396 C0.46128405,11.1002636 0.24025365,
-                          11.1012319 0.103329723,10.9655018 C-0.0335942042,
-                          10.8297717 -0.0345625823,10.6087413 0.101167594,10.4718174 C0.101885136,
-                          10.4710935 0.102605848,10.4703728 0.103329702,10.4696553 Z"></path>
-                      </g>
-                  </g>
-              </g>
-          </svg>
         </router-link>
       </h2>
       <h2 v-else class="participant-header">
@@ -93,7 +69,7 @@
       Please refresh in 60s to see changes!
     </p>
 
-    <div
+    <ol
       class="thread__sessions"
       v-scroll-to:params="{isMobile, selectedSession}"
       v-height:params="{location, windowHeight}">
@@ -106,7 +82,7 @@
         v-bind:people="people"
         v-bind:selected="index === selectedSession"
         v-on:session-toggle="onSessionToggle" />
-    </div>
+    </ol>
   </section>
 </template>
 
@@ -286,18 +262,16 @@ export default {
       });
     },
     onSessionToggle(e) {
-      if (e.state === true) {
-        this.selectedSession = (e.state === true) ? e.index : this.selectedSession;
-        this.emitSessionSelect();
-        if (this.location === 'standalone') {
-          this.$router.push({
-            name: 'Thread',
-            params: {
-              participant: this.participant,
-              viewSession: this.selectedSession + 1,
-            },
-          });
-        }
+      this.selectedSession = (e.state === true) ? e.index : -1;
+      this.emitSessionSelect();
+      if (this.location === 'standalone') {
+        this.$router.push({
+          name: 'Thread',
+          params: {
+            participant: this.participant,
+            viewSession: this.selectedSession + 1,
+          },
+        });
       }
     },
     onSessionSelect() {
@@ -355,6 +329,7 @@ export default {
   .participant-header {
     margin: 10px 0;
 
+    color: $text-color;
     font-weight: bold;
     font-size: 48px;
     text-align: center;
@@ -374,6 +349,7 @@ export default {
     display: inline-block;
     vertical-align: sub;
     background: #FFFFFF;
+    color: $text-color;
     padding: 5px 0;
     font-size: 36px;
     font-family: 'Dosis', sans-serif;
@@ -391,7 +367,12 @@ export default {
     font-size: 14px;
     border: 0;
     border-radius: 0;
-    border-bottom: 2px solid #222222;
+    border-bottom: 2px solid $text-color;
+  }
+
+  .icon-x {
+    fill: $text-color;
+    stroke: $text-color;
   }
 
   &--home {
@@ -404,7 +385,7 @@ export default {
     margin-top: $padding / 2;
 
     .thread__sessions {
-      border-right: 1px solid $color-gray;
+      border-right: 2px solid $color-gray-2;
     }
 
     .participant-dropdown {
@@ -456,75 +437,6 @@ export default {
     }
   }
 
-  &--akilah {
-    .participant-dropdown,
-    .participant-header,
-    .participant-header a {
-      color: $color-akilah;
-    }
-    .message--akilah .message__text {
-      background-color: $color-akilah;
-    }
-    .session--expanded .session__toggle {
-      border-color: $color-akilah;
-      .icon-chevron {
-        fill: $color-akilah;
-        stroke: $color-akilah;
-      }
-    }
-    .icon-arrow-up-right,
-    .icon-x {
-      fill: $color-akilah;
-      stroke: $color-akilah;
-    }
-  }
-
-  &--robyn {
-    .participant-dropdown,
-    .participant-header,
-    .participant-header a {
-      color: $color-robyn;
-    }
-    .message--robyn .message__text {
-      background-color: $color-robyn;
-    }
-    .session--expanded .session__toggle {
-      border-color: $color-robyn;
-      .icon-chevron {
-        fill: $color-robyn;
-        stroke: $color-robyn;
-      }
-    }
-    .icon-arrow-up-right,
-    .icon-x {
-      fill: $color-robyn;
-      stroke: $color-robyn;
-    }
-  }
-
-  &--timothy {
-    .participant-dropdown,
-    .participant-header,
-    .participant-header a {
-      color: $color-timothy;
-    }
-    .message--timothy .message__text {
-      background-color: $color-timothy;
-    }
-    .session--expanded .session__toggle {
-      border-color: $color-timothy;
-      .icon-chevron {
-        fill: $color-timothy;
-        stroke: $color-timothy;
-      }
-    }
-    .icon-arrow-up-right,
-    .icon-x {
-      fill: $color-timothy;
-      stroke: $color-timothy;
-    }
-  }
-
   @media screen and (max-width: 700px), screen and (max-height: 400px) {
     .participant-header__symbol {
       display: none;
@@ -555,10 +467,7 @@ export default {
         display: inline-block;
       }
 
-      .thread__sessions {
-        display: none;
-      }
-
+      .thread__sessions,
       .dev-only-message {
         display: none;
       }
@@ -567,9 +476,6 @@ export default {
     &--standalone {
       width: 80%;
 
-      .participant-header{
-        display: none;
-      }
       .participant-dropdown {
         display: block;
         float: left;
@@ -579,6 +485,8 @@ export default {
         float: right;
         margin: 15px 0;
       }
+
+      .participant-header,
       .session__toggle,
       .session.session--collapsed {
         display: none;

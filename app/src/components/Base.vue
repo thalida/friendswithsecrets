@@ -30,7 +30,7 @@ html {
 }
 
 body {
-  background-color: #FFFFFF;
+  background-color: #F8F8F8;
   margin: 0;
   padding: 0;
   font: 16px/1.2 'Dosis', sans-serif;
@@ -39,5 +39,15 @@ body {
 
 a {
   color: $text-color;
+}
+
+ol {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+li {
+  list-style: none;
 }
 </style>
