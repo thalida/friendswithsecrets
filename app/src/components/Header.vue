@@ -58,13 +58,14 @@ export default {
   data() {
     return {
       headerIsOpen: false,
-      isThreadView: this.$router.history.current.name.toLowerCase() === 'thread',
+      isThreadView: false,
+      // isThreadView: this.$router.history.current.name.toLowerCase() === 'thread',
     };
   },
   watch: {
-    $route(to) {
+    $route() {
       this.headerIsOpen = false;
-      this.isThreadView = to.name.toLowerCase() === 'thread';
+      this.isThreadView = false;
     },
   },
   methods: {
