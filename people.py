@@ -7,6 +7,8 @@ PEOPLE = {
     'april': {'name': 'april', 'full_name': 'April', 'is_therapist': True},
 }
 
+PARTICIPANT_ORDER = ['akilah', 'robyn', 'timothy'];
+
 PARTICIPANTS = {
     'akilah': PEOPLE['akilah'],
     'robyn': PEOPLE['robyn'],
