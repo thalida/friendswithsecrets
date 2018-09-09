@@ -40,6 +40,18 @@ def get_n_thread_sessions(person, num_sessions):
     thread = get_thread_class(person)
     return thread.get_n_sessions(num_sessions)
 
+@app.route('/api/people', methods=['GET'])
+def get_people():
+    try:
+        res = {
+            'people': people.PEOPLE,
+            'participantOrder': people.PARTICIPANT_ORDER,
+        }
+        return make_response(jsonify(res))
+    except Exception:
+        logger.exception('500 Error Fetching Thread Data')
+        abort(500)
+
 @app.route('/api/thread/<string:person>', methods=['GET'])
 def get_thread(person):
     try:

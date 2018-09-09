@@ -1,29 +1,28 @@
 <template>
-  <section class="thread" v-if="has_loaded">
-    <p v-if="used_cached" class="dev-only-message">
+  <section class="thread" v-if="isLoaded">
+    <p v-if="threadData && threadData.used_cached" class="dev-only-message">
       <strong>[DEV ONLY] Cached Session Text...</strong><br />
       Please refresh in 60s to see changes!
     </p>
 
     <ol
       class="thread__sessions"
-      v-scroll-to:params="{selectedSession}"
+      v-scroll-to:params="{selectedSession: selectedSessionZeroIdx}"
       v-height:params="{windowHeight}">
       <Session
-        v-for="(session, index) in sessions"
+        v-for="(session, index) in threadData.sessions"
         :key="index"
         v-bind:index="index"
         v-bind:session="session"
         v-bind:session-number="getSessionNumber(index)"
         v-bind:people="people"
-        v-bind:selected="index === selectedSession"
+        v-bind:selected="index === selectedSessionZeroIdx"
         v-on:session-toggle="onSessionToggle" />
     </ol>
   </section>
 </template>
 
 <script>
-import axios from 'axios';
 import Session from './Session';
 
 export default {
@@ -33,18 +32,11 @@ export default {
   },
   data() {
     return {
-      has_loaded: false,
-      apiHost: (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000' : '',
-      defaultParticipant: 'akilah',
-      defaultSession: 1,
-      used_cached: false,
-      sessions: [],
-      people: {},
       windowHeight: this.getViewportSize().height,
     };
   },
   created() {
-    this.getThreadData();
+    this.$store.dispatch('getThread');
   },
   mounted() {
     window.addEventListener('resize', this.onResize);
@@ -53,12 +45,23 @@ export default {
     window.removeEventListener('resize', this.onResize);
   },
   computed: {
+    isLoaded() {
+      return !!this.$store.state.isLoading[this.selectedParticipant] === false;
+    },
     selectedParticipant() {
-      return this.$route.params.participant || this.defaultParticipant;
+      return this.$store.state.selectedParticipant;
     },
     selectedSession() {
-      const session = this.$route.params.session || this.defaultSession;
-      return session - 1;
+      return this.$store.state.selectedSession;
+    },
+    selectedSessionZeroIdx() {
+      return this.selectedSession - 1;
+    },
+    people() {
+      return this.$store.state.people;
+    },
+    threadData() {
+      return this.$store.state.threads[this.selectedParticipant];
     },
   },
   watch: {
@@ -66,9 +69,7 @@ export default {
       if (from.params.participant === to.params.participant) {
         return;
       }
-
-      this.has_loaded = false;
-      this.getThreadData();
+      this.$store.dispatch('getThread');
     },
   },
   directives: {
@@ -132,21 +133,6 @@ export default {
       const pad = (index + 1 < 10) ? '0' : '';
       return `${pad}${index + 1}`;
     },
-    getThreadData() {
-      const path = `${this.apiHost}/api/thread/${this.selectedParticipant}`;
-      axios.get(path)
-        .then((response) => {
-          const res = response.data;
-          this.setThreadData(res);
-        });
-    },
-    setThreadData(res) {
-      this.sessions = res.sessions;
-      this.people[res.participant.name] = res.participant;
-      this.people[res.therapist.name] = res.therapist;
-      this.used_cached = res.used_cached;
-      this.has_loaded = true;
-    },
     onSessionToggle(e) {
       this.$root.$emit('session-select', {
         participant: this.selectedParticipant,
@@ -163,198 +149,22 @@ export default {
 <style lang="scss">
 @import '../assets/styles/colors';
 .thread {
+  display: block;
+  width: 80%;
+  margin: 0 auto;
   position: relative;
   overflow: hidden;
 
   .dev-only-message {
+    display: none;
     font-size: 12px;
     text-align: center;
-  }
-
-  &__header {
-    width: 100%;
-    height: 64px;
-
-    &:after {
-      content: "";
-      clear: both;
-      display: table;
-    }
   }
 
   &__sessions {
     width: 100%;
     overflow: auto;
     padding: 0 0 10% 0;
-  }
-
-  .participant-header {
-    margin: 10px 0;
-
-    color: $text-color;
-    font-weight: bold;
-    font-size: 48px;
-    text-align: center;
-    text-transform: lowercase;
-    vertical-align: middle;
-
-    a {
-      text-decoration: none;
-    }
-
-    &__symbol {
-      vertical-align: middle;
-    }
-  }
-
-  .participant-dropdown {
-    display: inline-block;
-    vertical-align: sub;
-    background: $body-bg-color;
-    color: $text-color;
-    padding: 5px 0;
-    font-size: 36px;
-    font-family: 'Dosis', sans-serif;
-    margin: 0;
-    border: 0;
-    border-radius: 0;
-  }
-
-  .sessions-dropdown {
-    display: inline-block;
-    vertical-align: sub;
-    background: $body-bg-color;
-    color: $text-color;
-    width: 128px;
-    padding: 5px 0;
-    font-size: 14px;
-    border: 0;
-    border-radius: 0;
-    border-bottom: 2px solid $text-color;
-  }
-
-  .icon-x {
-    fill: $text-color;
-    stroke: $text-color;
-  }
-
-  &--home {
-    $total-threads: 3;
-    $width: 100% / $total-threads;
-    $padding: 10%;
-    $padding-adjustment: ($padding / 2) / $total-threads;
-
-    float: left;
-    margin-top: $padding / 2;
-
-    .thread__sessions {
-      border-right: 2px solid $color-gray-2;
-    }
-
-    .participant-dropdown {
-      display: none;
-    }
-
-    .sessions-dropdown {
-      display: none;
-    }
-
-    &:nth-child(1) {
-      width: $width - ($padding-adjustment - ($padding-adjustment / 4));
-      .thread__sessions {
-        padding-left: 0;
-        padding-right: $padding;
-      }
-    }
-
-    &:nth-child(2) {
-      width: $width + ($padding-adjustment + ($padding-adjustment / 2));
-      .thread__sessions {
-        padding-left: $padding;
-        padding-right: $padding;
-      }
-    }
-
-    &:nth-child(3) {
-      width: $width - ($padding-adjustment - ($padding-adjustment / 4));
-      .thread__sessions {
-        padding-left: $padding;
-        padding-right: 0;
-
-        border-right: 0;
-      }
-    }
-  }
-
-  &--standalone {
-    width: 80%;
-    max-width: 800px;
-    margin: 0 auto;
-
-    .participant-dropdown {
-      display: none;
-    }
-
-    .sessions-dropdown {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 700px), screen and (max-height: 400px) {
-    .participant-header__symbol {
-      display: none;
-    }
-
-    &--home,
-    &--standalone {
-      float: none;
-      margin: 0 auto;
-    }
-
-    &--home {
-      width: 100% !important;
-      height: auto;
-      overflow: hidden;
-
-      .thread__header {
-        height: auto;
-      }
-
-      .participant-header {
-        display: inline-block;
-        font-size: 36px;
-        margin: 0;
-      }
-
-      .sessions-dropdown {
-        display: inline-block;
-      }
-
-      .thread__sessions,
-      .dev-only-message {
-        display: none;
-      }
-    }
-
-    &--standalone {
-      width: 80%;
-
-      .participant-dropdown {
-        display: block;
-        float: left;
-      }
-      .sessions-dropdown {
-        display: block;
-        float: right;
-        margin: 15px 0;
-      }
-
-      .participant-header,
-      .session__toggle,
-      .session.session--collapsed {
-        display: none;
-      }
-    }
   }
 }
 </style>
