@@ -77,7 +77,7 @@ export default {
       },
     },
     scrollTo: {
-      update(elem, args) {
+      componentUpdated(elem, args) {
         if (!args.value.isLoaded) {
           return;
         }
