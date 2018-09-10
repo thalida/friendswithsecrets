@@ -17,6 +17,7 @@ export default new Vuex.Store({
     defaultSession: 1,
     selectedParticipant: null,
     selectedSession: null,
+    selectedThread: null,
   },
   mutations: {
     setIsLoading(state, { key, status }) {
@@ -31,8 +32,11 @@ export default new Vuex.Store({
     setParticipantOrder(state, { participantOrder }) {
       state.participantOrder = participantOrder;
     },
-    setThread(state, { participant, thread }) {
+    setThreads(state, { participant, thread }) {
       Vue.set(state.threads, participant, thread);
+    },
+    setSelectedThread(state, participant) {
+      state.selectedThread = state.threads[participant];
     },
     setSelectedParticipant(state, participant) {
       if (typeof state.people[participant] !== 'undefined') {
@@ -75,10 +79,11 @@ export default new Vuex.Store({
       const path = `${state.apiHost}/api/thread/${state.selectedParticipant}`;
       axios.get(path)
         .then((response) => {
-          commit('setThread', {
+          commit('setThreads', {
             participant: state.selectedParticipant,
             thread: response.data,
           });
+          commit('setSelectedThread', state.selectedParticipant);
           commit('setIsLoading', { key: state.selectedParticipant, status: false });
         });
     },

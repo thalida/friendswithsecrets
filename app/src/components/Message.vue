@@ -51,7 +51,7 @@ export default {
     border-radius: 8px;
     font-size: 20px;
     font-weight: normal;
-    background-color: $color-gray-2;
+    background-color: $color-gray;
 
     &:first-of-type {
       border-radius: 8px 8px 8px 0px;

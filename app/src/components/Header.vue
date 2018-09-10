@@ -14,7 +14,7 @@
                 v-else>X</span>
           </a>
       </div>
-      <div class="header__body" v-if="headerIsOpen">
+      <div class="header__body container-wrapper" v-if="headerIsOpen">
           <p class="header__body__about header__body__about--inline">
               Three friends participated in 15 individual online text therapy
               sessions from January to April 2018. These sessions capture a slice
@@ -70,6 +70,7 @@ export default {
   width: 100%;
   min-height: 64px;
   padding: 15px 0;
+  transition: background-color 400ms;
 
   &__bar {
       display: block;

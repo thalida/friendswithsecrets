@@ -1,5 +1,5 @@
 <template>
-  <section class="thread container-wrapper" v-if="isLoaded">
+  <section class="thread container-wrapper" v-show="isLoaded">
     <p v-if="threadData && threadData.used_cached" class="dev-only-message">
       <strong>[DEV ONLY] Cached Session Text...</strong><br />
       Please refresh in 60s to see changes!
@@ -7,10 +7,10 @@
 
     <ol
       class="thread__sessions"
-      v-scroll-to:params="{selectedSession: selectedSessionZeroIdx}"
-      v-height:params="{windowHeight}">
+      v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}"
+      v-height:params="{isLoaded, windowHeight}">
       <Session
-        v-for="(session, index) in threadData.sessions"
+        v-for="(session, index) in threadSessions"
         :key="index"
         v-bind:index="index"
         v-bind:session="session"
@@ -45,9 +45,6 @@ export default {
     window.removeEventListener('resize', this.onResize);
   },
   computed: {
-    isLoaded() {
-      return !!this.$store.state.isLoading[this.selectedParticipant] === false;
-    },
     selectedParticipant() {
       return this.$store.state.selectedParticipant;
     },
@@ -60,8 +57,14 @@ export default {
     people() {
       return this.$store.state.people;
     },
+    isLoaded() {
+      return this.$store.state.isLoading[this.selectedParticipant] === false;
+    },
     threadData() {
-      return this.$store.state.threads[this.selectedParticipant];
+      return this.$store.state.selectedThread;
+    },
+    threadSessions() {
+      return (this.threadData) ? this.threadData.sessions : [];
     },
   },
   watch: {
@@ -74,31 +77,30 @@ export default {
   },
   directives: {
     height: {
-      inserted(elem, args) {
-        const $el = elem;
-        const params = args.value;
-        $el.style.height = `${params.windowHeight - $el.getBoundingClientRect().y}px`;
-      },
       update(elem, args) {
+        if (!args.value.isLoaded) {
+          return;
+        }
+
         const $el = elem;
         const params = args.value;
         $el.style.height = `${params.windowHeight - $el.getBoundingClientRect().y}px`;
       },
     },
     scrollTo: {
-      inserted(elem, args) {
-        const $el = elem;
-        const params = args.value;
-        const $sessionToggle = $el.querySelector('.session__toggle');
-        const styles = window.getComputedStyle($sessionToggle);
-        const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-        const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
-        $el.scrollTop = toggleHeight * params.selectedSession;
-      },
       update(elem, args) {
+        if (!args.value.isLoaded) {
+          return;
+        }
+
         const $el = elem;
         const params = args.value;
         const $sessionToggle = $el.querySelector('.session__toggle');
+
+        if ($sessionToggle === null) {
+          return;
+        }
+
         const styles = window.getComputedStyle($sessionToggle);
         const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
         const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
