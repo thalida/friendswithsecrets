@@ -1,5 +1,5 @@
 <template>
-  <section class="thread" v-if="isLoaded">
+  <section class="thread container-wrapper" v-if="isLoaded">
     <p v-if="threadData && threadData.used_cached" class="dev-only-message">
       <strong>[DEV ONLY] Cached Session Text...</strong><br />
       Please refresh in 60s to see changes!
@@ -147,11 +147,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../assets/styles/colors';
+@import '../assets/styles/toolkit';
 .thread {
-  display: block;
-  width: 80%;
-  margin: 0 auto;
   position: relative;
   overflow: hidden;
 

@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../assets/styles/colors';
+@import '../assets/styles/toolkit';
 .session {
   overflow: hidden;
 
@@ -140,12 +140,12 @@ export default {
   &--expanded &__toggle {
     font-weight: bold;
     color: $text-color;
-    border-color: $color-participant;
+    // border-color: $color-participant;
 
-    .icon-chevron {
-      fill: $color-participant;
-      stroke: $color-participant;
-    }
+    // .icon-chevron {
+    //   fill: $color-participant;
+    //   stroke: $color-participant;
+    // }
 
     .session__toggle__icon {
       transform: rotate(0deg);

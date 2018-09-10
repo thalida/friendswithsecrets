@@ -35,18 +35,14 @@ export default new Vuex.Store({
       Vue.set(state.threads, participant, thread);
     },
     setSelectedParticipant(state, participant) {
-      if (participant !== state.selectedParticipant
-        && typeof state.people[participant] !== 'undefined'
-      ) {
+      if (typeof state.people[participant] !== 'undefined') {
         state.selectedParticipant = participant;
       } else {
         state.selectedParticipant = state.defaultParticipant;
       }
     },
     setSelectedSession(state, session) {
-      if (session !== state.selectedSession
-          && !isNaN(parseInt(session, 10))
-      ) {
+      if (!isNaN(parseInt(session, 10))) {
         state.selectedSession = parseInt(session, 10);
       } else {
         state.selectedSession = state.defaultSession;
