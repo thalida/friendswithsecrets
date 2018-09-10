@@ -37,12 +37,14 @@ export default {
     return {};
   },
   beforeRouteEnter(to, from, next) {
-    if (['akilah', 'timothy', 'robyn'].includes(to.params.participant)
-      || typeof to.params.participant === 'undefined') {
-      next();
+    const isValidPerson = ['akilah', 'timothy', 'robyn'].includes(to.params.participant);
+    const isEmptyPerson = typeof to.params.participant === 'undefined';
+    if (!isValidPerson && !isEmptyPerson) {
+      next('/');
+      return;
     }
 
-    next('/');
+    next();
   },
   created() {
     this.$store.dispatch('getAllPeople', this.$route.params);
@@ -102,11 +104,18 @@ html {
 }
 
 body {
-  background-color: $body-bg-color;
   margin: 0;
   padding: 0;
-  font: 16px/1.2 'Dosis', sans-serif;
+  font: normal normal 16px/1.2 'proxima-nova', sans-serif;
   color: $text-color;
+  background: linear-gradient($color-gray-3, $color-gray-2);
+  height: 100%;
+}
+
+html,
+body,
+#app {
+  height: 100%;
 }
 
 a {
