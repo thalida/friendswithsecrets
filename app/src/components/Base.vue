@@ -164,15 +164,12 @@ li {
 
 .animation-fade-enter-active,
 .animation-fade-leave-active {
-  transition: opacity 200ms ease;
+  transition: opacity 300ms ease;
 }
 
-.animation-fade-enter {
-  opacity: 0;
-}
-
+.animation-fade-enter,
 .animation-fade-leave-to {
-  opacity: 0.3;
+  opacity: 0;
 }
 
 
