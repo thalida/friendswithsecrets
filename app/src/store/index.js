@@ -14,7 +14,7 @@ export default new Vuex.Store({
     threads: {},
     participantOrder: [],
     defaultParticipant: null,
-    defaultSession: 1,
+    defaultSession: null,
     selectedParticipant: null,
     selectedSession: null,
     selectedThread: null,
@@ -54,7 +54,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    getAllPeople({ commit, state }, { participant, session }) {
+    getAllPeople({ commit, state, dispatch }, routeParams) {
       if (state.isLoading.people) {
         return;
       }
@@ -66,30 +66,40 @@ export default new Vuex.Store({
           commit('setPeople', res);
           commit('setParticipantOrder', res);
           commit('setDefaultParticipant', res.participantOrder[0]);
-          commit('setSelectedParticipant', participant);
-          commit('setSelectedSession', session);
+          dispatch('setSelected', routeParams);
           commit('setIsLoading', { key: 'people', status: false });
         });
     },
-    getThread({ commit, state }) {
-      if (state.isLoading[state.selectedParticipant]) {
+    getThread({ commit, state }, personKey) {
+      const person = personKey || state.selectedParticipant;
+      if (state.isLoading[person]) {
         return;
       }
-      commit('setIsLoading', { key: state.selectedParticipant, status: true });
-      const path = `${state.apiHost}/api/thread/${state.selectedParticipant}`;
+      commit('setIsLoading', { key: person, status: true });
+      const path = `${state.apiHost}/api/thread/${person}`;
       axios.get(path)
         .then((response) => {
           commit('setThreads', {
-            participant: state.selectedParticipant,
+            participant: person,
             thread: response.data,
           });
-          commit('setSelectedThread', state.selectedParticipant);
-          commit('setIsLoading', { key: state.selectedParticipant, status: false });
+          if (person === state.selectedParticipant) {
+            commit('setSelectedThread', person);
+          }
+          commit('setIsLoading', { key: person, status: false });
         });
     },
-    setSelected({ commit }, { participant, session }) {
+    getAllThreads({ dispatch, state }) {
+      dispatch('getThread', state.selectedParticipant);
+      for (let i = 0; i < state.participantOrder.length; i += 1) {
+        dispatch('getThread', state.participantOrder[i]);
+      }
+    },
+    setSelected({ commit, state }, { participant, session }) {
+      const sessionVal = (typeof participant === 'undefined') ? 1 : session;
       commit('setSelectedParticipant', participant);
-      commit('setSelectedSession', session);
+      commit('setSelectedSession', sessionVal);
+      commit('setSelectedThread', state.selectedParticipant);
     },
   },
 });
