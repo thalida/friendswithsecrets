@@ -52,6 +52,7 @@ export default {
     font-size: 20px;
     font-weight: normal;
     background-color: $color-gray;
+    transition: background-color 400ms ease;
 
     &:first-of-type {
       border-radius: 8px 8px 8px 0px;

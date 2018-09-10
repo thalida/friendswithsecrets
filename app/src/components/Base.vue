@@ -158,8 +158,24 @@ li {
 
   &_link {
     text-decoration: none;
+    transition: color 400ms ease;
   }
 }
+
+.animation-fade-enter-active,
+.animation-fade-leave-active {
+  transition: opacity 200ms ease;
+}
+
+.animation-fade-enter {
+  opacity: 0;
+}
+
+.animation-fade-leave-to {
+  opacity: 0.3;
+}
+
+
 @each $person in $people {
   .theme--#{$person} {
     .header,
