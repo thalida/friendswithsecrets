@@ -1,6 +1,7 @@
 # Builtins
 import logging
 from pprint import pprint
+import random
 
 # Third Party
 from flask import Flask, request, make_response, jsonify, render_template, abort
@@ -29,6 +30,10 @@ basic_auth = BasicAuth(app)
 
 threads = {};
 
+def shuff(arr):
+    random.shuffle(arr)
+    return arr
+
 def get_thread_class(person):
     try:
         return threads[person]
@@ -56,6 +61,14 @@ def get_people():
 def get_thread(person):
     try:
         (sessions, used_cached) = get_n_thread_sessions(person, 10)
+
+        if person == 'akilah':
+            sessions = [shuff(session) for (i, session) in enumerate(sessions)]
+            random.shuffle(sessions)
+
+        if person == 'timothy':
+            sessions = [shuff(session) for (i, session) in enumerate(sessions)]
+
         res = {
             'sessions': sessions,
             'used_cached': used_cached,

@@ -70,7 +70,7 @@ export default {
   width: 100%;
   min-height: 64px;
   padding: 15px 0;
-  transition: background-color 400ms;
+  transition: background-color 400ms ease;
 
   &__bar {
       display: block;

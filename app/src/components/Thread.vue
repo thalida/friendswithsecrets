@@ -1,25 +1,28 @@
 <template>
-  <section class="thread container-wrapper" v-show="isLoaded">
-    <p v-if="threadData && threadData.used_cached" class="dev-only-message">
-      <strong>[DEV ONLY] Cached Session Text...</strong><br />
-      Please refresh in 60s to see changes!
-    </p>
-
-    <ol
-      class="thread__sessions"
-      v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}"
-      v-height:params="{isLoaded, windowHeight}">
-      <Session
-        v-for="(session, index) in threadSessions"
-        :key="index"
-        v-bind:index="index"
-        v-bind:session="session"
-        v-bind:session-number="getSessionNumber(index)"
-        v-bind:people="people"
-        v-bind:selected="index === selectedSessionZeroIdx"
-        v-on:session-toggle="onSessionToggle" />
-    </ol>
-  </section>
+  <transition name="animation-fade" mode="out-in">
+    <section class="thread container-wrapper" v-show="isLoaded">
+      <p v-if="threadData && threadData.used_cached" class="dev-only-message">
+        <strong>[DEV ONLY] Cached Session Text...</strong><br />
+        Please refresh in 60s to see changes!
+      </p>
+      <transition-group
+        name="animation-fade"
+        tag="ol"
+        class="thread__sessions"
+        v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}"
+        v-height:params="{isLoaded, windowHeight}">
+        <Session
+          v-for="(session, index) in threadSessions"
+          :key="index"
+          v-bind:index="index"
+          v-bind:session="session"
+          v-bind:session-number="getSessionNumber(index)"
+          v-bind:people="people"
+          v-bind:selected="index === selectedSessionZeroIdx"
+          v-on:session-toggle="onSessionToggle" />
+      </transition-group>
+    </section>
+  </transition>
 </template>
 
 <script>
@@ -151,7 +154,6 @@ export default {
 <style lang="scss">
 @import '../assets/styles/toolkit';
 .thread {
-  position: relative;
   overflow: hidden;
 
   .dev-only-message {
