@@ -39,19 +39,17 @@ export default {
 .message {
   &__sender {
     margin: 15px 0px 5px;
-
     color: $text-color;
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: lowercase;
+    font-size: 16px;
   }
 
   &__text {
     display: block;
     position: relative;
     margin: 5px 0 0;
-    padding: 8px;
+    padding: 16px;
     border-radius: 8px;
+    font-size: 20px;
     font-weight: normal;
     background-color: $color-gray-2;
 
@@ -62,12 +60,6 @@ export default {
 
   &--0 &__sender {
     margin-top: 0;
-  }
-
-  &--participant {
-    .message__text {
-      background-color: $color-participant;
-    }
   }
 }
 </style>

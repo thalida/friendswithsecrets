@@ -1,9 +1,10 @@
 <template>
-  <div id="app" v-if="isLoaded">
+  <div id="app" :class="[participantThemeClass]" v-if="isLoaded">
     <Header />
-    <div class="people">
+    <div class="people container-wrapper">
       <span
         class="person"
+        :class="['person--' + participant]"
         :key="index"
         v-for="(participant, index) in participantOrder">
         <router-link
@@ -16,8 +17,7 @@
             }
           }"
         >
-          {{ participant }}
-          <!-- {{ people[participant].full_name }} -->
+          {{ people[participant].full_name }}
         </router-link>
       </span>
     </div>
@@ -59,6 +59,9 @@ export default {
     isLoaded() {
       return this.$store.state.isLoading.people === false;
     },
+    people() {
+      return this.$store.state.people;
+    },
     participantOrder() {
       return this.$store.state.participantOrder;
     },
@@ -88,7 +91,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../assets/styles/colors';
+@import '../assets/styles/toolkit';
+
 html {
   box-sizing: border-box;
 }
@@ -119,16 +123,21 @@ li {
   list-style: none;
 }
 
-.people {
+.container-wrapper {
   display: block;
-  width: 80%;
   margin: 0 auto;
+  width: 80%;
+  max-width: 900px;
 }
 
 .person {
   display: inline-block;
   width: 33%;
+  margin: 32px 0;
   text-align: center;
+  font-weight: bold;
+  font-size: 38px;
+  color: #222;
 
   &:first-child {
     text-align: left;
@@ -140,6 +149,17 @@ li {
 
   &_link {
     text-decoration: none;
+  }
+}
+@each $person in $people {
+  .theme--#{$person} {
+    .header,
+    .message--#{$person}.message--participant .message__text {
+       @extend %bg-color--#{$person};
+    }
+    .person--#{$person} .person_link {
+       @extend %color--#{$person};
+    }
   }
 }
 </style>
