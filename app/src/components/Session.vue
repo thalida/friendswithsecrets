@@ -113,52 +113,44 @@ export default {
     display: block;
     width: 100%;
     padding: 10px;
-    margin: 10px 0;
-    border: 2px solid $color-dark-gray-faded;
+    margin: 10px 0 0;
     border-radius: 8px;
-    color: $color-dark-gray-faded;
+    color: $text-color;
     cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 400ms ease, opacity 300ms;
 
     .icon-chevron {
-      fill: $color-dark-gray-faded;
-      stroke: $color-dark-gray-faded;
+      fill: $text-color;
+      stroke: $text-color;
     }
 
     .session__toggle__icon {
       transform: rotate(180deg);
       margin-right: 5px;
     }
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
 
   &__messages {
     display: block;
     position: relative;
-    margin: 0;
+    margin: 20px 0;
     padding: 0;
   }
 
   &--expanded &__toggle {
-    font-weight: bold;
-    color: $text-color;
-    // border-color: $color-participant;
-
-    // .icon-chevron {
-    //   fill: $color-participant;
-    //   stroke: $color-participant;
-    // }
-
     .session__toggle__icon {
       transform: rotate(0deg);
     }
   }
 
-  &--collapsed &__toggle:hover {
-    color: $text-color;
-
-    .icon-chevron {
-      fill: $text-color;
-      stroke: $text-color;
-    }
+  &--collapsed &__toggle {
+    background-color: $color-gray;
   }
 }
 

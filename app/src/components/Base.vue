@@ -176,7 +176,8 @@ li {
 @each $person in $people {
   .theme--#{$person} {
     .header,
-    .message--#{$person}.message--participant .message__text {
+    .message--#{$person}.message--participant .message__text,
+    .session--expanded .session__toggle {
        @extend %bg-color--#{$person};
     }
     .person--#{$person} .person_link {
