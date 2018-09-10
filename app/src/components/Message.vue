@@ -40,7 +40,7 @@ export default {
   &__sender {
     margin: 15px 0px 5px;
     color: $text-color;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   &__text {
