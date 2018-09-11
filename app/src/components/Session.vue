@@ -29,7 +29,7 @@
                   </g>
               </g>
           </svg>
-          {{ sessionToggleText }}
+          <span>{{ sessionToggleText }}</span>
         </span>
       </a>
     </transition>
@@ -108,7 +108,7 @@ export default {
       return messagesFormatted;
     },
     sessionToggleText() {
-      return (this.isToggleOpen) ? `${this.sessionNumber}. ${this.sessionHeader.title}` : `${this.sessionNumber}. Session`;
+      return (this.isToggleOpen) ? `${this.sessionHeader.title}` : `${this.sessionNumber}. Session`;
     },
   },
   methods: {
@@ -193,23 +193,43 @@ export default {
     background-size: 0 0;
 
     &__contents {
-      background-color: rgba($color-gray, 0);
       align-items: left;
       justify-content: left;
+      flex-direction: row;
+      background-color: rgba($color-gray, 0);
     }
   }
 
   &--expanded &__toggle {
-    height: 300px;
+    height: 150px;
     padding: 0;
-    font-size: 48px;
+    font-size: 30px;
     font-weight: bold;
     overflow: hidden;
     border: 0;
 
-    .session__toggle__icon {
-      transform: rotate(0deg) scale(2);
-      margin-right: 20px;
+    &__contents {
+      flex-direction: row;
+    }
+
+    &__icon {
+      transform: rotate(0deg) scale(1.5);
+      margin-right: 15px;
+    }
+
+    @media (min-width: 500px) {
+      height: 225px;
+      font-size: 42px;
+
+      &__icon {
+        transform: rotate(0deg) scale(2);
+        margin-right: 20px;
+      }
+    }
+
+    @media (min-width: 800px) {
+      height: 300px;
+      font-size: 48px;
     }
   }
 
