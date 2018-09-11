@@ -143,7 +143,7 @@ li {
   display: block;
   position: relative;
   z-index: 1;
-  box-shadow: 0px 2px 8px 2px $color-gray-3;
+  box-shadow: 0px 4px 8px -8px #000;
 }
 
 .person {
