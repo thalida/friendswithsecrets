@@ -23,3 +23,15 @@
 %bg-color--timothy {
   background-color: $color-timothy;
 }
+
+%bg-color--faded--akilah {
+  background-color: rgba($color-akilah, 0.5);
+}
+
+%bg-color--faded--robyn {
+  background-color: rgba($color-robyn, 0.5);
+}
+
+%bg-color--faded--timothy {
+  background-color: rgba($color-timothy, 0.5);
+}

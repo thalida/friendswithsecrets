@@ -136,7 +136,7 @@ li {
   display: block;
   margin: 0 auto;
   width: 80%;
-  max-width: 900px;
+  max-width: 800px;
 }
 
 .people {
@@ -173,7 +173,6 @@ li {
 .animation-fade-leave-active {
   transition: opacity 300ms ease;
 }
-
 .animation-fade-enter,
 .animation-fade-leave-to {
   opacity: 0;
@@ -190,6 +189,9 @@ li {
     }
     .person--#{$person} .person_link {
        @extend %color--#{$person};
+    }
+    .session--expanded .session__toggle__contents {
+       @extend %bg-color--faded--#{$person};
     }
   }
 }
