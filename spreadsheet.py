@@ -19,7 +19,10 @@ def get_file(gc, person):
     return gc.open_by_key(people.PERSON_TO_SHEET[person])
 
 def count_all_sessions(file):
-    return len(file.worksheets()) - 1
+    try:
+        return len(file.worksheets()) - 1
+    except gspread.exceptions.APIError:
+        return None;
 
 def get_session(file, session_index):
     try:

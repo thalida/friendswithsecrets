@@ -43,6 +43,7 @@ class Thread():
         self.person = person
         self.file = spreadsheet.get_file(self.gc, self.person)
         self.used_cached_session = False;
+        self.max_sesions = 10;
         self.sessions = {};
 
     def get_session(self, session_index=0):
@@ -61,10 +62,12 @@ class Thread():
         now = datetime.date.today()
         time_since_start = now - self.STARTDAY
 
-        max_sesions = spreadsheet.count_all_sessions(self.file)
+        new_max_sesions = spreadsheet.count_all_sessions(self.file)
+        self.max_sesions = new_max_sesions if new_max_sesions is not None else self.max_sesions;
+
         num_visible_sessions = self.NUM_SESSIONS_PER_DAY * time_since_start.days
-        num_visible_sessions = max_sesions if num_visible_sessions > max_sesions else num_visible_sessions
-        num_hidden_sessions = max_sesions - num_visible_sessions
+        num_visible_sessions = self.max_sesions if num_visible_sessions > self.max_sesions else num_visible_sessions
+        num_hidden_sessions = self.max_sesions - num_visible_sessions
 
         self.used_cached_session = False;
         sessions = [self.get_session(i) for i in range(num_visible_sessions)] + ([None] * num_hidden_sessions)
