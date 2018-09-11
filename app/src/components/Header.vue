@@ -8,10 +8,8 @@
             v-on:click="toggle()"
             v-on:keyup.enter="toggle()"
             :title="(headerIsOpen ? 'Close' : 'Open') + ' about section'">
-              <span
-                v-if="!headerIsOpen">?</span>
-              <span
-                v-else>X</span>
+              <span v-if="!headerIsOpen">?</span>
+              <span v-else>X</span>
           </a>
       </div>
       <div class="header__body container-wrapper" v-if="headerIsOpen">
