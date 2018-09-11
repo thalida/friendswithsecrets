@@ -8,8 +8,34 @@ import people
 import spreadsheet
 
 class Thread():
-    STARTDAY = datetime.date(2018, 9, 9)
+    STARTDAY = datetime.date(2018, 9, 8)
     NUM_SESSIONS_PER_DAY = 1;
+    PERSON_SESSION_HEADERS = {
+        'akilah': [
+            {'key': 0, 'title': 'Journey', 'image_url': '/static/images/session/7.jpeg'},
+            {'key': 1, 'title': 'Recovery', 'image_url': '/static/images/session/8.jpeg'},
+            {'key': 2, 'title': 'Happiness', 'image_url': '/static/images/session/1.jpeg'},
+            {'key': 3, 'title': 'Love', 'image_url': '/static/images/session/3.jpeg'},
+            {'key': 4, 'title': 'Friendship', 'image_url': '/static/images/session/5.jpeg'},
+            {'key': 5, 'title': 'Acceptance', 'image_url': '/static/images/session/7.jpeg'},
+        ],
+        'robyn': [
+            {'key': 0, 'title': 'Recovery', 'image_url': '/static/images/session/1.jpeg'},
+            {'key': 1, 'title': 'Family', 'image_url': '/static/images/session/2.jpeg'},
+            {'key': 2, 'title': 'Acceptance', 'image_url': '/static/images/session/3.jpeg'},
+            {'key': 3, 'title': 'Friendship', 'image_url': '/static/images/session/4.jpeg'},
+            {'key': 4, 'title': 'Health', 'image_url': '/static/images/session/5.jpeg'},
+            {'key': 5, 'title': 'Love', 'image_url': '/static/images/session/6.jpeg'},
+        ],
+        'timothy': [
+            {'key': 0, 'title': 'Family', 'image_url': '/static/images/session/6.jpeg'},
+            {'key': 1, 'title': 'Health', 'image_url': '/static/images/session/4.jpeg'},
+            {'key': 2, 'title': 'Recovery', 'image_url': '/static/images/session/1.jpeg'},
+            {'key': 3, 'title': 'Journey', 'image_url': '/static/images/session/2.jpeg'},
+            {'key': 4, 'title': 'Happiness', 'image_url': '/static/images/session/8.jpeg'},
+            {'key': 5, 'title': 'Friendship', 'image_url': '/static/images/session/3.jpeg'},
+        ],
+    }
 
     def __init__(self, google_client, person):
         super(Thread, self).__init__()
@@ -43,6 +69,9 @@ class Thread():
         self.used_cached_session = False;
         sessions = [self.get_session(i) for i in range(num_visible_sessions)] + ([None] * num_hidden_sessions)
         return (sessions, self.used_cached_session)
+
+    def get_session_headers(self, person):
+        return self.PERSON_SESSION_HEADERS[person]
 
     def _tmp_format_session(self, session):
         try:

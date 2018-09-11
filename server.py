@@ -61,6 +61,7 @@ def get_thread(person):
     try:
         thread = get_thread_class(person)
         (sessions, used_cached) = thread.get_sessions()
+        session_headers = thread.get_session_headers(person)
 
         if person == 'akilah':
             sessions = [shuff(session) for (i, session) in enumerate(sessions)]
@@ -71,6 +72,7 @@ def get_thread(person):
         res = {
             'sessions': sessions,
             'used_cached': used_cached,
+            'session_headers': session_headers,
             'participant': people.PARTICIPANTS[person],
             'therapist': people.PARTICIPANT_TO_THERAPIST[person],
         }

@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../assets/styles/colors';
+@import '../assets/styles/toolkit';
 .message {
   &__sender {
     margin: 15px 0px 5px;
@@ -48,7 +48,7 @@ export default {
     position: relative;
     margin: 5px 0 0;
     padding: 16px;
-    border-radius: 8px;
+    border-radius: $border-radius;
     font-size: 20px;
     font-weight: normal;
     background-color: $color-gray;

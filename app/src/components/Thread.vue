@@ -14,6 +14,7 @@
       v-bind:index="index"
       v-bind:session="session"
       v-bind:session-number="getSessionNumber(index)"
+      v-bind:session-header="threadData.session_headers[index]"
       v-bind:people="people"
       v-bind:selected="index === selectedSessionZeroIdx"
       v-on:session-toggle="onSessionToggle" />
@@ -92,10 +93,10 @@ export default {
           return;
         }
 
-        const styles = window.getComputedStyle($sessionToggle);
-        const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-        const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
-        $el.scrollTop = toggleHeight * params.selectedSession;
+        // const styles = window.getComputedStyle($sessionToggle);
+        // const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
+        // const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
+        $el.scrollTop = 55 * params.selectedSession;
       },
     },
   },
