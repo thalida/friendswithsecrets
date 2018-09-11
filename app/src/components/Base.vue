@@ -140,32 +140,38 @@ li {
 }
 
 .people {
-  display: block;
+  display: flex;
   position: relative;
+  justify-content: space-between;
   z-index: 1;
   box-shadow: 0px 4px 8px -8px #000;
 }
 
 .person {
-  display: inline-block;
-  width: 33%;
   margin: 32px 0;
   text-align: center;
   font-weight: bold;
-  font-size: 38px;
-  color: #222;
-
-  &:first-child {
-    text-align: left;
-  }
-
-  &:last-child {
-    text-align: right;
-  }
+  font-size: 22px;
+  color: $color-dark-gray;
 
   &_link {
     text-decoration: none;
     transition: color 400ms ease;
+  }
+
+  @media (min-width: 500px) {
+    font-size: 32px;
+  }
+
+  @media (min-width: 800px) {
+    font-size: 38px;
+    &:first-child {
+      text-align: left;
+    }
+
+    &:last-child {
+      text-align: right;
+    }
   }
 }
 

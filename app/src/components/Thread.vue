@@ -96,7 +96,7 @@ export default {
         // const styles = window.getComputedStyle($sessionToggle);
         // const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
         // const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
-        $el.scrollTop = 55 * params.selectedSession;
+        $el.scrollTop = 65 * params.selectedSession;
       },
     },
   },
@@ -155,7 +155,6 @@ export default {
   }
 
   &__sessions {
-    width: 100%;
     padding: 0 0 10% 0;
   }
 }
