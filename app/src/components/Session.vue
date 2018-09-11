@@ -9,25 +9,28 @@
         :title="(isToggleOpen ? 'Close' : 'Open') + ' Session #' + sessionNumber"
         tabindex="0">
         <span class="session__toggle__contents">
-          <svg class="session__toggle__icon" width="13px" height="8px" viewBox="0 0 13 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>Chevron Arrow</title>
-              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g
-                    class="icon-chevron"
-                    transform="translate(1.000000, 1.000000)"
-                    fill="#000000"
-                    fill-rule="nonzero"
-                    stroke="#000000">
-                      <path d="M10.9999998,5.50171717 C11.0000856,5.42490512 10.9695513,
-                      5.35122694 10.9151566,5.29699308 L5.7029449,0.0847813876 C5.58986891,
-                      -0.0282604625 5.40657271,-0.0282604625 5.29349672,0.0847813876 L0.0812850265,
-                      5.29699308 C-0.0284529392,5.41061318 -0.0268835319,5.59121802 0.0848123689,
-                      5.70291392 C0.19650827,5.81460982 0.37711311,5.81617923 0.490733212,
-                      5.70644127 L5.49822081,0.698953665 L10.5057084,5.70644127 C10.588523,
-                      5.78923085 10.7130492,5.81399291 10.8212368,5.76918413 C10.9294243,
-                      5.72437534 10.9999748,5.61881701 10.9999998,5.50171717 Z"></path>
-                  </g>
-              </g>
+          <svg class="session__toggle__icon"
+            width="16px" height="10px"
+            viewBox="0 0 18 12" version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g
+              stroke="none"
+              stroke-width="1"
+              fill="none"
+              fill-rule="evenodd"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+                <g stroke="#222222" stroke-width="3">
+                  <polyline
+                    transform="
+                      translate(9.000000, 6.000000)
+                      rotate(-180.000000)
+                      translate(-9.000000, -6.000000)"
+                    points="16 2 9 10 2 2.21177316">
+                  </polyline>
+                </g>
+            </g>
           </svg>
           <span>{{ sessionToggleText }}</span>
         </span>
@@ -154,15 +157,16 @@ export default {
       stroke: $text-color;
     }
 
-    .session__toggle__icon {
-      transform: rotate(180deg);
+    &__icon {
       margin-right: 5px;
+      transition: transform 500ms ease;
     }
 
     &__contents {
       display:flex;
       align-items: center;
       justify-content: center;
+      flex-direction: row;
 
       height: 100%;
       width: 100%;
@@ -192,10 +196,12 @@ export default {
   &--collapsed &__toggle {
     background-size: 0 0;
 
+    &__icon {
+      transform: rotate(90deg);
+    }
+
     &__contents {
-      align-items: left;
       justify-content: left;
-      flex-direction: row;
       background-color: rgba($color-gray, 0);
     }
   }
@@ -207,10 +213,6 @@ export default {
     font-weight: bold;
     overflow: hidden;
     border: 0;
-
-    &__contents {
-      flex-direction: row;
-    }
 
     &__icon {
       transform: rotate(0deg) scale(1.5);
