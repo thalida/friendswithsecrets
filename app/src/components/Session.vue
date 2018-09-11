@@ -119,7 +119,8 @@ export default {
     cursor: pointer;
     font-weight: bold;
     text-transform: uppercase;
-    transition: background-color 400ms ease, opacity 300ms;
+    transition: background-color 400ms ease, opacity 300ms, border 300ms ease;
+    border: 2px solid rgba(0,0,0,0);
 
     .icon-chevron {
       fill: $text-color;
@@ -132,7 +133,12 @@ export default {
     }
 
     &:hover {
-      opacity: 0.7;
+      border: 2px solid $color-dark-gray-faded;
+    }
+
+    &:focus {
+      outline: none !important;
+      border: 2px solid $color-dark-gray-faded;
     }
   }
 
