@@ -1,11 +1,13 @@
 <template>
-<section class="thread container-wrapper" v-show="isLoaded">
+<section
+  class="thread"
+  v-show="isLoaded"
+  v-height:params="{isLoaded, windowHeight}">
   <transition-group
     name="animation-fade"
     tag="ol"
-    class="thread__sessions"
-    v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}"
-    v-height:params="{isLoaded, windowHeight}">
+    class="thread__sessions container-wrapper"
+    v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}">
     <Session
       v-for="(session, index) in threadSessions"
       :key="index"
@@ -140,7 +142,10 @@ export default {
 <style lang="scss">
 @import '../assets/styles/toolkit';
 .thread {
-  overflow: hidden;
+  display: block;
+  position: relative;
+  overflow: auto;
+  width: 100%;
 
   .dev-only-message {
     display: none;
@@ -150,7 +155,6 @@ export default {
 
   &__sessions {
     width: 100%;
-    overflow: auto;
     padding: 0 0 10% 0;
   }
 }

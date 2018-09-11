@@ -139,6 +139,13 @@ li {
   max-width: 900px;
 }
 
+.people {
+  display: block;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0px 2px 8px 2px $color-gray-3;
+}
+
 .person {
   display: inline-block;
   width: 33%;
