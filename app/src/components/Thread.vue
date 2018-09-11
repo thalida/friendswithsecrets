@@ -2,12 +2,12 @@
 <section
   class="thread"
   v-show="isLoaded"
-  v-height:params="{isLoaded, windowHeight}">
+  v-height:params="{isLoaded, windowHeight}"
+  v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}">
   <transition-group
     name="animation-fade"
     tag="ol"
-    class="thread__sessions container-wrapper"
-    v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}">
+    class="thread__sessions container-wrapper">
     <Session
       v-for="(session, index) in threadSessions"
       :key="index"
