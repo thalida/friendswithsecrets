@@ -184,7 +184,8 @@ li {
   .theme--#{$person} {
     .header,
     .message--#{$person}.message--participant .message__text,
-    .session--expanded .session__toggle {
+    .session--expanded .session__toggle,
+    .session--collapsed .session__toggle {
        @extend %bg-color--#{$person};
     }
     .person--#{$person} .person_link {

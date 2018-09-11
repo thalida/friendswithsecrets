@@ -31,8 +31,11 @@ basic_auth = BasicAuth(app)
 threads = {};
 
 def shuff(arr):
-    random.shuffle(arr)
-    return arr
+    try:
+        random.shuffle(arr)
+        return arr
+    except (TypeError):
+        return  arr
 
 def get_thread_class(person):
     try:
@@ -40,10 +43,6 @@ def get_thread_class(person):
     except (KeyError):
         threads[person] = Thread(google_client, person)
         return threads[person]
-
-def get_n_thread_sessions(person, num_sessions):
-    thread = get_thread_class(person)
-    return thread.get_n_sessions(num_sessions)
 
 @app.route('/api/people', methods=['GET'])
 def get_people():
@@ -60,11 +59,11 @@ def get_people():
 @app.route('/api/thread/<string:person>', methods=['GET'])
 def get_thread(person):
     try:
-        (sessions, used_cached) = get_n_thread_sessions(person, 10)
+        thread = get_thread_class(person)
+        (sessions, used_cached) = thread.get_sessions()
 
         if person == 'akilah':
             sessions = [shuff(session) for (i, session) in enumerate(sessions)]
-            random.shuffle(sessions)
 
         if person == 'timothy':
             sessions = [shuff(session) for (i, session) in enumerate(sessions)]

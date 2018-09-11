@@ -1,5 +1,5 @@
 <template>
-  <li class="session" :class="[sessionToggleClass]">
+  <li class="session" :class="[sessionToggleClass]" v-if="hasMessages">
     <a
       class="session__toggle"
       v-on:click="toggle"
@@ -39,6 +39,9 @@
       </ol>
     </transition>
   </li>
+  <li class="session session--disabled" v-else>
+    <span class="session__toggle">{{ sessionNumber }}. Session</span>
+  </li>
 </template>
 
 <script>
@@ -72,8 +75,17 @@ export default {
       const toggleClass = this.isToggleOpen ? this.toggleClasses.open : this.toggleClasses.closed;
       return `session--${toggleClass}`;
     },
+    hasMessages() {
+      return typeof this.session !== 'undefined'
+            && this.session !== null
+            && this.session.length > 0;
+    },
     messagesFormatted() {
       const messagesFormatted = [];
+
+      if (!this.hasMessages) {
+        return [];
+      }
 
       this.session.forEach((message) => {
         const lastMessage = messagesFormatted[messagesFormatted.length - 1];
@@ -114,13 +126,15 @@ export default {
     width: 100%;
     padding: 10px;
     margin: 10px 0 0;
+
+    background-color: $color-gray;
     border-radius: 8px;
+    border: 2px solid rgba(0,0,0,0);
     color: $text-color;
     cursor: pointer;
     font-weight: bold;
     text-transform: uppercase;
     transition: background-color 400ms ease, opacity 300ms, border 300ms ease;
-    border: 2px solid rgba(0,0,0,0);
 
     .icon-chevron {
       fill: $text-color;
@@ -155,8 +169,15 @@ export default {
     }
   }
 
-  &--collapsed &__toggle {
-    background-color: $color-gray;
+  &--disabled {
+    cursor: default;
+    .session__toggle {
+      &:hover,
+      &:focus {
+        cursor: default;
+        border: 2px solid rgba(0,0,0,0);
+      }
+    }
   }
 }
 

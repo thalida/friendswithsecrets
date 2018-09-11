@@ -18,6 +18,9 @@ def create_gc():
 def get_file(gc, person):
     return gc.open_by_key(people.PERSON_TO_SHEET[person])
 
+def count_all_sessions(file):
+    return len(file.worksheets()) - 1
+
 def get_session(file, session_index):
     try:
         sheet = file.get_worksheet(session_index + 1)
