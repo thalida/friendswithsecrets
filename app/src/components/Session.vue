@@ -3,38 +3,42 @@
     <transition name="animation-fade">
       <a
         class="session__toggle"
-        :style="{ backgroundImage: 'url('+sessionHeader.image_url+')' }"
         v-on:click="toggle"
         v-on:keyup.enter="toggle()"
         :title="(isToggleOpen ? 'Close' : 'Open') + ' Session #' + sessionNumber"
         tabindex="0">
-        <span class="session__toggle__contents">
-          <svg class="session__toggle__icon"
-            width="16px" height="10px"
-            viewBox="0 0 18 12" version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink">
-            <g
-              stroke="none"
-              stroke-width="1"
-              fill="none"
-              fill-rule="evenodd"
-              stroke-linecap="round"
-              stroke-linejoin="round">
-                <g stroke="#222222" stroke-width="3">
-                  <polyline
-                    transform="
-                      translate(9.000000, 6.000000)
-                      rotate(-180.000000)
-                      translate(-9.000000, -6.000000)"
-                    points="16 2 9 10 2 2.21177316">
-                  </polyline>
-                </g>
-            </g>
-          </svg>
-          <span>{{ sessionToggleText }}</span>
-        </span>
+        <svg class="session__toggle__icon"
+          width="16px" height="10px"
+          viewBox="0 0 18 12" version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink">
+          <g
+            stroke="none"
+            stroke-width="1"
+            fill="none"
+            fill-rule="evenodd"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+              <g stroke="#222222" stroke-width="3">
+                <polyline
+                  transform="
+                    translate(9.000000, 6.000000)
+                    rotate(-180.000000)
+                    translate(-9.000000, -6.000000)"
+                  points="16 2 9 10 2 2.21177316">
+                </polyline>
+              </g>
+          </g>
+        </svg>
+        <span>{{sessionNumber}}. Session</span>
       </a>
+    </transition>
+    <transition name="animation-fade-height">
+      <div class="session__image"
+          v-if="isToggleOpen"
+          :style="{ backgroundImage: 'url('+sessionHeader.image_url+')' }">
+        <span class="session__header">{{ sessionHeader.title }}</span>
+      </div>
     </transition>
     <ol class="session__messages" v-if="isToggleOpen">
       <Message
@@ -132,17 +136,17 @@ export default {
   overflow: hidden;
 
   &__toggle {
-    display: block;
+    display:flex;
+    align-items: center;
+    justify-content: left;
+    flex-direction: row;
+
     height: 45px;
     width: 100%;
     margin: 10px 0 0;
     padding: 10px;
 
     background-color: $color-gray;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-
     border-radius: $border-radius;
     border: 2px solid rgba(0,0,0,0);
     color: $text-color;
@@ -150,7 +154,7 @@ export default {
     font-weight: bold;
     text-transform: uppercase;
 
-    transition: height 400ms ease;
+    transition: color 400ms ease-in-out, border-radius 400ms ease-in-out;
 
     .icon-chevron {
       fill: $text-color;
@@ -159,21 +163,7 @@ export default {
 
     &__icon {
       margin-right: 5px;
-      transition: transform 500ms ease;
-    }
-
-    &__contents {
-      display:flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: row;
-
-      height: 100%;
-      width: 100%;
-
-      background-color: rgba($color-gray, 0.5);
-      text-transform: uppercase;
-      transition: color 400ms ease;
+      transition: transform 400ms ease;
     }
 
     &:hover {
@@ -186,6 +176,48 @@ export default {
     }
   }
 
+  &__image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    height: 150px;
+    border-radius: 0 0 $border-radius $border-radius;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+    @media (min-width: 500px) {
+      height: 225px;
+    }
+
+    @media (min-width: 800px) {
+      height: 300px;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color-dark-gray, 0);
+    font-size: 30px;
+    font-weight: bold;
+
+    transition: background-color 400ms ease;
+
+    @media (min-width: 500px) {
+      font-size: 42px;
+    }
+
+    @media (min-width: 800px) {
+      font-size: 48px;
+    }
+  }
+
   &__messages {
     display: block;
     position: relative;
@@ -194,50 +226,29 @@ export default {
   }
 
   &--collapsed &__toggle {
-    background-size: 0 0;
-
     &__icon {
       transform: rotate(90deg);
     }
 
     &__contents {
-      justify-content: left;
       background-color: rgba($color-gray, 0);
     }
   }
 
   &--expanded &__toggle {
-    height: 150px;
-    padding: 0;
-    font-size: 30px;
-    font-weight: bold;
-    overflow: hidden;
-    border: 0;
+    border-radius: $border-radius $border-radius 0 0;
 
     &__icon {
-      transform: rotate(0deg) scale(1.5);
-      margin-right: 15px;
-    }
-
-    @media (min-width: 500px) {
-      height: 225px;
-      font-size: 42px;
-
-      &__icon {
-        transform: rotate(0deg) scale(2);
-        margin-right: 20px;
-      }
-    }
-
-    @media (min-width: 800px) {
-      height: 300px;
-      font-size: 48px;
+      transform: rotate(0deg);
     }
   }
 
   &--disabled {
     cursor: default;
     .session__toggle {
+      .session__toggle__contents {
+        background-color: rgba($color-gray, 0.5);
+      }
       &:hover,
       &:focus {
         cursor: default;
