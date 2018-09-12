@@ -12,27 +12,29 @@
               <span v-else>X</span>
           </a>
       </div>
-      <div class="header__body container-wrapper" v-if="headerIsOpen">
-          <p class="header__body__about header__body__about--inline">
-              Three friends participated in 15 individual online text therapy
-              sessions from January to April 2018. These sessions capture a slice
-              of their life, their thoughts and feelings, their individualitiies,
-              and how they try to process the world around them. The identities of
-              the therapists have been protected.
-          </p>
-          <div class="header__body__credits">
-              <p class="header__body__credit">
-                  project by <a href="#">Akilah Hughes</a>,
-                  <a href="#">Robyn Kanner</a>, <a href="#">Timothy Goodman</a>
+      <transition name="animation-fade-height">
+          <div class="header__body container-wrapper" v-if="headerIsOpen">
+              <p class="header__body__about header__body__about--inline">
+                  Three friends participated in 15 individual online text therapy
+                  sessions from January to April 2018. These sessions capture a slice
+                  of their life, their thoughts and feelings, their individualitiies,
+                  and how they try to process the world around them. The identities of
+                  the therapists have been protected.
               </p>
-              <p class="header__body__credit">
-                  website coded by <a href="#">Thalida Noel</a>
-              </p>
-              <p class="header__body__credit">
-                  for inquires email us at <a href="#">FriendsWithSecrets@gmail.com</a>
-              </p>
+              <div class="header__body__credits">
+                  <p class="header__body__credit">
+                      project by <a href="#">Akilah Hughes</a>,
+                      <a href="#">Robyn Kanner</a>, <a href="#">Timothy Goodman</a>
+                  </p>
+                  <p class="header__body__credit">
+                      website coded by <a href="#">Thalida Noel</a>
+                  </p>
+                  <p class="header__body__credit">
+                      for inquires email us at <a href="#">FriendsWithSecrets@gmail.com</a>
+                  </p>
+              </div>
           </div>
-      </div>
+      </transition>
   </header>
 </template>
 
