@@ -239,7 +239,7 @@ export default {
     border-radius: $border-radius $border-radius 0 0;
 
     &__icon {
-      transform: rotate(0deg);
+      transform: rotate(180deg);
     }
   }
 
