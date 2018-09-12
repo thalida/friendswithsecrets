@@ -25,13 +25,13 @@
 }
 
 %bg-color--faded--akilah {
-  background-color: rgba($color-akilah, 0.5);
+  background-color: rgba(lighten($color-akilah, 15), 0.5);
 }
 
 %bg-color--faded--robyn {
-  background-color: rgba($color-robyn, 0.5);
+  background-color: rgba(lighten($color-robyn, 15), 0.5);
 }
 
 %bg-color--faded--timothy {
-  background-color: rgba($color-timothy, 0.5);
+  background-color: rgba(lighten($color-timothy, 15), 0.5);
 }

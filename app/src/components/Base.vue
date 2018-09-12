@@ -177,10 +177,34 @@ li {
 
 .animation-fade-enter-active,
 .animation-fade-leave-active {
-  transition: opacity 300ms ease;
+  transition: opacity 400ms ease;
 }
 .animation-fade-enter,
 .animation-fade-leave-to {
+  opacity: 0;
+}
+
+.animation-height-enter-active,
+.animation-height-leave-active {
+  transition: max-height 400ms ease-in-out;
+  max-height: 300px;
+  overflow: hidden;
+}
+.animation-height-enter,
+.animation-height-leave-to {
+  max-height: 0;
+}
+
+.animation-fade-height-enter-active,
+.animation-fade-height-leave-active {
+  transition: max-height 400ms ease-in-out, opacity 400ms ease-in-out;
+  max-height: 300px;
+  opacity: 1;
+  overflow: hidden;
+}
+.animation-fade-height-enter,
+.animation-fade-height-leave-to {
+  max-height: 0;
   opacity: 0;
 }
 
@@ -196,7 +220,7 @@ li {
     .person--#{$person} .person_link {
        @extend %color--#{$person};
     }
-    .session--expanded .session__toggle__contents {
+    .session--expanded .session__header {
        @extend %bg-color--faded--#{$person};
     }
   }
