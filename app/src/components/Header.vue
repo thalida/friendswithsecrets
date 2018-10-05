@@ -13,7 +13,7 @@
       </div>
       <transition name="animation-fade-height">
           <div class="header__body container-wrapper" v-if="headerIsOpen">
-              <p class="header__body__about header__body__about--inline">
+              <p class="header__body__about">
                   Three friends participated in 15 individual online text therapy
                   sessions from January to April 2018. These sessions capture a slice
                   of their life, their thoughts and feelings, their individualitiies,
@@ -95,16 +95,8 @@ export default {
   }
 
   &__body {
-      display: block;
-      width: 80%;
-      margin: 0 auto;
       position: relative;
       height: auto;
-
-      p {
-          margin: 0;
-          padding: 0;
-      }
 
       a {
           color: $text-color;
@@ -117,6 +109,8 @@ export default {
           width: 48%;
           float: left;
           text-transform: lowercase;
+          margin: 0;
+          padding: 0;
       }
 
       &__about {
@@ -140,7 +134,9 @@ export default {
       }
 
       &__credit {
-          line-height: 1.5;
+        margin: 0;
+        padding: 0;
+        line-height: 1.5;
       }
 
       &:after {
@@ -151,17 +147,14 @@ export default {
   }
 
   @media screen and (max-width: 700px), screen and (max-height: 400px) {
-    &__body__credits{
+    &__body__about,
+    &__body__credits {
         display: block;
         float: none;
         width: 100%;
-        margin: 0;
-    }
-    &__body__about--inline {
-        display: none;
-    }
-    &__body__about--after {
-        display: block;
+        margin: 0 0 20px 0;
+        font-size: 16px;
+        line-height: 1.5;
     }
   }
 }
