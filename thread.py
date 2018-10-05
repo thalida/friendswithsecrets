@@ -59,19 +59,23 @@ class Thread():
         return self._tmp_format_session(session);
 
     def get_sessions(self):
+        self.used_cached_session = False;
         now = datetime.date.today()
         time_since_start = now - self.STARTDAY
 
         num_available_sessions = spreadsheet.count_all_sessions(self.file)
+
+        if num_available_sessions is None:
+            self.used_cached_session = True
+            num_available_sessions = len(self.sessions.keys())
+
         num_visible_sessions = self.NUM_SESSIONS_PER_DAY * (time_since_start.days + 1)
-        print(time_since_start.days)
 
         if num_visible_sessions > num_available_sessions:
             num_visible_sessions = num_available_sessions
 
         num_hidden_sessions = self.total_sessions - num_visible_sessions
 
-        self.used_cached_session = False;
         sessions = [self.get_session(i) for i in range(num_visible_sessions)] + ([None] * num_hidden_sessions)
         return (sessions, self.used_cached_session)
 
