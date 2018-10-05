@@ -38,7 +38,7 @@ export default {
 @import '../assets/styles/toolkit';
 .message {
   &__sender {
-    margin: 15px 0px 5px;
+    margin: 30px 0px 5px;
     color: $text-color;
     font-size: 14px;
   }

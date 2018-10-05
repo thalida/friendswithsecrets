@@ -4,7 +4,11 @@ PEOPLE = {
     'timothy': {'name': 'timothy', 'full_name': 'Timothy', 'is_therapist': False},
     'deb': {'name': 'deb', 'full_name': 'Deb', 'is_therapist': True},
     'jennifer': {'name': 'jennifer', 'full_name': 'Jennifer', 'is_therapist': True},
-    'april': {'name': 'april', 'full_name': 'April', 'is_therapist': True},
+    'laura': {'name': 'laura', 'full_name': 'Laura', 'is_therapist': True},
+}
+
+PEOPLE_ALIAS_MAP = {
+    'tim': 'timothy'
 }
 
 PARTICIPANT_ORDER = ['akilah', 'robyn', 'timothy'];
@@ -18,11 +22,11 @@ PARTICIPANTS = {
 PARTICIPANT_TO_THERAPIST = {
     'akilah': PEOPLE['deb'],
     'robyn': PEOPLE['jennifer'],
-    'timothy': PEOPLE['april'],
+    'timothy': PEOPLE['laura'],
 }
 
 PERSON_TO_SHEET = {
     'akilah': '1NSAQQVHvUYSXV3WuXj47qwNOLwWfdONEO2va9JGFayY',
     'robyn': '1NSAQQVHvUYSXV3WuXj47qwNOLwWfdONEO2va9JGFayY',
-    'timothy': '1NSAQQVHvUYSXV3WuXj47qwNOLwWfdONEO2va9JGFayY',
+    'timothy': '1iEFuNiykCe9_n1Y96Y_IsGQCiXho_wn-aVSsdGTZuc0',
 }

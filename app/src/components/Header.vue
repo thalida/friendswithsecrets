@@ -1,7 +1,6 @@
 <template>
   <header class="header">
-      <div class="header__bar container-wrapper">
-          <router-link to="/" class="header__link">Friends with Secrets</router-link>
+      <div class="header__bar">
           <a
             tabindex="0"
             class="header__btn"
@@ -68,14 +67,13 @@ export default {
   display: block;
   position: relative;
   width: 100%;
-  min-height: 64px;
-  padding: 15px 0;
+  padding: 0;
   transition: background-color 400ms ease;
 
   &__bar {
       display: block;
       margin: 0 auto;
-      width: 80%;
+      width: 100%;
 
       &:after {
           content: "";
@@ -84,19 +82,11 @@ export default {
       }
   }
 
-  &__link {
-      display: inline-block;
-      margin: 5px 0;
-      padding: 0;
-      font: bold 18px/1.2 'PT Sans', sans-serif;
-      vertical-align: middle;
-      text-decoration: none;
-  }
-
   &__btn {
       display: inline-block;
       float: right;
       width: 30px;
+      margin: 15px;
       padding: 5px 0;
       cursor: pointer;
       border-radius: 50%;

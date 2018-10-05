@@ -52,6 +52,9 @@ def _format_session(session):
         if txt_lower in list(people.PEOPLE.keys()):
             sender = txt_lower;
             continue
+        elif txt_lower in list(people.PEOPLE_ALIAS_MAP.keys()):
+            sender = people.PEOPLE_ALIAS_MAP[txt_lower];
+            continue
 
         if sender:
             formatted_session.append({'sender': sender, 'message_text': txt});

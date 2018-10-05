@@ -1,12 +1,15 @@
+$color-white: #FFFFFF;
 $color-gray: #EBEBEB;
 $color-gray-2: #FEFEFE;
 $color-gray-3: #F2F2F2;
 $color-dark-gray: #222222;
 $color-dark-gray-faded: rgba($color-dark-gray, 0.5);
+$color-light-gray: $color-white;
 
-$color-akilah: #4FD87A;
-$color-robyn: #2CDDF3;
-$color-timothy: #FF989B;
+$color-akilah: #E190FF;
+$color-robyn: #9091FF;
+$color-timothy: #FF9091;
 
 $text-color: $color-dark-gray;
-$body-bg-color: #F8F8F8;
+$text-color-light: $color-light-gray;
+$body-bg-color: #A3E2F7;
