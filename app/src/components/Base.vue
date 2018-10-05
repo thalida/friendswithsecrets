@@ -135,7 +135,7 @@ li {
 .container-wrapper {
   display: block;
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
   max-width: 800px;
 }
 
@@ -151,7 +151,7 @@ li {
 }
 
 .person {
-  margin: 32px 0;
+  margin: 16px 0;
   text-align: center;
   font-weight: bold;
   font-size: 22px;
