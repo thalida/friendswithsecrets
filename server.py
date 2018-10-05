@@ -66,9 +66,6 @@ def get_thread(person):
         if person == 'akilah':
             sessions = [shuff(session) for (i, session) in enumerate(sessions)]
 
-        if person == 'timothy':
-            sessions = [shuff(session) for (i, session) in enumerate(sessions)]
-
         res = {
             'sessions': sessions,
             'used_cached': used_cached,

@@ -8,32 +8,32 @@ import people
 import spreadsheet
 
 class Thread():
-    STARTDAY = datetime.date(2018, 9, 8)
+    STARTDAY = datetime.date(2018, 10, 3)
     NUM_SESSIONS_PER_DAY = 1;
     PERSON_SESSION_HEADERS = {
         'akilah': [
-            {'key': 0, 'title': 'Journey', 'image_url': '/static/images/session/7.jpeg'},
-            {'key': 1, 'title': 'Recovery', 'image_url': '/static/images/session/8.jpeg'},
-            {'key': 2, 'title': 'Happiness', 'image_url': '/static/images/session/1.jpeg'},
-            {'key': 3, 'title': 'Love', 'image_url': '/static/images/session/3.jpeg'},
-            {'key': 4, 'title': 'Friendship', 'image_url': '/static/images/session/5.jpeg'},
-            {'key': 5, 'title': 'Acceptance', 'image_url': '/static/images/session/7.jpeg'},
+            {'key': 0, 'title': 'Journey'},
+            {'key': 1, 'title': 'Recovery'},
+            {'key': 2, 'title': 'Happiness'},
+            {'key': 3, 'title': 'Love'},
+            {'key': 4, 'title': 'Friendship'},
+            {'key': 5, 'title': 'Acceptance'},
         ],
         'robyn': [
-            {'key': 0, 'title': 'Recovery', 'image_url': '/static/images/session/1.jpeg'},
-            {'key': 1, 'title': 'Family', 'image_url': '/static/images/session/2.jpeg'},
-            {'key': 2, 'title': 'Acceptance', 'image_url': '/static/images/session/3.jpeg'},
-            {'key': 3, 'title': 'Friendship', 'image_url': '/static/images/session/4.jpeg'},
-            {'key': 4, 'title': 'Health', 'image_url': '/static/images/session/5.jpeg'},
-            {'key': 5, 'title': 'Love', 'image_url': '/static/images/session/6.jpeg'},
+            {'key': 0, 'title': 'Recovery'},
+            {'key': 1, 'title': 'Family'},
+            {'key': 2, 'title': 'Acceptance'},
+            {'key': 3, 'title': 'Friendship'},
+            {'key': 4, 'title': 'Health'},
+            {'key': 5, 'title': 'Love'},
         ],
         'timothy': [
-            {'key': 0, 'title': 'Family', 'image_url': '/static/images/session/6.jpeg'},
-            {'key': 1, 'title': 'Health', 'image_url': '/static/images/session/4.jpeg'},
-            {'key': 2, 'title': 'Recovery', 'image_url': '/static/images/session/1.jpeg'},
-            {'key': 3, 'title': 'Journey', 'image_url': '/static/images/session/2.jpeg'},
-            {'key': 4, 'title': 'Happiness', 'image_url': '/static/images/session/8.jpeg'},
-            {'key': 5, 'title': 'Friendship', 'image_url': '/static/images/session/3.jpeg'},
+            {'key': 0, 'title': 'Family'},
+            {'key': 1, 'title': 'Health'},
+            {'key': 2, 'title': 'Recovery'},
+            {'key': 3, 'title': 'Journey'},
+            {'key': 4, 'title': 'Happiness'},
+            {'key': 5, 'title': 'Friendship'},
         ],
     }
 
@@ -43,7 +43,7 @@ class Thread():
         self.person = person
         self.file = spreadsheet.get_file(self.gc, self.person)
         self.used_cached_session = False;
-        self.max_sesions = 10;
+        self.total_sessions = 10;
         self.sessions = {};
 
     def get_session(self, session_index=0):
@@ -62,12 +62,14 @@ class Thread():
         now = datetime.date.today()
         time_since_start = now - self.STARTDAY
 
-        new_max_sesions = spreadsheet.count_all_sessions(self.file)
-        self.max_sesions = new_max_sesions if new_max_sesions is not None else self.max_sesions;
+        num_available_sessions = spreadsheet.count_all_sessions(self.file)
 
-        num_visible_sessions = self.NUM_SESSIONS_PER_DAY * time_since_start.days
-        num_visible_sessions = self.max_sesions if num_visible_sessions > self.max_sesions else num_visible_sessions
-        num_hidden_sessions = self.max_sesions - num_visible_sessions
+        num_visible_sessions = self.NUM_SESSIONS_PER_DAY * (time_since_start.days + 1)
+
+        if num_visible_sessions > num_available_sessions:
+            num_visible_sessions = num_available_sessions
+
+        num_hidden_sessions = self.total_sessions - num_visible_sessions
 
         self.used_cached_session = False;
         sessions = [self.get_session(i) for i in range(num_visible_sessions)] + ([None] * num_hidden_sessions)

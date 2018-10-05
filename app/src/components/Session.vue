@@ -5,8 +5,7 @@
         class="session__toggle"
         v-on:click="toggle"
         v-on:keyup.enter="toggle()"
-        :title="(isToggleOpen ? 'Close' : 'Open') + ' Session #' + sessionNumber"
-        tabindex="0">
+        :title="(isToggleOpen ? 'Close' : 'Open') + ' Session #' + sessionNumber">
         <svg class="session__toggle__icon"
           width="16px" height="10px"
           viewBox="0 0 18 12" version="1.1"
@@ -19,7 +18,7 @@
             fill-rule="evenodd"
             stroke-linecap="round"
             stroke-linejoin="round">
-              <g stroke="#222222" stroke-width="3">
+              <g class="icon-chevron" stroke="#222222" stroke-width="3">
                 <polyline
                   transform="
                     translate(9.000000, 6.000000)
@@ -30,16 +29,11 @@
               </g>
           </g>
         </svg>
-        <span>{{sessionNumber}}. Session</span>
+        <span class="session__title" v-if="isToggleOpen">{{sessionHeader.title}}</span>
+        <span class="text--uppercase">{{sessionToggleText}}</span>
       </a>
     </transition>
-    <transition name="animation-fade-height">
-      <div class="session__image"
-          v-if="isToggleOpen"
-          :style="{ backgroundImage: 'url('+sessionHeader.image_url+')' }">
-        <span class="session__header">{{ sessionHeader.title }}</span>
-      </div>
-    </transition>
+    <transition name="animation--fade-height--2x">
     <ol class="session__messages" v-if="isToggleOpen">
       <Message
         v-for="(groupedMessages, index) in messagesFormatted"
@@ -48,9 +42,10 @@
         v-bind:messages="groupedMessages.messages"
         v-bind:sender="people[groupedMessages.sender]" />
     </ol>
+    </transition>
   </li>
   <li class="session session--disabled" v-else>
-    <span class="session__toggle">{{ sessionNumber }}. Session</span>
+    <span class="session__toggle text--uppercase">{{ sessionNumber }}. Session</span>
   </li>
 </template>
 
@@ -86,6 +81,9 @@ export default {
       const toggleClass = this.isToggleOpen ? this.toggleClasses.open : this.toggleClasses.closed;
       return `session--${toggleClass}`;
     },
+    sessionToggleText() {
+      return this.isToggleOpen ? `${this.sessionNumber}.` : `${this.sessionNumber}. Session`;
+    },
     hasMessages() {
       return typeof this.session !== 'undefined'
             && this.session !== null
@@ -113,9 +111,6 @@ export default {
       });
 
       return messagesFormatted;
-    },
-    sessionToggleText() {
-      return (this.isToggleOpen) ? `${this.sessionHeader.title}` : `${this.sessionNumber}. Session`;
     },
   },
   methods: {
@@ -152,12 +147,8 @@ export default {
     color: $text-color;
     cursor: pointer;
     font-weight: bold;
-    text-transform: uppercase;
-
-    transition: color 400ms ease-in-out, border-radius 400ms ease-in-out;
 
     .icon-chevron {
-      fill: $text-color;
       stroke: $text-color;
     }
 
@@ -165,57 +156,10 @@ export default {
       margin-right: 5px;
       transition: transform 400ms ease;
     }
-
-    &:hover {
-      border: 2px solid $color-dark-gray-faded;
-    }
-
-    &:focus {
-      outline: none !important;
-      border: 2px solid $color-dark-gray-faded;
-    }
   }
 
-  &__image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    height: 150px;
-    border-radius: 0 0 $border-radius $border-radius;
+  &__title {
 
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-
-    @media (min-width: 500px) {
-      height: 225px;
-    }
-
-    @media (min-width: 800px) {
-      height: 300px;
-    }
-  }
-
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: rgba($color-dark-gray, 0);
-    font-size: 30px;
-    font-weight: bold;
-
-    transition: background-color 400ms ease;
-
-    @media (min-width: 500px) {
-      font-size: 42px;
-    }
-
-    @media (min-width: 800px) {
-      font-size: 48px;
-    }
   }
 
   &__messages {
@@ -227,7 +171,7 @@ export default {
 
   &--collapsed &__toggle {
     &__icon {
-      transform: rotate(90deg);
+      transform: rotate(0deg);
     }
 
     &__contents {
@@ -236,10 +180,15 @@ export default {
   }
 
   &--expanded &__toggle {
-    border-radius: $border-radius $border-radius 0 0;
+    justify-content: space-between;
+    color: $text-color-light;
+
+    .icon-chevron {
+      stroke: $text-color-light;
+    }
 
     &__icon {
-      transform: rotate(180deg);
+      transform: rotate(90deg);
     }
   }
 

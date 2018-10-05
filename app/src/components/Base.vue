@@ -108,7 +108,7 @@ body {
   padding: 0;
   font: normal normal 16px/1.2 'proxima-nova', sans-serif;
   color: $text-color;
-  background: linear-gradient($color-gray-3, $color-gray-2);
+  background: $body-bg-color;
   height: 100%;
 }
 
@@ -139,12 +139,15 @@ li {
   max-width: 800px;
 }
 
+.text--uppercase {
+  text-transform: uppercase;
+}
+
 .people {
   display: flex;
   position: relative;
   justify-content: space-between;
   z-index: 1;
-  box-shadow: 0px 4px 8px -8px #000;
 }
 
 .person {
@@ -195,9 +198,14 @@ li {
   max-height: 0;
 }
 
+$fade-height-1x-speed: 400ms;
+$fade-height-2x-speed: $fade-height-1x-speed / 2;
+
 .animation-fade-height-enter-active,
 .animation-fade-height-leave-active {
-  transition: max-height 400ms ease-in-out, opacity 400ms ease-in-out;
+  transition:
+    max-height $fade-height-1x-speed ease-in-out,
+    opacity $fade-height-1x-speed ease-in-out;
   max-height: 300px;
   opacity: 1;
   overflow: hidden;
@@ -208,20 +216,38 @@ li {
   opacity: 0;
 }
 
+.animation--fade-height--2x-enter-active,
+.animation--fade-height--2x-leave-active {
+  transition:
+    max-height $fade-height-2x-speed ease-in-out,
+    opacity $fade-height-2x-speed ease-in-out;
+  max-height: 300px;
+  opacity: 1;
+  overflow: hidden;
+}
+.animation--fade-height--2x-enter,
+.animation--fade-height--2x-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
 
 @each $person in $people {
   .theme--#{$person} {
-    .header,
-    .message--#{$person}.message--participant .message__text,
-    .session--expanded .session__toggle,
-    .session--collapsed .session__toggle {
-       @extend %bg-color--#{$person};
+    .message--#{$person}.message--participant .message__text {
+      @extend %bg-color--#{$person};
+      color: $text-color-light;
     }
     .person--#{$person} .person_link {
        @extend %color--#{$person};
     }
-    .session--expanded .session__header {
-       @extend %bg-color--faded--#{$person};
+    .session--expanded {
+      .session__header {
+        @extend %bg-color--faded--#{$person};
+      }
+      .session__toggle {
+       @extend %bg-color--#{$person};
+      }
     }
   }
 }
