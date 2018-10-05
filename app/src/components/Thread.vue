@@ -80,24 +80,25 @@ export default {
       },
     },
     scrollTo: {
-      // componentUpdated(elem, args) {
-      //   if (!args.value.isLoaded) {
-      //     return;
-      //   }
-      //
-      //   const $el = elem;
-      //   const params = args.value;
-      //   const $sessionToggle = $el.querySelector('.session__toggle');
-      //
-      //   if ($sessionToggle === null) {
-      //     return;
-      //   }
-      //
-      //   // const styles = window.getComputedStyle($sessionToggle);
-      //   // const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-      //   // const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
-      //   $el.scrollTop = 65 * params.selectedSession;
-      // },
+      componentUpdated(elem, args) {
+        if (!args.value.isLoaded) {
+          return;
+        }
+
+        const $el = elem;
+        const params = args.value;
+        const $sessionToggle = $el.querySelector('.session__toggle');
+
+        if ($sessionToggle === null) {
+          return;
+        }
+
+        const styles = window.getComputedStyle($sessionToggle);
+        const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
+        const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
+        // const toggleHeight = 65;
+        $el.scrollTop = toggleHeight * params.selectedSession;
+      },
     },
   },
   methods: {

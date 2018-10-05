@@ -8,7 +8,7 @@ import people
 import spreadsheet
 
 class Thread():
-    STARTDAY = datetime.date(2018, 10, 3)
+    STARTDAY = datetime.date(2018, 9, 3)
     NUM_SESSIONS_PER_DAY = 1;
     PERSON_SESSION_HEADERS = {
         'akilah': [
@@ -63,8 +63,8 @@ class Thread():
         time_since_start = now - self.STARTDAY
 
         num_available_sessions = spreadsheet.count_all_sessions(self.file)
-
         num_visible_sessions = self.NUM_SESSIONS_PER_DAY * (time_since_start.days + 1)
+        print(time_since_start.days)
 
         if num_visible_sessions > num_available_sessions:
             num_visible_sessions = num_available_sessions
