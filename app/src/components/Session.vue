@@ -5,7 +5,7 @@
         class="session__toggle"
         v-on:click="toggle"
         v-on:keyup.enter="toggle()"
-        :title="(isToggleOpen ? 'Close' : 'Open') + ' Session #' + sessionNumber">
+        :title="sessionAltText">
         <svg class="session__toggle__icon"
           width="16px" height="10px"
           viewBox="0 0 18 12" version="1.1"
@@ -29,8 +29,12 @@
               </g>
           </g>
         </svg>
-        <span class="session__title" v-if="isToggleOpen">{{sessionHeader.title}}</span>
-        <span class="text--uppercase">{{sessionToggleText}}</span>
+        <span
+          class="session__title"
+          v-width>
+            {{sessionHeader.title}}
+        </span>
+        <span class="session__number">{{sessionNumber}}.</span>
       </a>
     </transition>
     <transition name="animation--fade-height--2x">
@@ -45,7 +49,7 @@
     </transition>
   </li>
   <li class="session session--disabled" v-else>
-    <span class="session__toggle text--uppercase">{{ sessionNumber }}. Session</span>
+    <span class="session__toggle text--uppercase">{{sessionNumber}}. Session</span>
   </li>
 </template>
 
@@ -81,8 +85,9 @@ export default {
       const toggleClass = this.isToggleOpen ? this.toggleClasses.open : this.toggleClasses.closed;
       return `session--${toggleClass}`;
     },
-    sessionToggleText() {
-      return this.isToggleOpen ? `${this.sessionNumber}.` : `${this.sessionNumber}. Session`;
+    sessionAltText() {
+      const openStateText = (this.isToggleOpen ? 'Close' : 'Open');
+      return `${openStateText} Session #${this.sessionNumber} ${this.sessionHeader.title}`;
     },
     hasMessages() {
       return typeof this.session !== 'undefined'
@@ -113,6 +118,19 @@ export default {
       return messagesFormatted;
     },
   },
+  directives: {
+    width: {
+      inserted(elem) {
+        const $el = elem;
+        // re-use canvas object for better performance
+        const canvas = window.testCanvas || (window.testCanvas = document.createElement('canvas'));
+        const context = canvas.getContext('2d');
+        context.font = '16px "proxima-nova"';
+        const metrics = context.measureText($el.textContent.trim());
+        $el.style.width = `${metrics.width}px`;
+      },
+    },
+  },
   methods: {
     toggle() {
       this.$emit('session-toggle', {
@@ -131,9 +149,8 @@ export default {
   overflow: hidden;
 
   &__toggle {
-    display:flex;
+    display: flex;
     align-items: center;
-    justify-content: left;
     flex-direction: row;
 
     height: 45px;
@@ -159,7 +176,12 @@ export default {
   }
 
   &__title {
+    margin: 0 4px 0 0;
+    transition: width 400ms ease;
+  }
 
+  &__number {
+    text-transform: uppercase;
   }
 
   &__messages {
@@ -169,26 +191,30 @@ export default {
     padding: 0;
   }
 
-  &--collapsed &__toggle {
-    &__icon {
-      transform: rotate(0deg);
-    }
-
-    &__contents {
-      background-color: rgba($color-gray, 0);
+  &--collapsed {
+    .session__toggle {
+      &__icon {
+        transform: rotate(0deg);
+      }
+      &__contents {
+        background-color: rgba($color-gray, 0);
+      }
     }
   }
 
-  &--expanded &__toggle {
-    justify-content: space-between;
-    color: $text-color-light;
-
-    .icon-chevron {
-      stroke: $text-color-light;
+  &--expanded {
+    .session__title {
+      width: (800px - 40px) !important;
+      text-align: center;
     }
-
-    &__icon {
-      transform: rotate(90deg);
+    .session__toggle {
+      color: $text-color-light;
+      .icon-chevron {
+        stroke: $text-color-light;
+      }
+      &__icon {
+        transform: rotate(90deg);
+      }
     }
   }
 

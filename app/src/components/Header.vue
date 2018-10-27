@@ -14,22 +14,31 @@
       <transition name="animation-fade-height">
           <div class="header__body container-wrapper" v-if="headerIsOpen">
               <p class="header__body__about">
-                  Three friends participated in 15 individual online text therapy
-                  sessions from January to April 2018. These sessions capture a slice
-                  of their life, their thoughts and feelings, their individualitiies,
-                  and how they try to process the world around them. The identities of
-                  the therapists have been protected.
+                Three friends from different backgrounds participated in 10
+                individual online text therapy sessions from January to April 2018.
+                Friends With Secrets captures a slice of their lives
+                — the good and the bad — including identity, feelings,
+                and how they try to process the world around them.
+                The identities of the therapists have been protected.
               </p>
               <div class="header__body__credits">
                   <p class="header__body__credit">
-                      project by <a href="#">Akilah Hughes</a>,
-                      <a href="#">Robyn Kanner</a>, <a href="#">Timothy Goodman</a>
+                    Project by
+                    <a href="https://twitter.com/AkilahObviously" target="_blank">Akilah Hughes</a>,
+                    <a href="https://twitter.com/robynkanner">Robyn Kanner</a>,
+                    and <a href="https://www.instagram.com/timothygoodman/">Timothy Goodman</a>
                   </p>
                   <p class="header__body__credit">
-                      website coded by <a href="#">Thalida Noel</a>
+                    Design by
+                    <a href="https://twitter.com/robynkanner">Robyn Kanner</a>
+                    and <a href="https://www.instagram.com/timothygoodman/">Timothy Goodman</a>
                   </p>
                   <p class="header__body__credit">
-                      for inquires email us at <a href="#">FriendsWithSecrets@gmail.com</a>
+                    Code by <a href="http://thalida.codes/">Thalida Noel</a>
+                  </p>
+                  <p class="header__body__credit">
+                    For inquires email us at
+                    <a mailto="friendswithsecrets@gmail.com">friendswithsecrets@gmail.com</a>
                   </p>
               </div>
           </div>
@@ -108,25 +117,10 @@ export default {
           position: relative;
           width: 48%;
           float: left;
-          text-transform: lowercase;
+          font-size: 16px;
+          line-height: 1.5;
           margin: 0;
           padding: 0;
-      }
-
-      &__about {
-          font-size: 18px;
-          line-height: 1.5;
-
-          &--after {
-              display: none;
-              float: none;
-              width: 80%;
-              margin: 15px auto;
-          }
-
-          &--inline {
-              display: block;
-          }
       }
 
       &__credits {
@@ -134,9 +128,9 @@ export default {
       }
 
       &__credit {
+        line-height: 1.5;
         margin: 0;
         padding: 0;
-        line-height: 1.5;
       }
 
       &:after {
@@ -153,8 +147,6 @@ export default {
         float: none;
         width: 100%;
         margin: 0 0 20px 0;
-        font-size: 16px;
-        line-height: 1.5;
     }
   }
 }
