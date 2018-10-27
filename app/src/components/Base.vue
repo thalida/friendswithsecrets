@@ -17,7 +17,7 @@
             }
           }"
         >
-          {{ people[participant].full_name }}
+          {{people[participant].full_name}}
         </router-link>
       </span>
     </div>
@@ -158,8 +158,15 @@ li {
   color: $color-dark-gray;
 
   &_link {
+    display: block;
     text-decoration: none;
     transition: color 400ms ease;
+  }
+
+  &:hover {
+    animation-duration: 500ms;
+    animation-name: bounce;
+    animation-fill-mode: backwards;
   }
 
   @media (min-width: 500px) {
@@ -175,6 +182,21 @@ li {
     &:last-child {
       text-align: right;
     }
+  }
+}
+
+// inpsiration: http://www.developerdrive.com/2015/01/8-simple-css-hover-effects/
+@keyframes bounce {
+  0%, 25%, 75% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(-5px);
   }
 }
 
