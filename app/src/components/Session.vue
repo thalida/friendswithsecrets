@@ -155,7 +155,7 @@ export default {
       const context = canvas.getContext('2d');
       context.font = 'bold 16px proxima-nova';
       const metrics = context.measureText($el.textContent.trim());
-      $el.style.width = `${metrics.width}px`;
+      $el.style.width = `${Math.ceil(metrics.width)}px`;
     },
   },
 };
