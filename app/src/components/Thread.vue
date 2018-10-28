@@ -146,8 +146,9 @@ export default {
 .thread {
   display: block;
   position: relative;
-  overflow: auto;
   width: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
   .dev-only-message {
     display: none;

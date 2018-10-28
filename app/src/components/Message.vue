@@ -57,6 +57,10 @@ export default {
     &:first-of-type {
       border-radius: 8px 8px 8px 0px;
     }
+
+    @media (max-width: 800px) {
+      font-size: 16px;
+    }
   }
 
   &--0 &__sender {
