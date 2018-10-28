@@ -10,32 +10,6 @@ import spreadsheet
 class Thread():
     STARTDAY = datetime.date(2018, 9, 3)
     NUM_SESSIONS_PER_DAY = 1;
-    PERSON_SESSION_HEADERS = {
-        'akilah': [
-            {'key': 0, 'title': 'Journey'},
-            {'key': 1, 'title': 'Recovery'},
-            {'key': 2, 'title': 'Happiness'},
-            {'key': 3, 'title': 'Love'},
-            {'key': 4, 'title': 'Friendship'},
-            {'key': 5, 'title': 'Acceptance'},
-        ],
-        'robyn': [
-            {'key': 0, 'title': 'Recovery'},
-            {'key': 1, 'title': 'Family'},
-            {'key': 2, 'title': 'Acceptance'},
-            {'key': 3, 'title': 'Friendship'},
-            {'key': 4, 'title': 'Health'},
-            {'key': 5, 'title': 'Love'},
-        ],
-        'timothy': [
-            {'key': 0, 'title': 'Family'},
-            {'key': 1, 'title': 'Health'},
-            {'key': 2, 'title': 'Recovery'},
-            {'key': 3, 'title': 'Journey'},
-            {'key': 4, 'title': 'Happiness'},
-            {'key': 5, 'title': 'Friendship'},
-        ],
-    }
 
     def __init__(self, google_client, person):
         super(Thread, self).__init__()
@@ -56,7 +30,8 @@ class Thread():
         else:
             session = None;
 
-        return self._tmp_format_session(session);
+        return session;
+        # return self._tmp_format_session(session);
 
     def get_sessions(self):
         self.used_cached_session = False;
@@ -79,19 +54,16 @@ class Thread():
         sessions = [self.get_session(i) for i in range(num_visible_sessions)] + ([None] * num_hidden_sessions)
         return (sessions, self.used_cached_session)
 
-    def get_session_headers(self, person):
-        return self.PERSON_SESSION_HEADERS[person]
+    # def _tmp_format_session(self, session):
+    #     try:
+    #         return [{'sender': self._tmp_get_sender(m['sender']), 'message_text': m['message_text']} for m in session]
+    #     except (TypeError):
+    #         return None
 
-    def _tmp_format_session(self, session):
-        try:
-            return [{'sender': self._tmp_get_sender(m['sender']), 'message_text': m['message_text']} for m in session]
-        except (TypeError):
-            return None
+    # def _tmp_get_sender(self, orig_sender):
+    #     if orig_sender in list(people.PARTICIPANTS.keys()):
+    #         sender = self.person
+    #     else:
+    #         sender = people.PARTICIPANT_TO_THERAPIST[self.person]['name']
 
-    def _tmp_get_sender(self, orig_sender):
-        if orig_sender in list(people.PARTICIPANTS.keys()):
-            sender = self.person
-        else:
-            sender = people.PARTICIPANT_TO_THERAPIST[self.person]['name']
-
-        return sender
+    #     return sender

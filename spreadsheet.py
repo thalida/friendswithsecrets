@@ -32,15 +32,17 @@ def get_session(file, session_index):
 
     try:
         session = sheet.get_all_values()
-        return _format_session(session)
+        return _format_session(session, sheet.title)
     except gspread.exceptions.APIError:
         return None;
     except AttributeError:
         return []
 
-def _format_session(session):
-    formatted_session = []
-    sender = None;
+def _format_session(session, title=""):
+    formatted_session = {
+        'title': title.split(':', 1)[-1].strip(), 
+        'messages': []
+    }
 
     for field in session:
         txt = field[0]
@@ -57,7 +59,7 @@ def _format_session(session):
             continue
 
         if sender:
-            formatted_session.append({'sender': sender, 'message_text': txt});
+            formatted_session['messages'].append({'sender': sender, 'message_text': txt});
             sender = None
 
     return formatted_session

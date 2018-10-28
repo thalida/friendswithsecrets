@@ -14,7 +14,6 @@
       v-bind:index="index"
       v-bind:session="session"
       v-bind:session-number="getSessionNumber(index)"
-      v-bind:session-header="threadData.session_headers[index]"
       v-bind:people="people"
       v-bind:selected="index === selectedSessionZeroIdx"
       v-on:session-toggle="onSessionToggle" />

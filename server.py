@@ -61,15 +61,14 @@ def get_thread(person):
     try:
         thread = get_thread_class(person)
         (sessions, used_cached) = thread.get_sessions()
-        session_headers = thread.get_session_headers(person)
+        # session_headers = thread.get_session_headers(person)
 
         if person == 'akilah':
-            sessions = [shuff(session) for (i, session) in enumerate(sessions)]
+            sessions = [{'title': session['title'], 'messages': shuff(session['messages'])} if session is not None else None for (i, session) in enumerate(sessions)]
 
         res = {
             'sessions': sessions,
             'used_cached': used_cached,
-            'session_headers': session_headers,
             'participant': people.PARTICIPANTS[person],
             'therapist': people.PARTICIPANT_TO_THERAPIST[person],
         }
