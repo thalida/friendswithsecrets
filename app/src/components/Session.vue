@@ -31,7 +31,8 @@
         </svg>
         <span
           class="session__title"
-          v-width>
+          v-width:params="{handler: widthDirectiveHandler}"
+          v-if="sessionTitle.length > 0">
             {{sessionTitle}}
         </span>
         <span class="session__number">{{sessionNumber}}.</span>
@@ -49,7 +50,8 @@
     </transition>
   </li>
   <li class="session session--disabled" v-else>
-    <span class="session__toggle">{{sessionTitle}} {{sessionNumber}}.</span>
+    <span class="session__toggle">Session {{sessionNumber}}.</span>
+    <!-- <span class="session__toggle">{{sessionTitle}} {{sessionNumber}}.</span> -->
   </li>
 </template>
 
@@ -122,14 +124,19 @@ export default {
   },
   directives: {
     width: {
-      componentUpdated(elem) {
-        const $el = elem;
-        // re-use canvas object for better performance
-        const canvas = window.testCanvas || (window.testCanvas = document.createElement('canvas'));
-        const context = canvas.getContext('2d');
-        context.font = '16px "proxima-nova"';
-        const metrics = context.measureText($el.textContent.trim());
-        $el.style.width = `${metrics.width}px`;
+      inserted(elem, args) {
+        if (typeof args.value.handler !== 'function') {
+          return;
+        }
+
+        args.value.handler.call(null, elem);
+      },
+      componentUpdated(elem, args) {
+        if (typeof args.value.handler !== 'function') {
+          return;
+        }
+
+        args.value.handler.call(null, elem);
       },
     },
   },
@@ -140,6 +147,15 @@ export default {
         index: this.index,
         state: !this.isToggleOpen,
       });
+    },
+    widthDirectiveHandler(elem) {
+      const $el = elem;
+      // re-use canvas object for better performance
+      const canvas = window.testCanvas || (window.testCanvas = document.createElement('canvas'));
+      const context = canvas.getContext('2d');
+      context.font = 'bold 16px proxima-nova';
+      const metrics = context.measureText($el.textContent.trim());
+      $el.style.width = `${metrics.width}px`;
     },
   },
 };
