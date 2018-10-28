@@ -23,20 +23,20 @@
                   <p class="header__about__credit">
                     Project by
                     <a href="https://twitter.com/AkilahObviously" target="_blank">Akilah Hughes</a>,
-                    <a href="https://twitter.com/robynkanner">Robyn Kanner</a>,
-                    and <a href="https://www.instagram.com/timothygoodman/">Timothy Goodman</a>
+                    <a href="https://twitter.com/robynkanner" target="_blank">Robyn Kanner</a>,
+                    and <a href="https://www.instagram.com/timothygoodman/" target="_blank">Timothy Goodman</a>
                   </p>
                   <p class="header__about__credit">
                     Design by
-                    <a href="https://twitter.com/robynkanner">Robyn Kanner</a>
-                    and <a href="https://www.instagram.com/timothygoodman/">Timothy Goodman</a>
+                    <a href="https://twitter.com/robynkanner" target="_blank">Robyn Kanner</a>
+                    and <a href="https://www.instagram.com/timothygoodman/" target="_blank">Timothy Goodman</a>
                   </p>
                   <p class="header__about__credit">
-                    Code by <a href="http://thalida.codes/">Thalida Noel</a>
+                    Code by <a href="http://thalida.codes/" target="_blank">Thalida Noel</a>
                   </p>
                   <p class="header__about__credit">
                     For inquires email us at
-                    <a mailto="friendswithsecrets@gmail.com">friendswithsecrets@gmail.com</a>
+                    <a href="mailto:friendswithsecrets@gmail.com">friendswithsecrets@gmail.com</a>
                   </p>
               </div>
           </div>
