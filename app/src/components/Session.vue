@@ -120,7 +120,7 @@ export default {
   },
   directives: {
     width: {
-      inserted(elem) {
+      componentUpdated(elem) {
         const $el = elem;
         // re-use canvas object for better performance
         const canvas = window.testCanvas || (window.testCanvas = document.createElement('canvas'));
@@ -176,7 +176,7 @@ export default {
   }
 
   &__title {
-    margin: 0 4px 0 0;
+    margin: 0 5px 0 0;
     transition: width 400ms ease;
   }
 
@@ -204,7 +204,7 @@ export default {
 
   &--expanded {
     .session__title {
-      width: (800px - 40px) !important;
+      width: 100% !important;
       text-align: center;
     }
     .session__toggle {

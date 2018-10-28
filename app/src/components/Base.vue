@@ -1,37 +1,23 @@
 <template>
-  <div id="app" :class="[participantThemeClass]" v-if="isLoaded">
+  <div
+    id="app"
+    :class="[participantThemeClass]"
+    v-if="isLoaded"
+    v-touch:swipe="onSwipe">
     <Header />
-    <div class="people container-wrapper">
-      <span
-        class="person"
-        :class="['person--' + participant]"
-        :key="index"
-        v-for="(participant, index) in participantOrder">
-        <router-link
-          class="person_link"
-          :to="{
-            name: 'Thread',
-            params: {
-              participant: participant,
-              session: selectedSession,
-            }
-          }"
-        >
-          {{people[participant].full_name}}
-        </router-link>
-      </span>
-    </div>
     <router-view />
   </div>
 </template>
 
 <script>
 import Header from './Header';
+import People from './People';
 
 export default {
   name: 'Base',
   components: {
     Header,
+    People,
   },
   data() {
     return {};
@@ -67,6 +53,12 @@ export default {
     participantOrder() {
       return this.$store.state.participantOrder;
     },
+    participantIndex() {
+      return this.participantOrder.indexOf(this.selectedParticipant);
+    },
+    totalParticipants() {
+      return this.participantOrder.length;
+    },
     selectedParticipant() {
       return this.$store.state.selectedParticipant;
     },
@@ -78,15 +70,33 @@ export default {
     },
   },
   methods: {
-    onSessionSelect(data) {
-      const session = !isNaN(parseInt(data.session, 10)) ? data.session + 1 : null;
+    navigateToThread({ participant, session }) {
       this.$router.push({
         name: 'Thread',
         params: {
-          participant: data.participant,
+          participant,
           session,
         },
       });
+    },
+    onSessionSelect(data) {
+      const participant = data.participant;
+      const session = !isNaN(parseInt(data.session, 10)) ? data.session + 1 : null;
+      this.navigateToThread({ participant, session });
+    },
+    onSwipe(directionStr) {
+      if (directionStr !== 'left' && directionStr !== 'right') {
+        return;
+      }
+
+      const direction = (directionStr === 'left') ? 1 : -1;
+      const participant = this.participantOrder[(this.participantIndex + direction)] || null;
+
+      if (participant === null) {
+        return;
+      }
+
+      this.navigateToThread({ participant, session: this.selectedSession });
     },
   },
 };
@@ -141,48 +151,6 @@ li {
 
 .text--uppercase {
   text-transform: uppercase;
-}
-
-.people {
-  display: flex;
-  position: relative;
-  justify-content: space-between;
-  z-index: 1;
-}
-
-.person {
-  margin: 16px 0;
-  text-align: center;
-  font-weight: bold;
-  font-size: 22px;
-  color: $color-dark-gray;
-
-  &_link {
-    display: block;
-    text-decoration: none;
-    transition: color 400ms ease;
-  }
-
-  &:hover {
-    animation-duration: 500ms;
-    animation-name: bounce;
-    animation-fill-mode: backwards;
-  }
-
-  @media (min-width: 500px) {
-    font-size: 32px;
-  }
-
-  @media (min-width: 800px) {
-    font-size: 38px;
-    &:first-child {
-      text-align: left;
-    }
-
-    &:last-child {
-      text-align: right;
-    }
-  }
 }
 
 // inpsiration: http://www.developerdrive.com/2015/01/8-simple-css-hover-effects/
