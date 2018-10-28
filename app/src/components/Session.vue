@@ -32,7 +32,7 @@
         <span
           class="session__title"
           v-width>
-            {{sessionHeader.title}}
+            {{sessionTitle}}
         </span>
         <span class="session__number">{{sessionNumber}}.</span>
       </a>
@@ -49,7 +49,7 @@
     </transition>
   </li>
   <li class="session session--disabled" v-else>
-    <span class="session__toggle text--uppercase">{{sessionNumber}}. Session</span>
+    <span class="session__toggle">{{sessionTitle}} {{sessionNumber}}.</span>
   </li>
 </template>
 
@@ -63,8 +63,7 @@ export default {
   },
   props: {
     index: Number,
-    session: Array,
-    sessionHeader: Object,
+    session: Object,
     sessionNumber: String,
     people: Object,
     selected: Boolean,
@@ -81,18 +80,21 @@ export default {
     },
   },
   computed: {
+    sessionTitle() {
+      return (this.session) ? this.session.title : '';
+    },
     sessionToggleClass() {
       const toggleClass = this.isToggleOpen ? this.toggleClasses.open : this.toggleClasses.closed;
       return `session--${toggleClass}`;
     },
     sessionAltText() {
       const openStateText = (this.isToggleOpen ? 'Close' : 'Open');
-      return `${openStateText} Session #${this.sessionNumber} ${this.sessionHeader.title}`;
+      return `${openStateText} Session #${this.sessionNumber} ${this.sessionTitle}`;
     },
     hasMessages() {
       return typeof this.session !== 'undefined'
             && this.session !== null
-            && this.session.length > 0;
+            && this.session.messages.length > 0;
     },
     messagesFormatted() {
       const messagesFormatted = [];
@@ -101,7 +103,7 @@ export default {
         return [];
       }
 
-      this.session.forEach((message) => {
+      this.session.messages.forEach((message) => {
         const lastMessage = messagesFormatted[messagesFormatted.length - 1];
 
         if (typeof lastMessage === 'undefined' || message.sender !== lastMessage.sender) {
