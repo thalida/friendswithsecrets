@@ -31,11 +31,10 @@
         </svg>
         <span
           class="session__title"
-          v-width:params="{handler: widthDirectiveHandler}"
           v-if="sessionTitle.length > 0">
             {{sessionTitle}}
         </span>
-        <span class="session__number">{{sessionNumber}}.</span>
+        <span class="session__number" v-if="isToggleOpen">{{sessionNumber}}.</span>
       </a>
     </transition>
     <transition name="animation--fade-height--2x">
@@ -167,20 +166,22 @@ export default {
   overflow: hidden;
 
   &__toggle {
+    position: relative;
     display: flex;
     align-items: center;
     flex-direction: row;
 
-    height: 45px;
     width: 100%;
     margin: 10px 0 0;
-    padding: 10px;
+    padding: 14px 16px;
 
     background-color: $color-gray;
     border-radius: $border-radius;
     border: 2px solid rgba(0,0,0,0);
     color: $text-color;
     cursor: pointer;
+
+    font-size: 20px;
     font-weight: bold;
 
     .icon-chevron {
@@ -191,11 +192,16 @@ export default {
       margin-right: 5px;
       transition: transform 400ms ease;
     }
+
+    @media (max-width: 800px) {
+      font-size: 16px;
+    }
   }
 
   &__title {
-    margin: 0 5px 0 0;
-    transition: width 400ms ease;
+    position: relative;
+    left: 0;
+    transition: all 300ms;
   }
 
   &__number {
@@ -211,6 +217,7 @@ export default {
 
   &--collapsed {
     .session__toggle {
+      justify-content: left;
       &__icon {
         transform: rotate(0deg);
       }
@@ -222,11 +229,13 @@ export default {
 
   &--expanded {
     .session__title {
-      width: 100% !important;
-      text-align: center;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
     .session__toggle {
       color: $text-color-light;
+      justify-content: space-between;
       .icon-chevron {
         stroke: $text-color-light;
       }

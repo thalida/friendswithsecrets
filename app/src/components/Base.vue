@@ -153,21 +153,6 @@ li {
   text-transform: uppercase;
 }
 
-// inpsiration: http://www.developerdrive.com/2015/01/8-simple-css-hover-effects/
-@keyframes bounce {
-  0%, 25%, 75% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-
-  100% {
-    transform: translateY(-5px);
-  }
-}
-
 .animation-fade-enter-active,
 .animation-fade-leave-active {
   transition: opacity 400ms ease;

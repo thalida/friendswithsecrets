@@ -61,10 +61,12 @@ export default {
     transition: color 400ms ease;
   }
 
-  &:hover {
-    animation-duration: 500ms;
-    animation-name: bounce;
-    animation-fill-mode: backwards;
+  @media not all and (hover: none) {
+    &:hover {
+      animation-duration: 500ms;
+      animation-name: bounce;
+      animation-fill-mode: backwards;
+    }
   }
 
   @media (min-width: 500px) {
@@ -82,4 +84,16 @@ export default {
     }
   }
 }
+
+// inpsiration: http://www.developerdrive.com/2015/01/8-simple-css-hover-effects/
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
 </style>
