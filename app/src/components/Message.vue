@@ -62,9 +62,5 @@ export default {
       font-size: 16px;
     }
   }
-
-  &--0 &__sender {
-    margin-top: 0;
-  }
 }
 </style>

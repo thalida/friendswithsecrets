@@ -25,7 +25,7 @@ module.exports = {
   },
   // add your custom rules here
   rules: {
-    'eol-last': ['error', 'never'],
+    'eol-last': 'off',
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       js: 'never',
