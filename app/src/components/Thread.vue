@@ -1,6 +1,8 @@
 <template>
 <section
   class="thread"
+  v-bind:class="{ 'thread--animated': swipe.isAnimating }"
+  v-bind:style="{ transform: swipeTransformStyles }"
   v-show="isLoaded"
   v-height:params="{isLoaded, windowHeight}"
   v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}">
@@ -22,6 +24,7 @@
 </template>
 
 <script>
+import interact from 'interactjs';
 import Session from './Session';
 
 export default {
@@ -30,18 +33,60 @@ export default {
     Session,
   },
   data() {
+    const vp = this.getViewportSize();
     return {
-      windowHeight: this.getViewportSize().height,
+      swipeTransformStyles: null,
+      windowHeight: vp.height,
+      swipe: {
+        LEFT: 0,
+        RIGHT: 1,
+        NEUTRAL: null,
+        isEnabled: vp.width < 800,
+        isAnimating: false,
+        direction: null, // left = 0 | right = 1 | neutral = null
+        x: 0,
+        threshold: (vp.width / 4 < 50) ? vp.width / 4 : 50,
+      },
     };
   },
   created() {
     this.$store.dispatch('getAllThreads');
   },
   mounted() {
+    const self = this;
+    interact(this.$el).draggable({
+      enabled: self.swipe.isEnabled,
+      autoScroll: true,
+      inertia: true,
+      onstart() {
+        self.swipe.isAnimating = true;
+      },
+      onmove(event) {
+        const x = (self.swipe.x || 0) + event.dx;
+        self.swipe.x = x;
+        self.swipeTransformStyles = `translate(${self.swipe.x}px, 0)`;
+      },
+      onend() {
+        self.swipe.isAnimating = false;
+        // eslint-disable-next-line
+        // console.log('got in here', self.swipe.x);
+        if (self.swipe.x > self.swipe.threshold) {
+          self.swipe.direction = self.swipe.RIGHT;
+        } else if (self.swipe.x < -self.swipe.threshold) {
+          self.swipe.direction = self.swipe.LEFT;
+        } else {
+          self.swipe.direction = self.swipe.NEUTRAL;
+          self.swipe.x = 0;
+        }
+
+        self.onSwipeEnd();
+      },
+    });
     window.addEventListener('resize', this.onResize);
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.onResize);
+    interact(this.$el).unset();
   },
   computed: {
     selectedParticipant() {
@@ -52,6 +97,12 @@ export default {
     },
     selectedSessionZeroIdx() {
       return this.selectedSession - 1;
+    },
+    participantOrder() {
+      return this.$store.state.participantOrder;
+    },
+    selectedParticipantIndex() {
+      return this.participantOrder.indexOf(this.selectedParticipant);
     },
     people() {
       return this.$store.state.people;
@@ -136,6 +187,29 @@ export default {
     onResize() {
       this.setWindowHeight();
     },
+    onSwipeEnd() {
+      if (this.swipe.direction === null) {
+        this.swipeTransformStyles = 'translate(0, 0)';
+        return;
+      }
+
+      const shift = (this.swipe.direction === this.swipe.LEFT) ? 1 : -1;
+      const participant = this.participantOrder[(this.selectedParticipantIndex + shift)] || null;
+
+      this.swipe.direction = this.swipe.NEUTRAL;
+      this.swipe.isAnimating = false;
+      this.swipe.x = 0;
+      this.swipeTransformStyles = 'translate(0, 0)';
+
+      if (participant === null) {
+        return;
+      }
+
+      this.$root.$emit('session-select', {
+        participant,
+        session: this.selectedSession,
+      });
+    },
   },
 };
 </script>
@@ -157,6 +231,10 @@ export default {
 
   &__sessions {
     padding: 0 0 10% 0;
+  }
+
+  &--animated {
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 }
 </style>

@@ -2,8 +2,7 @@
   <div
     id="app"
     :class="[participantThemeClass]"
-    v-if="isLoaded"
-    v-touch:swipe="onSwipe">
+    v-if="isLoaded">
     <Header />
     <router-view />
   </div>
