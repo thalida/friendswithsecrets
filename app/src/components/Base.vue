@@ -36,6 +36,7 @@ export default {
   },
   mounted() {
     this.$root.$on('session-select', this.onSessionSelect);
+    this.$root.$on('navigate', this.navigateToThread);
   },
   watch: {
     $route(to) {

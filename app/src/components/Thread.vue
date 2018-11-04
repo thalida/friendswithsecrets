@@ -41,11 +41,11 @@ export default {
         LEFT: 0,
         RIGHT: 1,
         NEUTRAL: null,
-        isEnabled: vp.width < 800,
+        isEnabled: false, // vp.width < 800,
         isAnimating: false,
         direction: null, // left = 0 | right = 1 | neutral = null
         x: 0,
-        threshold: (vp.width / 4 < 50) ? vp.width / 4 : 50,
+        threshold: 20,
       },
     };
   },
@@ -179,6 +179,9 @@ export default {
       return `${pad}${index + 1}`;
     },
     onSessionToggle(e) {
+      if (this.swipe.isAnimating) {
+        return;
+      }
       this.$root.$emit('session-select', {
         participant: this.selectedParticipant,
         session: (e.state === true) ? e.index : null,
@@ -205,7 +208,7 @@ export default {
         return;
       }
 
-      this.$root.$emit('session-select', {
+      this.$root.$emit('navigate', {
         participant,
         session: this.selectedSession,
       });
@@ -234,7 +237,8 @@ export default {
   }
 
   &--animated {
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: absolute;
+    transition: all 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 }
 </style>
