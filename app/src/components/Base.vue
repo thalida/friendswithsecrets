@@ -226,7 +226,7 @@ li {
   max-height: 0;
 }
 
-$fade-height-1x-speed: 400ms;
+$fade-height-1x-speed: 600ms;
 $fade-height-2x-speed: $fade-height-1x-speed / 2;
 
 .animation-fade-height-enter-active,
