@@ -1,51 +1,49 @@
 <template>
   <li class="session" :class="[sessionToggleClass]" v-if="hasMessages">
-    <transition name="animation-fade">
-      <a
-        class="session__toggle"
-        v-on:click="toggle"
-        v-on:keyup.enter="toggle()"
-        :title="sessionAltText">
-        <svg class="session__toggle__icon"
-          width="16px" height="10px"
-          viewBox="0 0 18 12" version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink">
-          <g
-            stroke="none"
-            stroke-width="1"
-            fill="none"
-            fill-rule="evenodd"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-              <g class="icon-chevron" stroke="#222222" stroke-width="3">
-                <polyline
-                  transform="
-                    translate(9.000000, 6.000000)
-                    rotate(-180.000000)
-                    translate(-9.000000, -6.000000)"
-                  points="16 2 9 10 2 2.21177316">
-                </polyline>
-              </g>
-          </g>
-        </svg>
-        <span
-          class="session__title"
-          v-if="sessionTitle.length > 0">
-            {{sessionTitle}}
-        </span>
-        <span class="session__number" v-if="isToggleOpen">{{sessionNumber}}.</span>
-      </a>
-    </transition>
-    <transition name="animation--fade-height--2x">
-    <ol class="session__messages" v-if="isToggleOpen">
-      <Message
-        v-for="(groupedMessages, index) in messagesFormatted"
-        :key="index"
-        v-bind:index="index"
-        v-bind:messages="groupedMessages.messages"
-        v-bind:sender="people[groupedMessages.sender]" />
-    </ol>
+    <a
+      class="session__toggle"
+      v-on:click="toggle"
+      v-on:keyup.enter="toggle()"
+      :title="sessionAltText">
+      <svg class="session__toggle__icon"
+        width="16px" height="10px"
+        viewBox="0 0 18 12" version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <g
+          stroke="none"
+          stroke-width="1"
+          fill="none"
+          fill-rule="evenodd"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+            <g class="icon-chevron" stroke="#222222" stroke-width="3">
+              <polyline
+                transform="
+                  translate(9.000000, 6.000000)
+                  rotate(-180.000000)
+                  translate(-9.000000, -6.000000)"
+                points="16 2 9 10 2 2.21177316">
+              </polyline>
+            </g>
+        </g>
+      </svg>
+      <span
+        class="session__title"
+        v-if="sessionTitle.length > 0">
+          {{sessionTitle}}
+      </span>
+      <span class="session__number" v-if="isToggleOpen">{{sessionNumber}}.</span>
+    </a>
+    <transition name="animation--fade-height">
+      <ol class="session__messages" v-if="isToggleOpen">
+        <Message
+          v-for="(groupedMessages, index) in messagesFormatted"
+          :key="index"
+          v-bind:index="index"
+          v-bind:messages="groupedMessages.messages"
+          v-bind:sender="people[groupedMessages.sender]" />
+      </ol>
     </transition>
   </li>
   <li class="session session--disabled" v-else>

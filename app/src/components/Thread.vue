@@ -6,10 +6,7 @@
   v-show="isLoaded"
   v-height:params="{isLoaded, windowHeight}"
   v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}">
-  <transition-group
-    name="xx--animation-fade"
-    tag="ol"
-    class="thread__sessions container-wrapper">
+  <ol class="thread__sessions container-wrapper">
     <Session
       v-for="(session, index) in threadSessions"
       :key="index"
@@ -19,7 +16,7 @@
       v-bind:people="people"
       v-bind:selected="index === selectedSessionZeroIdx"
       v-on:session-toggle="onSessionToggle" />
-  </transition-group>
+    </ol>
 </section>
 </template>
 
