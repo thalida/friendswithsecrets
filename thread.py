@@ -30,8 +30,7 @@ class Thread():
         else:
             session = None;
 
-        # return session;
-        return self._tmp_format_session(session);
+        return session;
 
     def get_sessions(self):
         self.used_cached_session = False;
@@ -53,18 +52,3 @@ class Thread():
 
         sessions = [self.get_session(i) for i in range(num_visible_sessions)] + ([None] * num_hidden_sessions)
         return (sessions, self.used_cached_session)
-
-    def _tmp_format_session(self, session):
-        try:
-            messages = [{'sender': self._tmp_get_sender(m['sender']), 'message_text': m['message_text']} for m in session['messages']]
-            return {'title': session['title'], 'messages': messages} 
-        except (TypeError):
-            return None
-
-    def _tmp_get_sender(self, orig_sender):
-        if orig_sender in list(people.PARTICIPANTS.keys()):
-            sender = self.person
-        else:
-            sender = people.PARTICIPANT_TO_THERAPIST[self.person]['name']
-
-        return sender
