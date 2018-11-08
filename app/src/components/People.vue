@@ -27,7 +27,7 @@ export default {
   name: 'People',
   computed: {
     queryParams() {
-      return this.$route.query;
+      return this.$store.state.queryParams;
     },
     people() {
       return this.$store.state.people;
