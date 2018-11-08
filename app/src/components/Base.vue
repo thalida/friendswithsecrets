@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    :class="[participantThemeClass]"
+    :class="[participantThemeClass, {'nightmode': nightMode}]"
     v-if="isLoaded">
     <Header />
     <router-view />
@@ -32,6 +32,7 @@ export default {
     next();
   },
   created() {
+    this.$store.dispatch('setNightMode', this.$route.query);
     this.$store.dispatch('getAllPeople', this.$route.params);
   },
   mounted() {
@@ -40,6 +41,7 @@ export default {
   },
   watch: {
     $route(to) {
+      this.$store.dispatch('setNightMode', to.query);
       this.$store.dispatch('setSelected', to.params);
     },
   },
@@ -49,6 +51,9 @@ export default {
     },
     people() {
       return this.$store.state.people;
+    },
+    nightMode() {
+      return this.$store.state.nightMode;
     },
     participantOrder() {
       return this.$store.state.participantOrder;
@@ -77,6 +82,7 @@ export default {
           participant,
           session,
         },
+        query: this.$route.query,
       });
     },
     onSessionSelect(data) {
@@ -118,14 +124,20 @@ body {
   padding: 0;
   font: normal normal 16px/1.2 'proxima-nova', sans-serif;
   color: $text-color;
-  background: $body-bg-color;
   height: 100%;
+  overflow: hidden;
 }
 
 html,
 body,
 #app {
   height: 100%;
+}
+
+#app {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  background: $body-bg-color;
 }
 
 a {
@@ -151,6 +163,44 @@ li {
 
 .text--uppercase {
   text-transform: uppercase;
+}
+
+@each $person in $people {
+  .theme--#{$person} {
+    .message--#{$person}.message--participant .message__text {
+      @extend %bg-color--#{$person};
+      color: $text-color-light;
+    }
+    .person--#{$person} .person_link {
+       @extend %color--#{$person};
+    }
+    .session--expanded {
+      .session__toggle {
+        @extend %bg-color--#{$person};
+      }
+    }
+  }
+}
+
+#app.nightmode {
+  background: $night-body-bg-color;
+
+  @each $person in $people {
+    &.theme--#{$person} {
+      .message--#{$person}.message--participant .message__text {
+        background-color: $night-name-color;
+        color: $text-color-light;
+      }
+      .person--#{$person} .person_link {
+        color: $night-name-color;
+      }
+      .session--expanded {
+        .session__toggle {
+          background-color: $night-name-color;
+        }
+      }
+    }
+  }
 }
 
 .animation-fade-enter-active,
@@ -204,26 +254,5 @@ $fade-height-2x-speed: $fade-height-1x-speed / 2;
 .animation--fade-height--2x-leave-to {
   max-height: 0;
   opacity: 0;
-}
-
-
-@each $person in $people {
-  .theme--#{$person} {
-    .message--#{$person}.message--participant .message__text {
-      @extend %bg-color--#{$person};
-      color: $text-color-light;
-    }
-    .person--#{$person} .person_link {
-       @extend %color--#{$person};
-    }
-    .session--expanded {
-      .session__header {
-        @extend %bg-color--faded--#{$person};
-      }
-      .session__toggle {
-       @extend %bg-color--#{$person};
-      }
-    }
-  }
 }
 </style>

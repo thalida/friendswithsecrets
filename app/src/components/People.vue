@@ -12,7 +12,8 @@
             params: {
               participant: participant,
               session: selectedSession,
-            }
+            },
+            query: queryParams
           }"
         >
           {{people[participant].full_name}}
@@ -25,6 +26,9 @@
 export default {
   name: 'People',
   computed: {
+    queryParams() {
+      return this.$route.query;
+    },
     people() {
       return this.$store.state.people;
     },
@@ -82,6 +86,12 @@ export default {
     &:last-child {
       text-align: right;
     }
+  }
+}
+
+.nightmode {
+  .person, .person a {
+    color: $night-name-color-disabled;
   }
 }
 

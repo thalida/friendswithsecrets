@@ -63,4 +63,13 @@ export default {
     }
   }
 }
+
+.nightmode {
+  .message__sender {
+    color: $night-color-light;
+  }
+  .message__text {
+    background-color: $night-color-light;
+  }
+}
 </style>

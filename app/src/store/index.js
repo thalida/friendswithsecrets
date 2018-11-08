@@ -18,6 +18,8 @@ export default new Vuex.Store({
     selectedParticipant: null,
     selectedSession: null,
     selectedThread: null,
+    nightModeKey: 'nightmode',
+    nightMode: false,
   },
   mutations: {
     setIsLoading(state, { key, status }) {
@@ -51,6 +53,9 @@ export default new Vuex.Store({
       } else {
         state.selectedSession = state.defaultSession;
       }
+    },
+    setNightMode(state, value) {
+      state.nightMode = value;
     },
   },
   actions: {
@@ -100,6 +105,21 @@ export default new Vuex.Store({
       commit('setSelectedParticipant', participant);
       commit('setSelectedSession', sessionVal);
       commit('setSelectedThread', state.selectedParticipant);
+    },
+    setNightMode({ commit, state }, query) {
+      const keyExists = typeof query[state.nightModeKey] !== 'undefined';
+
+      if (!keyExists) {
+        state.nightMode = false;
+        return;
+      }
+
+      const value = query[state.nightModeKey];
+      const isEnabled = value === null || value === 'true';
+      commit('setNightMode', isEnabled);
+    },
+    toggleNightMode({ commit, state }) {
+      commit('setNightMode', !state.nightMode);
     },
   },
 });
