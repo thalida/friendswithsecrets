@@ -219,7 +219,7 @@ export default {
     .session__toggle {
       justify-content: left;
       &__icon {
-        transform: rotate(0deg);
+        transform: rotate(90deg);
       }
       &__contents {
         background-color: rgba($color-gray, 0);
@@ -240,7 +240,7 @@ export default {
         stroke: $text-color-light;
       }
       &__icon {
-        transform: rotate(90deg);
+        transform: rotate(180deg);
       }
     }
   }
