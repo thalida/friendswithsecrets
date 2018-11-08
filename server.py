@@ -61,10 +61,6 @@ def get_thread(person):
     try:
         thread = get_thread_class(person)
         (sessions, used_cached) = thread.get_sessions()
-        # session_headers = thread.get_session_headers(person)
-
-        if person == 'akilah':
-            sessions = [{'title': session['title'], 'messages': shuff(session['messages'])} if session is not None else None for (i, session) in enumerate(sessions)]
 
         res = {
             'sessions': sessions,
