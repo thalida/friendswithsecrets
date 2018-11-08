@@ -89,6 +89,18 @@ export default {
   }
 }
 
+@media screen and (max-width: 800px), screen and (max-height: 400px) {
+  .people {
+    width: calc(85% - 5% - 70px);
+    margin: 0 auto 0 5%;
+    justify-content: left;
+  }
+
+  .person {
+    margin: 16px 5px;
+  }
+}
+
 .nightmode {
   .person, .person a {
     color: $night-name-color-disabled;

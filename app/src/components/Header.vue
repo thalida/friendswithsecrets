@@ -119,6 +119,7 @@ export default {
   .logo {
     display: block;
     margin-bottom: 20px;
+    max-width: 100%;
   }
 
   &__btn-container {
@@ -130,6 +131,8 @@ export default {
   &__btn {
     cursor: pointer;
     margin: 0 5px;
+    height: 30px;
+    width: 30px;
   }
 
   &__about {
@@ -172,15 +175,6 @@ export default {
   @media screen and (max-width: 800px), screen and (max-height: 400px) {
     align-items: center;
     flex-flow: row-reverse wrap;
-
-    .people {
-      margin-left: 5%;
-      width: calc(85% - 30px);
-    }
-
-    &__btn {
-      margin-right: 5%;
-    }
 
     &__about {
       min-width: 90%;
