@@ -6,11 +6,12 @@
         v-on:click="toggle()"
         v-on:keyup.enter="toggle()"
         :title="(headerIsOpen ? 'Close' : 'Open') + ' about section'">
-          <span v-if="!headerIsOpen">?</span>
-          <span v-else>X</span>
+          <span v-if="!headerIsOpen"><img src="/static/images/question.svg" /></span>
+          <span v-else><img src="/static/images/x.svg" /></span>
       </a>
       <transition name="animation-fade-height">
           <div class="header__about container-wrapper" v-if="headerIsOpen">
+              <img class="logo" src="/static/images/fws.svg" />
               <p class="header__about__text">
                 Three friends from different backgrounds participated in 10
                 individual online text therapy sessions from January to April 2018.
@@ -79,6 +80,11 @@ export default {
   flex-direction: column;
   width: 100%;
 
+  .logo {
+    display: block;
+    margin-bottom: 20px;
+  }
+
   &__btn {
       display: block;
       // float: right;
@@ -143,7 +149,6 @@ export default {
     }
 
     &__about {
-      order: 1;
       min-width: 90%;
       &__text,
       &__credits {
