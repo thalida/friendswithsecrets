@@ -7,7 +7,7 @@
   v-height:params="{isLoaded, windowHeight}"
   v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}">
   <transition-group
-    name="animation-fade"
+    name="xx--animation-fade"
     tag="ol"
     class="thread__sessions container-wrapper">
     <Session

@@ -49,6 +49,9 @@ export default {
     isLoaded() {
       return this.$store.state.isLoading.people === false;
     },
+    queryParams() {
+      return this.$store.state.queryParams;
+    },
     people() {
       return this.$store.state.people;
     },
@@ -82,7 +85,7 @@ export default {
           participant,
           session,
         },
-        query: this.$route.query,
+        query: this.queryParams,
       });
     },
     onSessionSelect(data) {

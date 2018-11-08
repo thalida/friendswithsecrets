@@ -20,6 +20,7 @@ export default new Vuex.Store({
     selectedThread: null,
     nightModeKey: 'nightmode',
     nightMode: false,
+    queryParams: {},
   },
   mutations: {
     setIsLoading(state, { key, status }) {
@@ -56,6 +57,15 @@ export default new Vuex.Store({
     },
     setNightMode(state, value) {
       state.nightMode = value;
+    },
+    setQueryParams(state) {
+      const params = {};
+
+      if (state.nightMode) {
+        params[state.nightModeKey] = null;
+      }
+
+      state.queryParams = params;
     },
   },
   actions: {
@@ -117,9 +127,11 @@ export default new Vuex.Store({
       const value = query[state.nightModeKey];
       const isEnabled = value === null || value === 'true';
       commit('setNightMode', isEnabled);
+      commit('setQueryParams');
     },
     toggleNightMode({ commit, state }) {
       commit('setNightMode', !state.nightMode);
+      commit('setQueryParams');
     },
   },
 });

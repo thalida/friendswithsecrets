@@ -76,6 +76,15 @@ export default {
     },
   },
   computed: {
+    queryParams() {
+      return this.$store.state.queryParams;
+    },
+    selectedParticipant() {
+      return this.$store.state.selectedParticipant;
+    },
+    selectedSession() {
+      return this.$store.state.selectedSession;
+    },
     nightModeEnabled() {
       return this.$store.state.nightMode;
     },
@@ -86,6 +95,14 @@ export default {
     },
     toggleNightMode() {
       this.$store.dispatch('toggleNightMode');
+      this.$router.push({
+        name: 'Thread',
+        params: {
+          participant: this.selectedParticipant,
+          session: this.selectedSession,
+        },
+        query: this.queryParams,
+      });
     },
   },
 };
@@ -178,7 +195,7 @@ export default {
   }
 }
 
-.nightmode { 
+.nightmode {
   .header__about,
   .header__about a {
     color: $night-color-light;
