@@ -1,14 +1,25 @@
 <template>
   <header class="header">
-      <a
-        tabindex="0"
-        class="header__btn"
-        v-on:click="toggle()"
-        v-on:keyup.enter="toggle()"
-        :title="(headerIsOpen ? 'Close' : 'Open') + ' about section'">
-          <span v-if="!headerIsOpen"><img src="/static/images/question.svg" /></span>
-          <span v-else><img src="/static/images/x.svg" /></span>
-      </a>
+      <div class="header__btn-container">
+        <a
+          tabindex="0"
+          class="header__btn"
+          v-on:click="toggleNightMode()"
+          v-on:keyup.enter="toggleNightMode()"
+          :title="'Turn ' + (nightModeEnabled ? 'off' : 'on') + ' night mode'">
+            <img v-if="nightModeEnabled" src="/static/images/day.svg" />
+            <img v-else src="/static/images/night.svg" />
+        </a>
+        <a
+          tabindex="0"
+          class="header__btn"
+          v-on:click="toggle()"
+          v-on:keyup.enter="toggle()"
+          :title="(headerIsOpen ? 'Close' : 'Open') + ' about section'">
+            <img v-if="!headerIsOpen" src="/static/images/question.svg" />
+            <img v-else src="/static/images/x.svg" />
+        </a>
+      </div>
       <transition name="animation-fade-height">
           <div class="header__about container-wrapper" v-if="headerIsOpen">
               <img class="logo" src="/static/images/fws.svg" />
@@ -64,9 +75,17 @@ export default {
       this.headerIsOpen = false;
     },
   },
+  computed: {
+    nightModeEnabled() {
+      return this.$store.state.nightMode;
+    },
+  },
   methods: {
     toggle() {
       this.headerIsOpen = !this.headerIsOpen;
+    },
+    toggleNightMode() {
+      this.$store.dispatch('toggleNightMode');
     },
   },
 };
@@ -85,17 +104,15 @@ export default {
     margin-bottom: 20px;
   }
 
+  &__btn-container {
+    display: flex;
+    align-content: center;
+    margin: 15px;
+  }
+
   &__btn {
-      display: block;
-      // float: right;
-      width: 30px;
-      height: 30px;
-      margin: 15px;
-      padding: 5px 0;
-      cursor: pointer;
-      border-radius: 50%;
-      background: #FFFFFF;
-      text-align: center;
+    cursor: pointer;
+    margin: 0 5px;
   }
 
   &__about {
@@ -158,6 +175,13 @@ export default {
           margin: 0 0 20px 0;
       }
     }
+  }
+}
+
+.nightmode { 
+  .header__about,
+  .header__about a {
+    color: $night-color-light;
   }
 }
 </style>
