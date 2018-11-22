@@ -7,8 +7,8 @@
           v-on:click="toggleNightMode()"
           v-on:keyup.enter="toggleNightMode()"
           :title="'Turn ' + (nightModeEnabled ? 'off' : 'on') + ' night mode'">
-            <img v-if="nightModeEnabled" src="/static/images/day.svg" />
-            <img v-else src="/static/images/night.svg" />
+            <img v-if="nightModeEnabled" src="/static/images/day-icon.svg" />
+            <img v-else src="/static/images/night-icon.svg" />
         </a>
         <a
           tabindex="0"
