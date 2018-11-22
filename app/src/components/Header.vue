@@ -24,11 +24,10 @@
           <div class="header__about container-wrapper" v-if="headerIsOpen">
               <img class="logo" src="/static/images/fws.svg" />
               <p class="header__about__text">
-                Three friends from different backgrounds participated in 10
-                individual online text therapy sessions from January to April 2018.
-                Friends With Secrets captures a slice of their lives
-                — the good and the bad — including identity, feelings,
-                and how they try to process the world around them.
+                Three friends with different backgrounds participated in online
+                text therapy sessions from January to May 2018.
+                Friends With Secrets captures a slice of their lives —
+                the good and the bad — and how they try to process the world around them.
                 The identities of the therapists have been protected.
               </p>
               <div class="header__about__credits">
