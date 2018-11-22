@@ -129,10 +129,14 @@ export default {
   }
 
   &__btn {
+    display: flex;
+    justify-content: center;
     cursor: pointer;
     margin: 0 5px;
     height: 30px;
     width: 30px;
+    background: white;
+    border-radius: 50%;
   }
 
   &__about {

@@ -140,7 +140,7 @@ body,
 #app {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  background: $body-bg-color;
+  background: linear-gradient($body-bg-color-light, $body-bg-color-dark);
 }
 
 a {
@@ -186,20 +186,20 @@ li {
 }
 
 #app.nightmode {
-  background: $night-body-bg-color;
+  background: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
 
   @each $person in $people {
     &.theme--#{$person} {
       .message--#{$person}.message--participant .message__text {
-        background-color: $night-name-color;
+        background-color: $night-color-dark;
         color: $text-color-light;
       }
       .person--#{$person} .person_link {
-        color: $night-name-color;
+        color: $night-color-light;
       }
       .session--expanded {
         .session__toggle {
-          background-color: $night-name-color;
+          background-color: $night-color-dark;
         }
       }
     }
