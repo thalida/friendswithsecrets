@@ -46,7 +46,8 @@ export default new Vuex.Store({
       if (typeof state.people[participant] !== 'undefined') {
         state.selectedParticipant = participant;
       } else {
-        state.selectedParticipant = state.participantOrder[Math.floor(Math.random() * state.participantOrder.length)];
+        const randomIndex = Math.floor(Math.random() * state.participantOrder.length);
+        state.selectedParticipant = state.participantOrder[randomIndex];
       }
     },
     setSelectedSession(state, session) {
