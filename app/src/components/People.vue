@@ -103,7 +103,7 @@ export default {
 
 .nightmode {
   .person, .person a {
-    color: $night-name-color-disabled;
+    color: $night-color-medium;
   }
 }
 
