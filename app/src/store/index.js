@@ -26,6 +26,7 @@ export default new Vuex.Store({
     setIsLoading(state, { key, status }) {
       Vue.set(state.isLoading, key, status);
     },
+    // not being used TODO: Remove
     setDefaultParticipant(state, participant) {
       state.defaultParticipant = participant;
     },
@@ -45,7 +46,7 @@ export default new Vuex.Store({
       if (typeof state.people[participant] !== 'undefined') {
         state.selectedParticipant = participant;
       } else {
-        state.selectedParticipant = state.defaultParticipant;
+        state.selectedParticipant = state.participantOrder[Math.floor(Math.random() * state.participantOrder.length)];
       }
     },
     setSelectedSession(state, session) {
