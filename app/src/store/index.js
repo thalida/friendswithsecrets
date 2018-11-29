@@ -9,7 +9,12 @@ export default new Vuex.Store({
   strict: debug,
   state: {
     apiHost: (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000' : '',
+    localStorageKeys: {
+      LAST_VISITED: 'last-visited',
+      NUM_VISITS: 'num-visits',
+    },
     isLoading: {},
+    isFirstVisit: null,
     people: {},
     threads: {},
     participantOrder: [],
@@ -23,6 +28,9 @@ export default new Vuex.Store({
     queryParams: {},
   },
   mutations: {
+    setIsFirstVisit(state, status) {
+      state.isFirstVisit = status;
+    },
     setIsLoading(state, { key, status }) {
       Vue.set(state.isLoading, key, status);
     },
@@ -82,6 +90,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    newSiteVisit({ commit, state }) {
+      let numVisits = 0;
+      if (localStorage.getItem(state.localStorageKeys.NUM_VISITS)) {
+        numVisits = localStorage.getItem(state.localStorageKeys.NUM_VISITS);
+        numVisits = isNaN(numVisits) ? 0 : Math.abs(parseInt(numVisits, 10));
+      }
+      commit('setIsFirstVisit', numVisits === 0);
+      localStorage.setItem(state.localStorageKeys.LAST_VISITED, new Date());
+      localStorage.setItem(state.localStorageKeys.NUM_VISITS, numVisits + 1);
+    },
     getAllPeople({ commit, state, dispatch }, routeParams) {
       if (state.isLoading.people) {
         return;

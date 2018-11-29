@@ -4,7 +4,6 @@
   v-bind:class="{ 'thread--animated': swipe.isAnimating }"
   v-bind:style="{ transform: swipeTransformStyles }"
   v-show="isLoaded"
-  v-height:params="{isLoaded, windowHeight}"
   v-scroll-to:params="{isLoaded, selectedSession: selectedSessionZeroIdx}">
   <ol class="thread__sessions container-wrapper">
     <Session
@@ -29,10 +28,8 @@ export default {
     Session,
   },
   data() {
-    const vp = this.getViewportSize();
     return {
       swipeTransformStyles: null,
-      windowHeight: vp.height,
       swipe: {
         LEFT: 0,
         RIGHT: 1,
@@ -78,10 +75,8 @@ export default {
         self.onSwipeEnd();
       },
     });
-    window.addEventListener('resize', this.onResize);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
     interact(this.$el).unset();
   },
   computed: {
@@ -114,17 +109,6 @@ export default {
     },
   },
   directives: {
-    height: {
-      update(elem, args) {
-        if (!args.value.isLoaded) {
-          return;
-        }
-
-        const $el = elem;
-        const params = args.value;
-        $el.style.height = `${params.windowHeight - $el.getBoundingClientRect().y}px`;
-      },
-    },
     scrollTo: {
       componentUpdated(elem, args) {
         if (!args.value.isLoaded) {
@@ -142,34 +126,11 @@ export default {
         const styles = window.getComputedStyle($sessionToggle);
         const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
         const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
-        // const toggleHeight = 65;
-        $el.scrollTop = toggleHeight * params.selectedSession;
+        window.scrollTo(0, toggleHeight * params.selectedSession);
       },
     },
   },
   methods: {
-    getOuterHeight($el) {
-      const styles = window.getComputedStyle($el);
-      const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-      return Math.ceil($el.offsetHeight + margin);
-    },
-    getViewportSize() {
-      let $el = window;
-      let prefix = 'inner';
-
-      if (!('innerWidth' in window)) {
-        $el = document.documentElement || document.body;
-        prefix = 'client';
-      }
-
-      const width = $el[`${prefix}Width`];
-      const height = $el[`${prefix}Height`];
-      return { width, height };
-    },
-    setWindowHeight() {
-      const viewport = this.getViewportSize();
-      this.windowHeight = viewport.height;
-    },
     onSessionToggle(e) {
       if (this.swipe.isAnimating) {
         return;
@@ -178,9 +139,6 @@ export default {
         participant: this.selectedParticipant,
         session: (e.state === true) ? e.index : null,
       });
-    },
-    onResize() {
-      this.setWindowHeight();
     },
     onSwipeEnd() {
       if (this.swipe.direction === null) {
@@ -225,7 +183,7 @@ export default {
   }
 
   &__sessions {
-    padding: 0 0 10% 0;
+    padding: 0 0 60px 0;
   }
 
   &--animated {

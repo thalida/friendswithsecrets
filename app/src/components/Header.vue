@@ -1,5 +1,6 @@
 <template>
-  <header class="header">
+  <header id="header" class="header" data-sticky>
+      <div class="header__gradient"></div>
       <div class="header__btn-container">
         <a
           tabindex="0"
@@ -21,7 +22,7 @@
         </a>
       </div>
       <transition name="animation-fade-height">
-          <div class="header__about container-wrapper" v-if="headerIsOpen">
+          <div class="header__about container-wrapper" v-show="headerIsOpen">
               <img class="logo" src="/static/images/fws-logo.gif?v=1" />
               <p class="header__about__text">
                 Three friends with different backgrounds participated in online
@@ -66,7 +67,7 @@ export default {
   },
   data() {
     return {
-      headerIsOpen: false,
+      headerIsOpen: this.$store.state.isFirstVisit,
     };
   },
   watch: {
@@ -114,11 +115,25 @@ export default {
   align-items: flex-end;
   flex-direction: column;
   width: 100%;
+  overflow: hidden;
 
   .logo {
     display: block;
     margin-bottom: 20px;
     width: 50%;
+  }
+
+  &__gradient {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-image: linear-gradient($body-bg-color-light, $body-bg-color-dark);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
 
   &__btn-container {
@@ -175,6 +190,10 @@ export default {
       }
   }
 
+  &.is-sticky {
+    .header__gradient { display: block; }
+  }
+
   @media screen and (max-width: 800px), screen and (max-height: 400px) {
     align-items: center;
     flex-flow: row-reverse wrap;
@@ -197,6 +216,10 @@ export default {
 }
 
 .nightmode {
+  .header__gradient {
+    background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
+  }
+
   .header__about,
   .header__about a {
     color: $night-color-light;

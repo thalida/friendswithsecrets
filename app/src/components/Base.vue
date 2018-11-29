@@ -1,9 +1,10 @@
 <template>
   <div
     id="app"
-    :class="[participantThemeClass, {'nightmode': nightMode}]"
+    :class="[participantThemeClass]"
     v-if="isLoaded">
     <Header />
+    <div id="sticky-spacer"></div>
     <router-view />
   </div>
 </template>
@@ -19,7 +20,10 @@ export default {
     People,
   },
   data() {
-    return {};
+    return {
+      $header: null,
+      $stickySpacer: null,
+    };
   },
   beforeRouteEnter(to, from, next) {
     const isValidPerson = ['akilah', 'timothy', 'robyn'].includes(to.params.participant);
@@ -34,15 +38,24 @@ export default {
   created() {
     this.$store.dispatch('setNightMode', this.$route.query);
     this.$store.dispatch('getAllPeople', this.$route.params);
+    window.addEventListener('scroll', this.onScroll);
   },
   mounted() {
     this.$root.$on('session-select', this.onSessionSelect);
     this.$root.$on('navigate', this.navigateToThread);
+    this.$store.dispatch('newSiteVisit');
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.onScroll);
   },
   watch: {
     $route(to) {
       this.$store.dispatch('setNightMode', to.query);
       this.$store.dispatch('setSelected', to.params);
+    },
+    nightMode(isEnabled) {
+      const action = (isEnabled) ? 'add' : 'remove';
+      document.body.classList[action]('nightmode');
     },
   },
   computed: {
@@ -88,6 +101,26 @@ export default {
         query: this.queryParams,
       });
     },
+    onScroll() {
+      if (typeof this.$header === 'undefined' || this.$header === null) {
+        this.$header = document.getElementById('header');
+      }
+
+      if (typeof this.$stickySpacer === 'undefined' || this.$stickySpacer === null) {
+        this.$stickySpacer = document.getElementById('sticky-spacer');
+      }
+
+      const headerBoundingClientRect = this.$header.getBoundingClientRect();
+      const headerOffset = this.$header.offsetTop;
+      const action = (window.pageYOffset > headerOffset) ? 'add' : 'remove';
+
+      this.$header.classList[action]('is-sticky');
+      if (action === 'add') {
+        this.$stickySpacer.style.height = `${headerBoundingClientRect.height}px`;
+      } else {
+        this.$stickySpacer.style.height = '0px';
+      }
+    },
     onSessionSelect(data) {
       const participant = data.participant;
       const session = !isNaN(parseInt(data.session, 10)) ? data.session + 1 : null;
@@ -115,6 +148,7 @@ export default {
 @import '../assets/styles/toolkit';
 
 html {
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -125,22 +159,14 @@ html {
 body {
   margin: 0;
   padding: 0;
+  min-height: 100%;
   font: normal normal 16px/1.2 'proxima-nova', sans-serif;
   color: $text-color;
-  height: 100%;
-  overflow: hidden;
-}
-
-html,
-body,
-#app {
-  height: 100%;
-}
-
-#app {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  background: linear-gradient($body-bg-color-light, $body-bg-color-dark);
+  background-image: linear-gradient($body-bg-color-light, $body-bg-color-dark);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 a {
@@ -164,6 +190,18 @@ li {
   max-width: 800px;
 }
 
+.is-sticky {
+  position: fixed;
+  z-index: 1;
+}
+
+.sticky-spacer {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 0px;
+}
+
 .text--uppercase {
   text-transform: uppercase;
 }
@@ -185,8 +223,8 @@ li {
   }
 }
 
-#app.nightmode {
-  background: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
+body.nightmode {
+  background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
 
   @each $person in $people {
     &.theme--#{$person} {
