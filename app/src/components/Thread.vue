@@ -12,7 +12,6 @@
       :key="index"
       v-bind:index="index"
       v-bind:session="session"
-      v-bind:session-number="getSessionNumber(index)"
       v-bind:people="people"
       v-bind:selected="index === selectedSessionZeroIdx"
       v-on:session-toggle="onSessionToggle" />
@@ -170,10 +169,6 @@ export default {
     setWindowHeight() {
       const viewport = this.getViewportSize();
       this.windowHeight = viewport.height;
-    },
-    getSessionNumber(index) {
-      const pad = (index + 1 < 10) ? '0' : '';
-      return `${pad}${index + 1}`;
     },
     onSessionToggle(e) {
       if (this.swipe.isAnimating) {

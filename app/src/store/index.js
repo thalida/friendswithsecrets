@@ -31,6 +31,17 @@ export default new Vuex.Store({
       state.defaultParticipant = participant;
     },
     setPeople(state, { people }) {
+      Object.keys(people).map((key) => {
+        const person = people[key];
+        if (!person.is_therapist) {
+          person.img_urls = {
+            still: `/static/images/people/${person.name}.png`,
+            moving: `/static/images/people/${person.name}.gif`,
+          };
+        }
+        return person;
+      });
+
       state.people = people;
     },
     setParticipantOrder(state, { participantOrder }) {

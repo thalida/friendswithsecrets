@@ -17,7 +17,7 @@ class Thread():
         self.person = person
         self.file = spreadsheet.get_file(self.gc, self.person)
         self.used_cached_session = False;
-        self.total_sessions = 10;
+        self.total_sessions = 5;
         self.sessions = {};
 
     def get_session(self, session_index=0):

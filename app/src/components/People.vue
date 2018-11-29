@@ -16,7 +16,14 @@
             query: queryParams
           }"
         >
-          {{people[participant].full_name}}
+          <img
+            class="name-image name-image--still"
+            :src="people[participant].img_urls.still"
+            :alt="people[participant].full_name" />
+          <img
+            class="name-image name-image--moving"
+            :src="people[participant].img_urls.moving"
+            :alt="people[participant].full_name" />
         </router-link>
       </span>
   </div>
@@ -61,15 +68,34 @@ export default {
 
   &_link {
     display: block;
+    position: relative;
     text-decoration: none;
     transition: color 400ms ease;
   }
 
+  .name-image {
+    display: block;
+    position: relative;
+    width: 100%;
+
+    &--still {
+      display: block;
+    }
+
+    &--moving {
+      display: none;
+    }
+  }
+
   @media not all and (hover: none) {
     &:hover {
-      animation-duration: 500ms;
-      animation-name: bounce;
-      animation-fill-mode: backwards;
+      .name-image--still {
+        display: none;
+      }
+
+      .name-image--moving {
+        display: block;
+      }
     }
   }
 

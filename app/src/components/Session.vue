@@ -33,7 +33,7 @@
         v-if="sessionTitle.length > 0">
           {{sessionTitle}}
       </span>
-      <span class="session__number" v-if="isToggleOpen">{{sessionNumber}}.</span>
+      <span class="session__number" v-if="isToggleOpen">{{leftPadSessionNumber}}.</span>
     </a>
     <transition name="animation--fade-height">
       <ol class="session__messages" v-if="isToggleOpen">
@@ -47,8 +47,13 @@
     </transition>
   </li>
   <li class="session session--disabled" v-else>
-    <span class="session__toggle">Session {{sessionNumber}}.</span>
-    <!-- <span class="session__toggle">{{sessionTitle}} {{sessionNumber}}.</span> -->
+    <span class="session__toggle">
+      <span class="session__title" v-if="sessionTitle.length > 0">
+          {{sessionTitle}}
+      </span>
+      <span class="session__title" v-else></span>
+      <span class="session__number">Day {{sessionNumber}}.</span>
+    </span>
   </li>
 </template>
 
@@ -63,7 +68,6 @@ export default {
   props: {
     index: Number,
     session: Object,
-    sessionNumber: String,
     people: Object,
     selected: Boolean,
   },
@@ -79,6 +83,13 @@ export default {
     },
   },
   computed: {
+    sessionNumber() {
+      return this.index + 1;
+    },
+    leftPadSessionNumber() {
+      const pad = (this.sessionNumber < 10) ? '0' : '';
+      return `${pad}${this.sessionNumber}`;
+    },
     sessionTitle() {
       return (this.session) ? this.session.title : '';
     },
@@ -88,7 +99,7 @@ export default {
     },
     sessionAltText() {
       const openStateText = (this.isToggleOpen ? 'Close' : 'Open');
-      return `${openStateText} Session #${this.sessionNumber} ${this.sessionTitle}`;
+      return `${openStateText} day ${this.sessionNumber}`;
     },
     hasMessages() {
       return typeof this.session !== 'undefined'
@@ -245,10 +256,13 @@ export default {
 
   &--disabled {
     cursor: default;
+    .session__number {
+      text-transform: none;
+    }
     .session__toggle {
-      .session__toggle__contents {
-        background-color: rgba($color-gray, 0.5);
-      }
+      justify-content: space-between;
+      opacity: 0.5;
+
       &:hover,
       &:focus {
         cursor: default;

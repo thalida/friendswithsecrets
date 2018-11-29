@@ -22,7 +22,7 @@
       </div>
       <transition name="animation-fade-height">
           <div class="header__about container-wrapper" v-if="headerIsOpen">
-              <img class="logo" src="/static/images/fws.svg" />
+              <img class="logo" src="/static/images/fws-logo.gif?v=1" />
               <p class="header__about__text">
                 Three friends with different backgrounds participated in online
                 text therapy sessions from January to May 2018.
@@ -118,7 +118,7 @@ export default {
   .logo {
     display: block;
     margin-bottom: 20px;
-    max-width: 100%;
+    width: 50%;
   }
 
   &__btn-container {
@@ -178,6 +178,10 @@ export default {
   @media screen and (max-width: 800px), screen and (max-height: 400px) {
     align-items: center;
     flex-flow: row-reverse wrap;
+
+    .logo {
+      width: 100%;
+    }
 
     &__about {
       min-width: 90%;
