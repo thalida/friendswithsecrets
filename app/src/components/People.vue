@@ -117,13 +117,23 @@ export default {
 
 @media screen and (max-width: 800px), screen and (max-height: 400px) {
   .people {
-    width: calc(85% - 5% - 70px);
+    width: calc(95% - 110px);
     margin: 0 auto 0 5%;
     justify-content: left;
   }
 
   .person {
     margin: 16px 5px;
+  }
+
+  .person .name-image {
+    width: 120%;
+  }
+}
+
+@media screen and (max-width: 330px), screen and (max-height: 400px) {
+  .person .name-image {
+    width: 130%;
   }
 }
 

@@ -3,6 +3,7 @@
     id="app"
     :class="[participantThemeClass]"
     v-if="isLoaded">
+    <div id="body-gradient" class="body-gradient"></div>
     <Header />
     <div id="sticky-spacer"></div>
     <router-view />
@@ -22,6 +23,7 @@ export default {
   data() {
     return {
       $header: null,
+      $headerGradient: null,
       $stickySpacer: null,
     };
   },
@@ -39,6 +41,7 @@ export default {
     this.$store.dispatch('setNightMode', this.$route.query);
     this.$store.dispatch('getAllPeople', this.$route.params);
     window.addEventListener('scroll', this.onScroll);
+    window.addEventListener('resize', this.onResize);
   },
   mounted() {
     this.$root.$on('session-select', this.onSessionSelect);
@@ -47,6 +50,7 @@ export default {
   },
   destroyed() {
     window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
   },
   watch: {
     $route(to) {
@@ -112,14 +116,29 @@ export default {
 
       const headerBoundingClientRect = this.$header.getBoundingClientRect();
       const headerOffset = this.$header.offsetTop;
-      const action = (window.pageYOffset > headerOffset) ? 'add' : 'remove';
+      const action = (
+        !this.$header.classList.contains('is-open')
+        && window.pageYOffset > headerOffset
+      ) ? 'add' : 'remove';
 
       this.$header.classList[action]('is-sticky');
       if (action === 'add') {
+        this.onResize();
         this.$stickySpacer.style.height = `${headerBoundingClientRect.height}px`;
       } else {
         this.$stickySpacer.style.height = '0px';
       }
+    },
+    onResize() {
+      if (typeof this.$headerGradient === 'undefined' || this.$headerGradient === null) {
+        this.$headerGradient = document.getElementById('header__gradient');
+      }
+
+      const windowHeight = window.innerHeight
+        || document.documentElement.clientHeight
+        || document.body.clientHeight;
+      document.body.style.height = `${windowHeight}px`;
+      this.$headerGradient.style.height = `${windowHeight}px`;
     },
     onSessionSelect(data) {
       const participant = data.participant;
@@ -159,14 +178,32 @@ html {
 body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
-  font: normal normal 16px/1.2 'proxima-nova', sans-serif;
-  color: $text-color;
+
+  height: 100%;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+
+  font: normal normal 16px/1.2 'proxima-nova', sans-serif;
+  color: $text-color;
+}
+
+.body-gradient {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
   background-image: linear-gradient($body-bg-color-light, $body-bg-color-dark);
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+#app {
+  display: block;
+  position: relative;
+  height: auto;
 }
 
 a {
@@ -195,7 +232,7 @@ li {
   z-index: 1;
 }
 
-.sticky-spacer {
+#sticky-spacer {
   display: block;
   position: relative;
   width: 100%;
@@ -215,6 +252,12 @@ li {
     .person--#{$person} .person_link {
        @extend %color--#{$person};
     }
+    .person.person--#{$person} .name-image--still {
+      display: none;
+    }
+    .person.person--#{$person} .name-image--moving {
+      display: block;
+    }
     .session--expanded {
       .session__toggle {
         @extend %bg-color--#{$person};
@@ -224,7 +267,9 @@ li {
 }
 
 body.nightmode {
-  background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
+  .body-gradient {
+    background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
+  }
 
   @each $person in $people {
     &.theme--#{$person} {
@@ -264,14 +309,14 @@ body.nightmode {
   max-height: 0;
 }
 
-$fade-height-1x-speed: 600ms;
+$fade-height-1x-speed: 300ms;
 $fade-height-2x-speed: $fade-height-1x-speed / 2;
 
 .animation-fade-height-enter-active,
 .animation-fade-height-leave-active {
   transition:
-    max-height $fade-height-1x-speed ease-in-out,
-    opacity $fade-height-1x-speed ease-in-out;
+    max-height $fade-height-1x-speed linear,
+    opacity $fade-height-1x-speed linear;
   max-height: 300px;
   opacity: 1;
   overflow: hidden;

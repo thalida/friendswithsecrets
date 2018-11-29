@@ -1,6 +1,6 @@
 <template>
-  <header id="header" class="header" data-sticky>
-      <div class="header__gradient"></div>
+  <header id="header" class="header" :class="{'is-open': headerIsOpen}" data-sticky>
+      <div id="header__gradient" class="header__gradient"></div>
       <div class="header__btn-container">
         <a
           tabindex="0"
@@ -67,7 +67,8 @@ export default {
   },
   data() {
     return {
-      headerIsOpen: this.$store.state.isFirstVisit,
+      headerIsOpen: false,
+      // headerIsOpen: this.$store.state.isFirstVisit,
     };
   },
   watch: {
@@ -92,6 +93,10 @@ export default {
   methods: {
     toggle() {
       this.headerIsOpen = !this.headerIsOpen;
+
+      if (this.headerIsOpen) {
+        window.scrollTo(0, 0);
+      }
     },
     toggleNightMode() {
       this.$store.dispatch('toggleNightMode');
