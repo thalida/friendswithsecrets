@@ -272,7 +272,7 @@ body.nightmode {
   }
 
   @each $person in $people {
-    &.theme--#{$person} {
+    #app.theme--#{$person} {
       .message--#{$person}.message--participant .message__text {
         background-color: $night-color-dark;
         color: $text-color-light;
