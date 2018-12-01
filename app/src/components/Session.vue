@@ -68,7 +68,6 @@ export default {
   props: {
     index: Number,
     session: Object,
-    people: Object,
     selected: Boolean,
   },
   data() {
@@ -83,6 +82,9 @@ export default {
     },
   },
   computed: {
+    people() {
+      return this.$store.state.people;
+    },
     sessionNumber() {
       return this.index + 1;
     },
@@ -130,24 +132,6 @@ export default {
       return messagesFormatted;
     },
   },
-  directives: {
-    width: {
-      inserted(elem, args) {
-        if (typeof args.value.handler !== 'function') {
-          return;
-        }
-
-        args.value.handler.call(null, elem);
-      },
-      componentUpdated(elem, args) {
-        if (typeof args.value.handler !== 'function') {
-          return;
-        }
-
-        args.value.handler.call(null, elem);
-      },
-    },
-  },
   methods: {
     toggle() {
       this.$emit('session-toggle', {
@@ -155,15 +139,6 @@ export default {
         index: this.index,
         state: !this.isToggleOpen,
       });
-    },
-    widthDirectiveHandler(elem) {
-      const $el = elem;
-      // re-use canvas object for better performance
-      const canvas = window.testCanvas || (window.testCanvas = document.createElement('canvas'));
-      const context = canvas.getContext('2d');
-      context.font = 'bold 16px proxima-nova';
-      const metrics = context.measureText($el.textContent.trim());
-      $el.style.width = `${Math.ceil(metrics.width)}px`;
     },
   },
 };

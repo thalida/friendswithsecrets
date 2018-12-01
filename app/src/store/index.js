@@ -112,8 +112,11 @@ export default new Vuex.Store({
           commit('setPeople', res);
           commit('setParticipantOrder', res);
           commit('setDefaultParticipant', res.participantOrder[0]);
-          dispatch('setSelected', routeParams);
-          commit('setIsLoading', { key: 'people', status: false });
+          dispatch('setSelected', routeParams).then(() => {
+            dispatch('getAllThreads').then(() => {
+              commit('setIsLoading', { key: 'people', status: false });
+            });
+          });
         });
     },
     getThread({ commit, state }, personKey) {

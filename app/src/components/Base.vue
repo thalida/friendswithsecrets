@@ -1,27 +1,41 @@
 <template>
   <div
     id="app"
-    :class="[participantThemeClass]"
+    :class="[participantThreadClass]"
     v-if="isLoaded">
     <div id="body-gradient" class="body-gradient"></div>
     <Header />
     <div id="sticky-spacer"></div>
-    <router-view />
+    <div
+      id="theads-wrapper"
+      class="theads-wrapper"
+      :class="[{'is-loading': !areAllThreadsRendered}]">
+      <Thread
+        v-for="(person, index) in participantOrder"
+        :key="index"
+        v-bind:participant="person"
+        v-bind:selectedSession="selectedSession"
+        v-bind:is-thread-selected="areAllThreadsRendered && selectedParticipant === person"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import Header from './Header';
 import People from './People';
+import Thread from './Thread';
 
 export default {
   name: 'Base',
   components: {
     Header,
     People,
+    Thread,
   },
   data() {
     return {
+      threadsRendered: [],
       $header: null,
       $headerGradient: null,
       $stickySpacer: null,
@@ -46,6 +60,7 @@ export default {
   mounted() {
     this.$root.$on('session-select', this.onSessionSelect);
     this.$root.$on('navigate', this.navigateToThread);
+    this.$root.$on('thread-rendered', this.onThreadRendered);
     this.$store.dispatch('newSiteVisit');
   },
   destroyed() {
@@ -65,6 +80,9 @@ export default {
   computed: {
     isLoaded() {
       return this.$store.state.isLoading.people === false;
+    },
+    areAllThreadsRendered() {
+      return this.threadsRendered.length === this.totalParticipants;
     },
     queryParams() {
       return this.$store.state.queryParams;
@@ -90,8 +108,8 @@ export default {
     selectedSession() {
       return this.$store.state.selectedSession;
     },
-    participantThemeClass() {
-      return `theme--${this.selectedParticipant}`;
+    participantThreadClass() {
+      return `thread--${this.selectedParticipant}`;
     },
   },
   methods: {
@@ -104,6 +122,13 @@ export default {
         },
         query: this.queryParams,
       });
+    },
+    onThreadRendered(participant) {
+      if (this.threadsRendered.indexOf(participant) >= 0) {
+        return;
+      }
+
+      this.threadsRendered.push(participant);
     },
     onScroll() {
       if (typeof this.$header === 'undefined' || this.$header === null) {
@@ -144,20 +169,6 @@ export default {
       const participant = data.participant;
       const session = !isNaN(parseInt(data.session, 10)) ? data.session + 1 : null;
       this.navigateToThread({ participant, session });
-    },
-    onSwipe(directionStr) {
-      if (directionStr !== 'left' && directionStr !== 'right') {
-        return;
-      }
-
-      const direction = (directionStr === 'left') ? 1 : -1;
-      const participant = this.participantOrder[(this.participantIndex + direction)] || null;
-
-      if (participant === null) {
-        return;
-      }
-
-      this.navigateToThread({ participant, session: this.selectedSession });
     },
   },
 };
@@ -227,6 +238,17 @@ li {
   max-width: 800px;
 }
 
+.theads-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  overflow: hidden;
+
+  &.is-loading {
+    visibility: hidden;
+  }
+}
+
 .is-sticky {
   position: fixed !important;
   z-index: 1;
@@ -244,24 +266,12 @@ li {
 }
 
 @each $person in $people {
-  .theme--#{$person} {
-    .message--#{$person}.message--participant .message__text {
-      @extend %bg-color--#{$person};
-      color: $text-color-light;
-    }
-    .person--#{$person} .person_link {
-       @extend %color--#{$person};
-    }
+  #app.thread--#{$person} {
     .person.person--#{$person} .name-image--still {
       display: none;
     }
     .person.person--#{$person} .name-image--moving {
       display: block;
-    }
-    .session--expanded {
-      .session__toggle {
-        @extend %bg-color--#{$person};
-      }
     }
   }
 }
@@ -270,74 +280,20 @@ body.nightmode {
   .body-gradient {
     background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
   }
-
-  @each $person in $people {
-    #app.theme--#{$person} {
-      .message--#{$person}.message--participant .message__text {
-        background-color: $night-color-dark;
-        color: $text-color-light;
-      }
-      .person--#{$person} .person_link {
-        color: $night-color-light;
-      }
-      .session--expanded {
-        .session__toggle {
-          background-color: $night-color-dark;
-        }
-      }
-    }
-  }
 }
 
-.animation-fade-enter-active,
-.animation-fade-leave-active {
-  transition: opacity 400ms ease;
-}
-.animation-fade-enter,
-.animation-fade-leave-to {
-  opacity: 0;
-}
-
-.animation-height-enter-active,
-.animation-height-leave-active {
-  transition: max-height 400ms ease-in-out;
-  max-height: 300px;
-  overflow: hidden;
-}
-.animation-height-enter,
-.animation-height-leave-to {
-  max-height: 0;
-}
-
-$fade-height-1x-speed: 300ms;
-$fade-height-2x-speed: $fade-height-1x-speed / 2;
-
+$fade-height-speed: 300ms;
 .animation-fade-height-enter-active,
 .animation-fade-height-leave-active {
   transition:
-    max-height $fade-height-1x-speed linear,
-    opacity $fade-height-1x-speed linear;
+    max-height $fade-height-speed linear,
+    opacity $fade-height-speed linear;
   max-height: 300px;
   opacity: 1;
   overflow: hidden;
 }
 .animation-fade-height-enter,
 .animation-fade-height-leave-to {
-  max-height: 0;
-  opacity: 0;
-}
-
-.animation--fade-height--2x-enter-active,
-.animation--fade-height--2x-leave-active {
-  transition:
-    max-height $fade-height-2x-speed ease-in-out,
-    opacity $fade-height-2x-speed ease-in-out;
-  max-height: 300px;
-  opacity: 1;
-  overflow: hidden;
-}
-.animation--fade-height--2x-enter,
-.animation--fade-height--2x-leave-to {
   max-height: 0;
   opacity: 0;
 }
