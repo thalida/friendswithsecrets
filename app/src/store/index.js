@@ -43,8 +43,8 @@ export default new Vuex.Store({
         const person = people[key];
         if (!person.is_therapist) {
           person.img_urls = {
-            still: `/static/images/people/${person.name}.png`,
-            moving: `/static/images/people/${person.name}.gif`,
+            still: `/static/images/people/${person.name}.png?v=2`,
+            moving: `/static/images/people/${person.name}.gif?v=2`,
           };
         }
         return person;

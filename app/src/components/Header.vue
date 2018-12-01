@@ -28,8 +28,8 @@
             <p class="header__about__text">
               Three friends with different backgrounds participated in online
               text therapy sessions from January to April 2018.
-              Friends With Secrets captures a slice of their lives — the good and the bad  — and
-              how they try to process the world around them.
+              Friends With Secrets captures a slice of their lives — the good, the bad,
+              the heartbreaking — and how they try to process the world around them.
               This is a refinement of 5 sessions.
               The identities of the therapists have been protected.
             </p>
@@ -41,19 +41,23 @@
                   and <a href="https://www.instagram.com/timothygoodman/" target="_blank">Timothy Goodman</a>
                 </p>
                 <p class="header__about__credit">
-                  Design by
-                  <a href="https://twitter.com/robynkanner" target="_blank">Robyn Kanner</a>
-                  and <a href="https://www.instagram.com/timothygoodman/" target="_blank">Timothy Goodman</a>
-                </p>
-                <p class="header__about__credit">
                   Code by <a href="http://thalida.codes/" target="_blank">Thalida Noel</a>
                 </p>
                 <p class="header__about__credit">
-                  For inquires email us at
+                  Web Design by Robyn Kanner and Timothy Goodman
+                </p>
+                <p class="header__about__credit">
+                  Logo by <a href="https://john-sampson.com/" target="_blank">John Sampson</a>
+                </p>
+                <p class="header__about__credit">
+                  Photo by <a href="https://www.justindoesthings.com/" target="_blank">Justin J. Wee</a>
+                </p>
+                <p class="header__about__credit">
+                  For inquires
                   <a href="mailto:friendswithsecrets@gmail.com">friendswithsecrets@gmail.com</a>
                 </p>
             </div>
-            <img class="header__about__photo" src="/static/images/people/fws_group.jpg" />
+            <img class="header__about__photo" src="/static/images/people/fws_group.jpg?v=2" />
         </div>
       </transition>
       <People />

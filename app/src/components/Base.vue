@@ -228,7 +228,7 @@ li {
 }
 
 .is-sticky {
-  position: fixed;
+  position: fixed !important;
   z-index: 1;
 }
 
