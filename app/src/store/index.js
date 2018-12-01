@@ -8,7 +8,7 @@ const debug = process.env.NODE_ENV !== 'production';
 export default new Vuex.Store({
   strict: debug,
   state: {
-    apiHost: (process.env.NODE_ENV === 'development') ? 'http://127.0.0.1:5000' : '',
+    apiHost: (process.env.NODE_ENV === 'development') ? `http://${window.location.hostname}:5000` : '',
     localStorageKeys: {
       LAST_VISITED: 'last-visited',
       NUM_VISITS: 'num-visits',
