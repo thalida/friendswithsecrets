@@ -150,7 +150,6 @@ export default {
     flex-direction: row;
 
     width: 100%;
-    min-height: 51px;
     margin: 10px 0 0;
     padding: 14px 16px;
 
@@ -178,9 +177,10 @@ export default {
   }
 
   &__title {
-    position: relative;
-    left: 0px;
-    transition: all 300ms;
+    width: 0;
+    text-align: center;
+    transition: width 300ms;
+    white-space: nowrap;
   }
 
   &__number {
@@ -196,7 +196,6 @@ export default {
 
   &--collapsed {
     .session__toggle {
-      justify-content: left;
       &__icon {
         transform: rotate(90deg);
       }
@@ -208,13 +207,11 @@ export default {
 
   &--expanded {
     .session__title {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      width: 100%;
+      text-align: center;
     }
     .session__toggle {
       color: $text-color-light;
-      justify-content: space-between;
       .icon-chevron {
         stroke: $text-color-light;
       }
