@@ -46,7 +46,7 @@
   </li>
   <li class="session session--disabled" v-else>
     <span class="session__toggle">
-      <span class="session__number">Session {{sessionNumber}}.</span>
+      <span class="session__number">Session {{sessionNumber}}</span>
     </span>
   </li>
 </template>

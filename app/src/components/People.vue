@@ -58,7 +58,7 @@ export default {
   justify-content: space-between;
   z-index: 1;
   width: calc(100% - 70px - 30px);
-  margin-top: 90px;
+  margin-top: 50px;
   padding-bottom: 15px;
 }
 
