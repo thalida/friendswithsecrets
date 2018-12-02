@@ -150,6 +150,7 @@ export default {
     flex-direction: row;
 
     width: 100%;
+    min-height: 51px;
     margin: 10px 0 0;
     padding: 14px 16px;
 
