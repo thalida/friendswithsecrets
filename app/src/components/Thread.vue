@@ -1,6 +1,6 @@
 <template>
 <section
-  class="thread"
+  class="thread tns-item"
   :class="[threadNameClass, selectedThreadClass]"
   v-show="isLoaded"
   v-scroll-to-session:params="{isLoaded, selectedSession: selectedSessionZeroIdx}">
@@ -10,7 +10,7 @@
       :key="index"
       v-bind:index="index"
       v-bind:session="session"
-      v-bind:selected="isThreadSelected && index === selectedSessionZeroIdx"
+      v-bind:selected="index === selectedSessionZeroIdx"
       v-on:session-toggle="onSessionToggle" />
     </ol>
 </section>
@@ -30,9 +30,7 @@ export default {
     isThreadSelected: Boolean,
   },
   data() {
-    return {
-      $threadsWrapper: null,
-    };
+    return {};
   },
   computed: {
     selectedSessionZeroIdx() {
@@ -61,13 +59,6 @@ export default {
       }
     });
   },
-  watch: {
-    isThreadSelected() {
-      if (this.isThreadSelected) {
-        this.scrollToThread();
-      }
-    },
-  },
   directives: {
     scrollToSession: {
       componentUpdated(elem, args) {
@@ -86,7 +77,12 @@ export default {
         const styles = window.getComputedStyle($sessionToggle);
         const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
         const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
-        window.scrollTo(0, toggleHeight * params.selectedSession);
+        // eslint-disable-next-line
+        console.log(params, toggleHeight);
+        // setTimeout(() => {
+        // window.scrollTo(0, toggleHeight * params.selectedSession);
+        // window.scrollTo(0, 0);
+        // }, 450);
       },
     },
   },
@@ -96,15 +92,6 @@ export default {
         participant: this.participant,
         session: (e.state === true) ? e.index : null,
       });
-    },
-    scrollToThread() {
-      if (typeof this.$threadsWrapper === 'undefined' || this.$threadsWrapper === null) {
-        this.$threadsWrapper = document.getElementById('theads-wrapper');
-      }
-
-      const $thread = this.$el;
-      const threadXPos = $thread.offsetLeft - this.$threadsWrapper.offsetLeft;
-      this.$threadsWrapper.scrollTo(threadXPos, this.$threadsWrapper.scrollTop);
     },
   },
 };

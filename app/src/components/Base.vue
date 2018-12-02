@@ -6,22 +6,31 @@
     <div id="body-gradient" class="body-gradient"></div>
     <Header />
     <div id="sticky-spacer"></div>
-    <div
-      id="theads-wrapper"
-      class="theads-wrapper"
-      :class="[{'is-loading': !areAllThreadsRendered}]">
-      <Thread
-        v-for="(person, index) in participantOrder"
-        :key="index"
-        v-bind:participant="person"
-        v-bind:selectedSession="selectedSession"
-        v-bind:is-thread-selected="areAllThreadsRendered && selectedParticipant === person"
-      />
+    <div class="slider-wrapper" :class="[{'is-loading': !areAllThreadsRendered}]">
+      <tiny-slider
+        ref="tinySlider"
+        mode="carousel"
+        items="1"
+        :swipeAngle="10"
+        :responsive="sliderResponsive"
+        :controls="false"
+        :nav="false"
+        :loop="false"
+        :startIndex="participantIndex">
+        <Thread
+          v-for="(person, index) in participantOrder"
+          :key="index"
+          v-bind:participant="person"
+          v-bind:selectedSession="selectedSession"
+          v-bind:is-thread-selected="selectedParticipant === person"
+        />
+      </tiny-slider>
     </div>
   </div>
 </template>
 
 <script>
+import VueTinySlider from 'vue-tiny-slider';
 import Header from './Header';
 import People from './People';
 import Thread from './Thread';
@@ -29,6 +38,7 @@ import Thread from './Thread';
 export default {
   name: 'Base',
   components: {
+    'tiny-slider': VueTinySlider,
     Header,
     People,
     Thread,
@@ -39,6 +49,12 @@ export default {
       $header: null,
       $headerGradient: null,
       $stickySpacer: null,
+      $sliderInner: null,
+      sliderResponsive: {
+        800: {
+          speed: 0,
+        },
+      },
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -70,11 +86,19 @@ export default {
   watch: {
     $route(to) {
       this.$store.dispatch('setNightMode', to.query);
-      this.$store.dispatch('setSelected', to.params);
+      this.$store.dispatch('setSelected', to.params).then(() => {
+        this.$refs.tinySlider.goTo(this.participantIndex);
+      });
     },
     nightMode(isEnabled) {
       const action = (isEnabled) ? 'add' : 'remove';
       document.body.classList[action]('nightmode');
+    },
+    areAllThreadsRendered(state) {
+      if (state) {
+        this.$refs.tinySlider.goTo(this.participantIndex);
+        this.$refs.tinySlider.slider.events.on('indexChanged', this.onSliderIndexChanged);
+      }
     },
   },
   computed: {
@@ -124,6 +148,8 @@ export default {
       });
     },
     onThreadRendered(participant) {
+      this.updateSliderHeight();
+
       if (this.threadsRendered.indexOf(participant) >= 0) {
         return;
       }
@@ -169,6 +195,29 @@ export default {
       const participant = data.participant;
       const session = !isNaN(parseInt(data.session, 10)) ? data.session + 1 : null;
       this.navigateToThread({ participant, session });
+    },
+    onSliderIndexChanged(data) {
+      this.navigateToThread({
+        participant: this.participantOrder[data.index],
+        session: this.selectedSession,
+      });
+    },
+    updateSliderHeight() {
+      if (typeof this.$sliderInner === 'undefined' || this.$sliderInner === null) {
+        this.$sliderInner = document.getElementsByClassName('tns-inner')[0];
+      }
+
+      const $slideWrapper = document.getElementsByClassName('thread--selected')[0];
+      const $slideContents = $slideWrapper.getElementsByClassName('thread__sessions')[0];
+      const slideBCR = $slideContents.getBoundingClientRect();
+      let sliderHeight = null;
+      if (slideBCR.height >= window.innerHeight - 60) {
+        sliderHeight = slideBCR.height;
+      } else {
+        sliderHeight = window.innerHeight - 60;
+      }
+      this.$sliderInner.style.height = `${sliderHeight}px`;
+      window.scrollTo(0, 0);
     },
   },
 };
@@ -238,7 +287,19 @@ li {
   max-width: 800px;
 }
 
-.theads-wrapper {
+.slider-wrapper.is-loading {
+  visibility:  hidden;
+}
+
+.tns-outer {
+  overflow: hidden;
+}
+
+.tns-inner {
+  min-height: 100%;
+}
+
+.tns-slider {
   display: flex;
   flex-direction: row;
   width: 100%;
