@@ -80,8 +80,8 @@ export default {
         // eslint-disable-next-line
         console.log(params, toggleHeight);
         // setTimeout(() => {
-        // window.scrollTo(0, toggleHeight * params.selectedSession);
-        // window.scrollTo(0, 0);
+        //   window.scrollTo(0, toggleHeight * params.selectedSession);
+        window.scrollTo(0, 0);
         // }, 450);
       },
     },
