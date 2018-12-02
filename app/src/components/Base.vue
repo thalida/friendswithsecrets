@@ -6,29 +6,11 @@
     <div id="body-gradient" class="body-gradient"></div>
     <Header />
     <div id="sticky-spacer"></div>
-    <carousel
-      :speed="carouselSpeed"
-      :per-page="1"
-      :min-swipe-distance="100"
-      :mouse-drag="false"
-      :adjustable-height="false"
-      :navigation-enabled="false"
-      :pagination-enabled="false"
-      :navigate-to="participantIndex"
-      @pageChange="onCarouselPageChange">
-      <slide v-for="(person, index) in participantOrder" :key="index">
-        <Thread
-          v-bind:participant="person"
-          v-bind:selectedSession="selectedSession"
-          v-bind:is-thread-selected="selectedParticipant === person"
-          />
-      </slide>
-    </carousel>
+    <router-view />
   </div>
 </template>
 
 <script>
-import { Carousel, Slide } from 'vue-carousel';
 import Header from './Header';
 import People from './People';
 import Thread from './Thread';
@@ -36,8 +18,6 @@ import Thread from './Thread';
 export default {
   name: 'Base',
   components: {
-    Carousel,
-    Slide,
     Header,
     People,
     Thread,
@@ -48,7 +28,6 @@ export default {
       $header: null,
       $headerGradient: null,
       $stickySpacer: null,
-      carouselSpeed: 0,
       runningOnScroll: false,
       runningOnResize: false,
     };
@@ -193,14 +172,10 @@ export default {
       const windowHeight = window.innerHeight
         || document.documentElement.clientHeight
         || document.body.clientHeight;
-      const windowWidth = window.innerWidth
-        || document.documentElement.clientWidth
-        || document.body.clientWidth;
 
       document.body.style.height = `${windowHeight + 100}px`;
       this.$bodyGradient.style.height = `${windowHeight + 100}px`;
       this.$headerGradient.style.height = `${windowHeight + 100}px`;
-      this.carouselSpeed = (windowWidth < 800) ? 300 : 0;
 
       this.runningOnResize = false;
     },
@@ -208,13 +183,6 @@ export default {
       const participant = data.participant;
       const session = !isNaN(parseInt(data.session, 10)) ? data.session + 1 : null;
       this.navigateToThread({ participant, session });
-    },
-    onCarouselPageChange(index) {
-      window.scrollTo(0, 0);
-      this.navigateToThread({
-        participant: this.participantOrder[index],
-        session: this.selectedSession,
-      });
     },
   },
 };

@@ -24,15 +24,19 @@ export default {
   components: {
     Session,
   },
-  props: {
-    participant: String,
-    selectedSession: Number,
-    isThreadSelected: Boolean,
-  },
+  props: {},
   data() {
-    return {};
+    return {
+      isThreadSelected: true,
+    };
   },
   computed: {
+    participant() {
+      return this.$store.state.selectedParticipant;
+    },
+    selectedSession() {
+      return this.$store.state.selectedSession;
+    },
     selectedSessionZeroIdx() {
       return this.selectedSession - 1;
     },
