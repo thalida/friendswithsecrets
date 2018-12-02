@@ -11,7 +11,7 @@
       :per-page="1"
       :min-swipe-distance="100"
       :mouse-drag="false"
-      :adjustable-height="true"
+      :adjustable-height="false"
       :navigation-enabled="false"
       :pagination-enabled="false"
       :navigate-to="participantIndex"
@@ -300,30 +300,19 @@ li {
   text-transform: uppercase;
 }
 
-@each $person in $people {
-  #app.thread--#{$person} {
-    .person.person--#{$person} .name-image--still {
-      display: none;
-    }
-    .person.person--#{$person} .name-image--moving {
-      display: block;
-    }
-  }
-}
-
 body.nightmode {
   .body-gradient {
     background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
   }
 }
 
-$fade-height-speed: 200ms;
+$fade-height-speed: 300ms;
 .animation-fade-height-enter-active,
 .animation-fade-height-leave-active {
   transition:
     max-height $fade-height-speed linear,
     opacity $fade-height-speed linear;
-  max-height: 100px;
+  max-height: 800px;
   opacity: 1;
   overflow: hidden;
 }

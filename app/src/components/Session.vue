@@ -31,9 +31,9 @@
       <span
         class="session__title"
         v-if="sessionTitle.length > 0">
+          <span class="session__number" v-if="isToggleOpen">{{leftPadSessionNumber}}.</span>
           {{sessionTitle}}
       </span>
-      <span class="session__number" v-if="isToggleOpen">{{leftPadSessionNumber}}.</span>
     </a>
     <ol class="session__messages" v-show="isToggleOpen">
       <Message
@@ -46,11 +46,7 @@
   </li>
   <li class="session session--disabled" v-else>
     <span class="session__toggle">
-      <span class="session__title" v-if="sessionTitle.length > 0">
-          {{sessionTitle}}
-      </span>
-      <span class="session__title" v-else></span>
-      <span class="session__number">Day {{sessionNumber}}.</span>
+      <span class="session__number">Session {{sessionNumber}}.</span>
     </span>
   </li>
 </template>

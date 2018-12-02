@@ -58,11 +58,13 @@ export default {
   justify-content: space-between;
   z-index: 1;
   width: calc(100% - 70px - 30px);
-  margin-top: 20px;
+  margin-top: 90px;
+  padding-bottom: 15px;
 }
 
 .person {
   text-align: center;
+  padding: 0 30px;
 
   &_link {
     display: block;
@@ -94,6 +96,17 @@ export default {
         display: block;
       }
     }
+  }
+}
+
+@media screen and (max-width: 800px), screen and (max-height: 400px) {
+  .people {
+    margin-top: 18px;
+    padding: 0 5px;
+  }
+
+  .person {
+    padding: 0;
   }
 }
 

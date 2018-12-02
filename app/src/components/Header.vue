@@ -24,13 +24,13 @@
       </a>
       <transition name="animation-fade-height">
         <div class="header__about container-wrapper" v-show="headerIsOpen">
-            <img class="logo" src="/static/images/fws-logo.gif?v=1" />
+            <img class="logo" src="/static/images/fws-logo.gif?v=3" />
             <p class="header__about__text">
               Three friends with different backgrounds participated in online
               text therapy sessions from January to April 2018.
               Friends With Secrets captures a slice of their lives — the good, the bad,
               the heartbreaking — and how they try to process the world around them.
-              This is a refinement of 5 sessions.
+              The sessions have been refined.
               The identities of the therapists have been protected.
             </p>
             <div class="header__about__credits">
@@ -47,7 +47,7 @@
                   Web Design by Robyn Kanner and Timothy Goodman
                 </p>
                 <p class="header__about__credit">
-                  Logo by <a href="https://john-sampson.com/" target="_blank">John Sampson</a>
+                  Logo desgin <a href="https://john-sampson.com/" target="_blank">John Sampson</a>
                 </p>
                 <p class="header__about__credit">
                   Photo by <a href="https://www.justindoesthings.com/" target="_blank">Justin J. Wee</a>
@@ -132,8 +132,8 @@ export default {
   .logo {
     display: block;
     margin-bottom: 20px;
-    width: 80%;
-    margin: 0 auto;
+    width: 85%;
+    margin: 0 auto 10px;
   }
 
   &__gradient {
@@ -227,17 +227,33 @@ export default {
 
   @media screen and (max-width: 800px), screen and (max-height: 400px) {
     .logo {
-      width: 100%;
+      width: 104%;
+      margin-left: -2%;
+    }
+
+    &__btn {
+      width: 30px;
+      height: 30px;
     }
 
     &__about {
       min-width: 90%;
+      margin-top: 60px;
+
       &__text,
       &__credits {
           display: block;
           float: none;
           width: 100%;
           margin: 0 0 20px 0;
+      }
+
+      &__text {
+          margin: 0 0 20px 0;
+      }
+
+      &__credits {
+          margin: 0;
       }
     }
   }
