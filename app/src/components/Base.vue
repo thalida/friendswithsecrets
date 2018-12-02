@@ -10,12 +10,12 @@
       :speed="carouselSpeed"
       :per-page="1"
       :min-swipe-distance="100"
-      :mouse-drag="true"
+      :mouse-drag="false"
       :adjustable-height="true"
       :navigation-enabled="false"
       :pagination-enabled="false"
       :navigate-to="participantIndex"
-      @pageChange="onCarouselTransitionEnd">
+      @pageChange="onCarouselPageChange">
       <slide v-for="(person, index) in participantOrder" :key="index">
         <Thread
           v-bind:participant="person"
@@ -44,12 +44,13 @@ export default {
   },
   data() {
     return {
-      threadsRendered: [],
+      $bodyGradient: null,
       $header: null,
       $headerGradient: null,
       $stickySpacer: null,
-      $sliderInner: null,
       carouselSpeed: 0,
+      runningOnScroll: false,
+      runningOnResize: false,
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -92,9 +93,6 @@ export default {
     isLoaded() {
       return this.$store.state.isLoading.people === false;
     },
-    areAllThreadsRendered() {
-      return this.threadsRendered.length === this.totalParticipants;
-    },
     queryParams() {
       return this.$store.state.queryParams;
     },
@@ -134,14 +132,31 @@ export default {
         query: this.queryParams,
       });
     },
-    onThreadRendered(participant) {
-      if (this.threadsRendered.indexOf(participant) >= 0) {
+    onScroll() {
+      if (this.runningOnScroll) {
         return;
       }
 
-      this.threadsRendered.push(participant);
+      this.runningOnScroll = true;
+      if (window.requestAnimationFrame) {
+        window.requestAnimationFrame(this.updateStickyHeader);
+      } else {
+        setTimeout(this.updateStickyHeader, 66);
+      }
     },
-    onScroll() {
+    onResize() {
+      if (this.runningOnResize) {
+        return;
+      }
+
+      this.runningOnResize = true;
+      if (window.requestAnimationFrame) {
+        window.requestAnimationFrame(this.updateResponsiveStyles);
+      } else {
+        setTimeout(this.updateResponsiveStyles, 66);
+      }
+    },
+    updateStickyHeader() {
       if (typeof this.$header === 'undefined' || this.$header === null) {
         this.$header = document.getElementById('header');
       }
@@ -164,8 +179,13 @@ export default {
       } else {
         this.$stickySpacer.style.height = '0px';
       }
+
+      this.runningOnScroll = false;
     },
-    onResize() {
+    updateResponsiveStyles() {
+      if (typeof this.$bodyGradient === 'undefined' || this.$bodyGradient === null) {
+        this.$bodyGradient = document.getElementById('body-gradient');
+      }
       if (typeof this.$headerGradient === 'undefined' || this.$headerGradient === null) {
         this.$headerGradient = document.getElementById('header__gradient');
       }
@@ -173,20 +193,24 @@ export default {
       const windowHeight = window.innerHeight
         || document.documentElement.clientHeight
         || document.body.clientHeight;
-      document.body.style.height = `${windowHeight}px`;
-      this.$headerGradient.style.height = `${windowHeight}px`;
-
       const windowWidth = window.innerWidth
         || document.documentElement.clientWidth
         || document.body.clientWidth;
-      this.carouselSpeed = (windowWidth < 800) ? 400 : 0;
+
+      document.body.style.height = `${windowHeight + 100}px`;
+      this.$bodyGradient.style.height = `${windowHeight + 100}px`;
+      this.$headerGradient.style.height = `${windowHeight + 100}px`;
+      this.carouselSpeed = (windowWidth < 800) ? 300 : 0;
+
+      this.runningOnResize = false;
     },
     onSessionSelect(data) {
       const participant = data.participant;
       const session = !isNaN(parseInt(data.session, 10)) ? data.session + 1 : null;
       this.navigateToThread({ participant, session });
     },
-    onCarouselTransitionEnd(index) {
+    onCarouselPageChange(index) {
+      window.scrollTo(0, 0);
       this.navigateToThread({
         participant: this.participantOrder[index],
         session: this.selectedSession,
@@ -260,29 +284,6 @@ li {
   max-width: 800px;
 }
 
-.slider-wrapper.is-loading {
-  visibility:  hidden;
-}
-
-.tns-outer {
-  overflow: hidden;
-}
-
-.tns-inner {
-  min-height: 100%;
-}
-
-.tns-slider {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  overflow: hidden;
-
-  &.is-loading {
-    visibility: hidden;
-  }
-}
-
 .is-sticky {
   position: fixed !important;
   z-index: 1;
@@ -316,13 +317,13 @@ body.nightmode {
   }
 }
 
-$fade-height-speed: 300ms;
+$fade-height-speed: 200ms;
 .animation-fade-height-enter-active,
 .animation-fade-height-leave-active {
   transition:
     max-height $fade-height-speed linear,
     opacity $fade-height-speed linear;
-  max-height: 300px;
+  max-height: 100px;
   opacity: 1;
   overflow: hidden;
 }

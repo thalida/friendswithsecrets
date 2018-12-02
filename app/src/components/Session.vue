@@ -35,16 +35,14 @@
       </span>
       <span class="session__number" v-if="isToggleOpen">{{leftPadSessionNumber}}.</span>
     </a>
-    <transition name="animation--fade-height">
-      <ol class="session__messages" v-if="isToggleOpen">
-        <Message
-          v-for="(groupedMessages, index) in messagesFormatted"
-          :key="index"
-          v-bind:index="index"
-          v-bind:messages="groupedMessages.messages"
-          v-bind:sender="people[groupedMessages.sender]" />
-      </ol>
-    </transition>
+    <ol class="session__messages" v-show="isToggleOpen">
+      <Message
+        v-for="(groupedMessages, index) in messagesFormatted"
+        :key="index"
+        v-bind:index="index"
+        v-bind:messages="groupedMessages.messages"
+        v-bind:sender="people[groupedMessages.sender]" />
+    </ol>
   </li>
   <li class="session session--disabled" v-else>
     <span class="session__toggle">
@@ -174,7 +172,7 @@ export default {
 
     &__icon {
       margin-right: 5px;
-      transition: transform 400ms ease;
+      transition: transform 400ms;
     }
 
     @media (max-width: 800px) {
@@ -184,7 +182,7 @@ export default {
 
   &__title {
     position: relative;
-    left: 0;
+    left: 0px;
     transition: all 300ms;
   }
 

@@ -1,6 +1,6 @@
 <template>
 <section
-  class="thread tns-item"
+  class="thread"
   :class="[threadNameClass, selectedThreadClass]"
   v-show="isLoaded"
   v-scroll-to-session:params="{isLoaded, selectedSession: selectedSessionZeroIdx}">
@@ -52,13 +52,6 @@ export default {
       return (this.isThreadSelected) ? 'thread--selected' : '';
     },
   },
-  updated() {
-    this.$nextTick(() => {
-      if (this.$children.length > 0) {
-        this.$root.$emit('thread-rendered', this.participant);
-      }
-    });
-  },
   directives: {
     scrollToSession: {
       componentUpdated(elem, args) {
@@ -67,22 +60,13 @@ export default {
         }
 
         const $el = elem;
-        const params = args.value;
         const $sessionToggle = $el.querySelector('.session__toggle');
 
         if ($sessionToggle === null) {
           return;
         }
 
-        const styles = window.getComputedStyle($sessionToggle);
-        const margin = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-        const toggleHeight = Math.ceil($sessionToggle.offsetHeight + margin);
-        // eslint-disable-next-line
-        console.log(params, toggleHeight);
-        // setTimeout(() => {
-        //   window.scrollTo(0, toggleHeight * params.selectedSession);
         window.scrollTo(0, 0);
-        // }, 450);
       },
     },
   },
