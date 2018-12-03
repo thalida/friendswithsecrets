@@ -8,7 +8,7 @@ import people
 import spreadsheet
 
 class Thread():
-    STARTDAY = datetime.date(2018, 12, 2)
+    STARTDAY = datetime.date(2018, 12, 3)
     NUM_SESSIONS_PER_DAY = 1;
 
     def __init__(self, google_client, person):
