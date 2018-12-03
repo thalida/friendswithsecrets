@@ -33,7 +33,7 @@
       <span
         class="session__title"
         v-if="sessionTitle.length > 0">
-          <span class="session__number" v-if="isToggleOpen">{{leftPadSessionNumber}}.</span>
+          <span class="session__number">{{leftPadSessionNumber}}.</span>
           {{sessionTitle}}
       </span>
     </a>
@@ -48,7 +48,7 @@
   </li>
   <li class="session session--disabled" v-else>
     <span class="session__toggle">
-      <span class="session__number">Session {{sessionNumber}}</span>
+      <span class="session__number">{{leftPadSessionNumber}}. Session</span>
     </span>
   </li>
 </template>

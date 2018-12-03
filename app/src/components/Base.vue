@@ -193,9 +193,6 @@ body {
 .content-daymode,
 .content-nightmode {
   position: relative;
-  &.is-header-open::before {
-    position: absolute;
-  }
 }
 
 .content-daymode {
@@ -212,6 +209,22 @@ body {
     background-size: cover;
     will-change: transform; // creates a new paint layer
     z-index: -1;
+  }
+
+  &.is-header-open::before {
+    position: absolute;
+    background-image: linear-gradient(to bottom, #97DCF4 0%, $body-bg-color-dark 100%);
+    background-color: #97DCF4;
+  }
+
+  @media screen and (max-width: 800px), screen and (max-height: 400px) {
+    &.is-header-open::before {
+      background-image: linear-gradient(
+        to bottom,
+        $body-bg-color-light 0%,
+        $body-bg-color-dark 100%
+      );
+    }
   }
 }
 
@@ -233,6 +246,22 @@ body {
     background-size: cover;
     will-change: transform; // creates a new paint layer
     z-index: -1;
+  }
+
+  &.is-header-open::before {
+    position: absolute;
+    background-image: linear-gradient(to bottom, #2D2D2E 0%, $night-body-bg-color-dark 100%);
+    background-color: #2D2D2E;
+  }
+
+  @media screen and (max-width: 800px), screen and (max-height: 400px) {
+    &.is-header-open::before {
+      background-image: linear-gradient(
+        to bottom,
+        $night-body-bg-color-light 0%,
+        $night-body-bg-color-dark 100%
+      );
+    }
   }
 }
 

@@ -127,7 +127,11 @@ export default {
   width: 100%;
   overflow: hidden;
   min-height: 60px;
-  background-color: $body-bg-color-light;
+  background-color: #97DCF4;
+
+  @media screen and (max-width: 800px), screen and (max-height: 400px) {
+    background-color: $body-bg-color-light;
+  }
 
   .logo {
     display: block;
@@ -246,7 +250,10 @@ export default {
 
 .nightmode {
   .header {
-    background-color: $night-body-bg-color-light;
+    background-color: #2D2D2E;
+    @media screen and (max-width: 800px), screen and (max-height: 400px) {
+      background-color: $night-body-bg-color-light;
+    }
   }
 
   .header__about,
