@@ -3,7 +3,6 @@
     'is-open': headerIsOpen,
     'is-closed': !headerIsOpen
   }" data-sticky>
-      <div id="header__gradient" class="header__gradient"></div>
       <a
         tabindex="0"
         class="header__btn header__btn--theme"
@@ -136,19 +135,6 @@ export default {
     margin: 0 auto 10px;
   }
 
-  &__gradient {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    background-image: linear-gradient($body-bg-color-light, $body-bg-color-dark);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-
   &__btn {
     $margin: 15px;
     display: flex;
@@ -221,8 +207,8 @@ export default {
     align-items: flex-start;
   }
 
-  &.is-sticky {
-    .header__gradient { display: block; }
+  &.is-closed {
+    background-image: linear-gradient($body-bg-color-light, $header-bg-color-dark);
   }
 
   @media screen and (max-width: 800px), screen and (max-height: 400px) {
@@ -260,8 +246,8 @@ export default {
 }
 
 .nightmode {
-  .header__gradient {
-    background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
+  .header {
+    background-image: linear-gradient($night-body-bg-color-light, $night-header-bg-color-dark);
   }
 
   .header__about,

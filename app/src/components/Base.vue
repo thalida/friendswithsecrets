@@ -24,7 +24,6 @@ export default {
   data() {
     return {
       $header: null,
-      $headerGradient: null,
       $stickySpacer: null,
       runningOnScroll: false,
       runningOnResize: false,
@@ -44,7 +43,6 @@ export default {
     this.$store.dispatch('setNightMode', this.$route.query);
     this.$store.dispatch('getAllPeople', this.$route.params);
     window.addEventListener('scroll', this.onScroll);
-    window.addEventListener('resize', this.onResize);
   },
   mounted() {
     this.$root.$on('session-select', this.onSessionSelect);
@@ -54,7 +52,6 @@ export default {
   },
   destroyed() {
     window.removeEventListener('scroll', this.onScroll);
-    window.removeEventListener('resize', this.onResize);
   },
   watch: {
     $route(to) {
@@ -110,28 +107,7 @@ export default {
       });
     },
     onScroll() {
-      if (this.runningOnScroll) {
-        return;
-      }
-
-      this.runningOnScroll = true;
-      if (window.requestAnimationFrame) {
-        window.requestAnimationFrame(this.updateStickyHeader);
-      } else {
-        setTimeout(this.updateStickyHeader, 66);
-      }
-    },
-    onResize() {
-      if (this.runningOnResize) {
-        return;
-      }
-
-      this.runningOnResize = true;
-      if (window.requestAnimationFrame) {
-        window.requestAnimationFrame(this.updateResponsiveStyles);
-      } else {
-        setTimeout(this.updateResponsiveStyles, 66);
-      }
+      this.updateStickyHeader();
     },
     updateStickyHeader() {
       if (typeof this.$header === 'undefined' || this.$header === null) {
@@ -159,19 +135,6 @@ export default {
 
       this.runningOnScroll = false;
     },
-    updateResponsiveStyles() {
-      if (typeof this.$headerGradient === 'undefined' || this.$headerGradient === null) {
-        this.$headerGradient = document.getElementById('header__gradient');
-      }
-
-      const windowHeight = window.innerHeight
-        || document.documentElement.clientHeight
-        || document.body.clientHeight;
-
-      this.$headerGradient.style.height = `${windowHeight + 100}px`;
-
-      this.runningOnResize = false;
-    },
     onSessionSelect(data) {
       const participant = data.participant;
       const session = !isNaN(parseInt(data.session, 10)) ? data.session + 1 : null;
@@ -185,7 +148,6 @@ export default {
 @import '../assets/styles/toolkit';
 
 html {
-  height: 100%;
   box-sizing: border-box;
 }
 
@@ -203,17 +165,28 @@ body {
 
   font: normal normal 16px/1.2 'proxima-nova', sans-serif;
   color: $text-color;
-
   background-color: $body-bg-color-dark;
-  background-image: linear-gradient($body-bg-color-light, $body-bg-color-dark);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+
+  &::before {
+    content: ' ';
+    position: fixed; // instead of background-attachment
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: $body-bg-color-dark;
+    background-image: linear-gradient(to bottom, $body-bg-color-light 0%, $body-bg-color-dark 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    will-change: transform; // creates a new paint layer
+    z-index: -1;
+  }
 }
 
 #app {
   display: block;
   position: relative;
-  height: auto;
+  height: 100%;
 }
 
 a {
@@ -254,8 +227,10 @@ li {
 }
 
 body.nightmode {
-  background-color: $night-body-bg-color-dark;
-  background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
+  &::before {
+    background-color: $night-body-bg-color-dark;
+    background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
+  }
 }
 
 $fade-height-speed: 300ms;
