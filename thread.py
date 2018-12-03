@@ -1,5 +1,7 @@
 # Builtins
+import os
 import datetime
+import pytz
 import logging
 from pprint import pprint
 
@@ -8,7 +10,8 @@ import people
 import spreadsheet
 
 class Thread():
-    STARTDAY = datetime.date(2018, 12, 3)
+    TIMEZONE = pytz.timezone('America/New_York')
+    STARTDAY = TIMEZONE.localize(datetime.datetime(2018, 12, 3, 7, 0))
     NUM_SESSIONS_PER_DAY = 1;
 
     def __init__(self, google_client, person):
@@ -34,8 +37,8 @@ class Thread():
 
     def get_sessions(self):
         self.used_cached_session = False;
-        now = datetime.date.today()
-        time_since_start = now - self.STARTDAY
+        now = self.TIMEZONE.localize(datetime.datetime.now())
+        days_since_start = abs((now - self.STARTDAY).days)
 
         num_available_sessions = spreadsheet.count_all_sessions(self.file)
 
@@ -43,7 +46,7 @@ class Thread():
             self.used_cached_session = True
             num_available_sessions = len(self.sessions.keys())
 
-        num_visible_sessions = self.NUM_SESSIONS_PER_DAY * (time_since_start.days + 1)
+        num_visible_sessions = self.NUM_SESSIONS_PER_DAY * (days_since_start + 1)
 
         if num_visible_sessions > num_available_sessions:
             num_visible_sessions = num_available_sessions
