@@ -47,7 +47,7 @@
                   Web Design by Robyn Kanner and Timothy Goodman
                 </p>
                 <p class="header__about__credit">
-                  Logo desgin <a href="https://john-sampson.com/" target="_blank">John Sampson</a>
+                  Logo Design by <a href="https://john-sampson.com/" target="_blank">John Sampson</a>
                 </p>
                 <p class="header__about__credit">
                   Photo by <a href="https://www.justindoesthings.com/" target="_blank">Justin J. Wee</a>
