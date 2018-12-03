@@ -53,7 +53,7 @@
                 </p>
                 <p class="header__about__credit">
                   For inquires
-                  <a href="mailto:friendswithsecrets@gmail.com">friendswithsecrets@gmail.com</a>
+                  <a href="mailto:hi@friendswithsecrets.com">hi@friendswithsecrets.com</a>
                 </p>
             </div>
             <img class="header__about__photo" src="/static/images/people/fws_group.jpg?v=2" />
@@ -74,7 +74,6 @@ export default {
   data() {
     return {
       headerIsOpen: false,
-      // headerIsOpen: this.$store.state.isFirstVisit,
     };
   },
   watch: {
@@ -99,6 +98,7 @@ export default {
   methods: {
     toggle() {
       this.headerIsOpen = !this.headerIsOpen;
+      this.$root.$emit('header-toggled', this.headerIsOpen);
 
       if (this.headerIsOpen) {
         window.scrollTo(0, 0);
@@ -127,6 +127,7 @@ export default {
   width: 100%;
   overflow: hidden;
   min-height: 60px;
+  background-color: $body-bg-color-light;
 
   .logo {
     display: block;
@@ -207,9 +208,7 @@ export default {
     align-items: flex-start;
   }
 
-  &.is-closed {
-    background-image: linear-gradient($body-bg-color-light, $header-bg-color-dark);
-  }
+  &.is-closed {}
 
   @media screen and (max-width: 800px), screen and (max-height: 400px) {
     .logo {
@@ -247,7 +246,7 @@ export default {
 
 .nightmode {
   .header {
-    background-image: linear-gradient($night-body-bg-color-light, $night-header-bg-color-dark);
+    background-color: $night-body-bg-color-light;
   }
 
   .header__about,

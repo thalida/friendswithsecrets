@@ -5,7 +5,14 @@
     v-if="isLoaded">
     <Header />
     <div id="sticky-spacer"></div>
-    <router-view />
+    <div
+      :class="{
+        'is-header-open': headerIsOpen,
+        'content-nightmode': nightModeEnabled,
+        'content-daymode': !nightModeEnabled
+      }">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -26,7 +33,8 @@ export default {
       $header: null,
       $stickySpacer: null,
       runningOnScroll: false,
-      runningOnResize: false,
+      headerIsOpen: false,
+      nightModeEnabled: false,
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -48,6 +56,7 @@ export default {
     this.$root.$on('session-select', this.onSessionSelect);
     this.$root.$on('navigate', this.navigateToThread);
     this.$root.$on('thread-rendered', this.onThreadRendered);
+    this.$root.$on('header-toggled', this.onHeaderToggled);
     this.$store.dispatch('newSiteVisit');
   },
   destroyed() {
@@ -61,6 +70,7 @@ export default {
     nightMode(isEnabled) {
       const action = (isEnabled) ? 'add' : 'remove';
       document.body.classList[action]('nightmode');
+      this.nightModeEnabled = isEnabled;
     },
   },
   computed: {
@@ -106,6 +116,9 @@ export default {
         query: this.queryParams,
       });
     },
+    onHeaderToggled(state) {
+      this.headerIsOpen = state;
+    },
     onScroll() {
       this.updateStickyHeader();
     },
@@ -127,7 +140,6 @@ export default {
 
       this.$header.classList[action]('is-sticky');
       if (action === 'add') {
-        this.onResize();
         this.$stickySpacer.style.height = `${headerBoundingClientRect.height}px`;
       } else {
         this.$stickySpacer.style.height = '0px';
@@ -167,6 +179,26 @@ body {
   color: $text-color;
   background-color: $body-bg-color-dark;
 
+  &.nightmode {
+    background-color: $night-body-bg-color-dark;
+  }
+}
+
+#app {
+  display: block;
+  position: relative;
+  height: 100%;
+}
+
+.content-daymode,
+.content-nightmode {
+  position: relative;
+  &.is-header-open::before {
+    position: absolute;
+  }
+}
+
+.content-daymode {
   &::before {
     content: ' ';
     position: fixed; // instead of background-attachment
@@ -183,10 +215,25 @@ body {
   }
 }
 
-#app {
-  display: block;
-  position: relative;
-  height: 100%;
+.content-nightmode {
+  &::before {
+    content: ' ';
+    position: fixed; // instead of background-attachment
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: $night-body-bg-color-dark;
+    background-image: linear-gradient(
+      to bottom,
+      $night-body-bg-color-light 0%,
+      $night-body-bg-color-dark 100%
+    );
+    background-repeat: no-repeat;
+    background-size: cover;
+    will-change: transform; // creates a new paint layer
+    z-index: -1;
+  }
 }
 
 a {
@@ -224,13 +271,6 @@ li {
 
 .text--uppercase {
   text-transform: uppercase;
-}
-
-body.nightmode {
-  &::before {
-    background-color: $night-body-bg-color-dark;
-    background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
-  }
 }
 
 $fade-height-speed: 300ms;

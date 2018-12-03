@@ -1,5 +1,7 @@
 <template>
-  <li class="session" :class="[sessionToggleClass]" v-if="hasMessages">
+  <li v-if="hasMessages"
+    class="session"
+    :class="[sessionToggleClass, {'quick-animate': isAnimating}]">
     <a
       class="session__toggle"
       v-on:click="toggle"
@@ -66,12 +68,14 @@ export default {
   },
   data() {
     return {
+      isAnimating: false,
       isToggleOpen: this.selected,
       toggleClasses: { open: 'expanded', closed: 'collapsed' },
     };
   },
   watch: {
     selected(newState) {
+      this.isAnimating = newState;
       this.isToggleOpen = newState;
     },
   },
@@ -128,6 +132,7 @@ export default {
   },
   methods: {
     toggle() {
+      this.isAnimating = true;
       this.$emit('session-toggle', {
         source: 'session',
         index: this.index,
@@ -179,8 +184,8 @@ export default {
   &__title {
     width: 0;
     text-align: center;
-    transition: width 300ms;
     white-space: nowrap;
+    transition: width 300ms linear;
   }
 
   &__number {
@@ -192,6 +197,12 @@ export default {
     position: relative;
     margin: 20px 0;
     padding: 0;
+  }
+
+  &.quick-animate {
+    .session__title {
+      width: 100%;
+    }
   }
 
   &--collapsed {
@@ -208,7 +219,6 @@ export default {
   &--expanded {
     .session__title {
       width: 100%;
-      text-align: center;
     }
     .session__toggle {
       color: $text-color-light;
@@ -227,7 +237,6 @@ export default {
       text-transform: none;
     }
     .session__toggle {
-      justify-content: space-between;
       opacity: 0.5;
 
       &:hover,
