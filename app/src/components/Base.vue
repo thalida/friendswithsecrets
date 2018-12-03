@@ -3,7 +3,6 @@
     id="app"
     :class="[participantThreadClass]"
     v-if="isLoaded">
-    <div id="body-gradient" class="body-gradient"></div>
     <Header />
     <div id="sticky-spacer"></div>
     <router-view />
@@ -24,7 +23,6 @@ export default {
   },
   data() {
     return {
-      $bodyGradient: null,
       $header: null,
       $headerGradient: null,
       $stickySpacer: null,
@@ -162,9 +160,6 @@ export default {
       this.runningOnScroll = false;
     },
     updateResponsiveStyles() {
-      if (typeof this.$bodyGradient === 'undefined' || this.$bodyGradient === null) {
-        this.$bodyGradient = document.getElementById('body-gradient');
-      }
       if (typeof this.$headerGradient === 'undefined' || this.$headerGradient === null) {
         this.$headerGradient = document.getElementById('header__gradient');
       }
@@ -173,8 +168,6 @@ export default {
         || document.documentElement.clientHeight
         || document.body.clientHeight;
 
-      document.body.style.height = `${windowHeight + 100}px`;
-      this.$bodyGradient.style.height = `${windowHeight + 100}px`;
       this.$headerGradient.style.height = `${windowHeight + 100}px`;
 
       this.runningOnResize = false;
@@ -210,16 +203,8 @@ body {
 
   font: normal normal 16px/1.2 'proxima-nova', sans-serif;
   color: $text-color;
-}
 
-.body-gradient {
-  display: block;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: -1;
+  background-color: $body-bg-color-dark;
   background-image: linear-gradient($body-bg-color-light, $body-bg-color-dark);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -269,9 +254,8 @@ li {
 }
 
 body.nightmode {
-  .body-gradient {
-    background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
-  }
+  background-color: $night-body-bg-color-dark;
+  background-image: linear-gradient($night-body-bg-color-light, $night-body-bg-color-dark);
 }
 
 $fade-height-speed: 300ms;
