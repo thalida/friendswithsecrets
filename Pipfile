@@ -9,6 +9,7 @@ flask-cors = "*"
 gspread = "*"
 "oauth2client" = "*"
 flask-basicauth = "*"
+pytz = "*"
 
 [dev-packages]
 
