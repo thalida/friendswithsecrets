@@ -34,9 +34,11 @@ export default new Vuex.Store({
     setIsLoading(state, { key, status }) {
       Vue.set(state.isLoading, key, status);
     },
-    // not being used TODO: Remove
     setDefaultParticipant(state, participant) {
       state.defaultParticipant = participant;
+    },
+    setDefaultSession(state, session) {
+      state.defaultSession = session;
     },
     setPeople(state, { people }) {
       Object.keys(people).map((key) => {
@@ -73,7 +75,7 @@ export default new Vuex.Store({
       if (!isNaN(parseInt(session, 10))) {
         state.selectedSession = parseInt(session, 10);
       } else {
-        state.selectedSession = state.defaultSession;
+        state.selectedSession = null;
       }
     },
     setNightMode(state, value) {
@@ -112,6 +114,7 @@ export default new Vuex.Store({
           commit('setPeople', res);
           commit('setParticipantOrder', res);
           commit('setDefaultParticipant', res.participantOrder[0]);
+          commit('setDefaultSession', res.currentSession);
           dispatch('setSelected', routeParams).then(() => {
             dispatch('getAllThreads').then(() => {
               commit('setIsLoading', { key: 'people', status: false });
@@ -145,7 +148,7 @@ export default new Vuex.Store({
       }
     },
     setSelected({ commit, state }, { participant, session }) {
-      const sessionVal = (typeof participant === 'undefined') ? 1 : session;
+      const sessionVal = (typeof participant === 'undefined') ? state.defaultSession : session;
       commit('setSelectedParticipant', participant);
       commit('setSelectedSession', sessionVal);
       commit('setSelectedThread', state.selectedParticipant);

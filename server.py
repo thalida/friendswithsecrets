@@ -47,9 +47,11 @@ def get_thread_class(person):
 @app.route('/api/people', methods=['GET'])
 def get_people():
     try:
+        thread = get_thread_class('robyn')
         res = {
             'people': people.PEOPLE,
             'participantOrder': people.PARTICIPANT_ORDER,
+            'currentSession': thread.get_num_sessions(),
         }
         return make_response(jsonify(res))
     except Exception:

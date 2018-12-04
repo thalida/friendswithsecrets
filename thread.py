@@ -55,3 +55,9 @@ class Thread():
 
         sessions = [self.get_session(i) for i in range(num_visible_sessions)] + ([None] * num_hidden_sessions)
         return (sessions, self.used_cached_session)
+
+    def get_num_sessions(self):
+        now = self.TIMEZONE.localize(datetime.datetime.now())
+        days_since_start = abs((now - self.STARTDAY).days)
+        num_visible_sessions = self.NUM_SESSIONS_PER_DAY * (days_since_start + 1)
+        return num_visible_sessions if (num_visible_sessions < self.total_sessions) else self.total_sessions
