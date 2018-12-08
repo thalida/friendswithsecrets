@@ -44,6 +44,7 @@ def _format_session(session, title=""):
         'messages': []
     }
 
+    sender = None
     for field in session:
         txt = field[0]
         txt_lower = txt.lower()
@@ -59,7 +60,9 @@ def _format_session(session, title=""):
             continue
 
         if sender:
-            formatted_session['messages'].append({'sender': sender, 'message_text': txt});
+            unicode_txt = str(txt)
+            unicode_txt = unicode_txt.replace(u"\u00A0", " ")
+            formatted_session['messages'].append({'sender': sender, 'message_text': unicode_txt});
             sender = None
 
     return formatted_session

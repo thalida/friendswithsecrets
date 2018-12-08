@@ -21,13 +21,10 @@ app = Flask(
     template_folder="./dist"
 )
 
-# app.config['BASIC_AUTH_USERNAME'] = app_secrets.AUTH_USERNAME
-# app.config['BASIC_AUTH_PASSWORD'] = app_secrets.AUTH_PASSWORD
-
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 google_client = spreadsheet.create_gc()
-# basic_auth = BasicAuth(app)
 
+force_update = 2
 threads = {};
 
 def shuff(arr):
@@ -75,7 +72,6 @@ def get_thread(person):
         logger.exception('500 Error Fetching Thread Data')
         abort(500)
 
-# @basic_auth.required
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
